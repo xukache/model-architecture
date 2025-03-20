@@ -487,4 +487,63 @@
         <!-- 自注意力机制 -->
 
         <!-- 前馈网络 -->
+    </main>
+
+    <script>
+        // 主题切换功能
+        document.addEventListener('DOMContentLoaded', () => {
+            // 获取主题切换按钮
+            const themeToggle = document.getElementById('theme-toggle');
+            const mobileThemeToggle = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            // 检查系统主题偏好
+            const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+            
+            // 从localStorage获取用户的主题偏好
+            const currentTheme = localStorage.getItem('theme');
+            if (currentTheme === 'dark') {
+                document.documentElement.classList.add('dark');
+            } else if (currentTheme === 'light') {
+                document.documentElement.classList.remove('dark');
+            } else if (prefersDarkScheme.matches) {
+                document.documentElement.classList.add('dark');
+            }
+
+            // 主题切换按钮点击事件
+            themeToggle.addEventListener('click', () => {
+                document.documentElement.classList.toggle('dark');
+                
+                // 保存主题偏好到localStorage
+                const theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+                localStorage.setItem('theme', theme);
+            });
+
+            // 移动端菜单切换
+            mobileThemeToggle.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        });
+
+        // 返回顶部按钮功能
+        window.addEventListener('scroll', () => {
+            const backToTopBtn = document.getElementById('back-to-top');
+            if (window.pageYOffset > 300) {
+                backToTopBtn.classList.remove('opacity-0', 'invisible');
+                backToTopBtn.classList.add('opacity-100', 'visible');
+            } else {
+                backToTopBtn.classList.add('opacity-0', 'invisible');
+                backToTopBtn.classList.remove('opacity-100', 'visible');
+            }
+        });
+
+        // 平滑滚动到顶部
+        document.getElementById('back-to-top')?.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+</body>
 </html>

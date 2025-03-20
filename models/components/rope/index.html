@@ -255,37 +255,33 @@
                 <div id="code-block" class="hidden">
                     <div class="code-container">
                         <pre
-                            class="code-block language-python"><code><span class="comment"># 将频率用于q、k矩阵</span>
-<span class="keyword">def</span> <span class="function">apply_rotary_emb</span>(<span class="parameter">xq</span>, <span class="parameter">xk</span>, <span class="parameter">pos_cis</span>):
-    <span class="string">"""
-    xq: 查询矩阵
-    xk: 键矩阵
-    pos_cis: 位置编码矩阵，形状为 (seq_len, dim/2)
-    """</span>
-    <span class="comment"># 用于调整位置编码的形状以匹配输入张量。</span>
-    <span class="keyword">def</span> <span class="function">unite_shape</span>(<span class="parameter">pos_cis</span>, <span class="parameter">x</span>):
-        ndim = x.ndim
-        <span class="comment"># 检查维度要求</span>
-        <span class="keyword">assert</span> 0 <= 1 < ndim
-        <span class="comment"># 确保pos_cis的形状与输入张量在序列长度和特征维度上匹配</span>
-        <span class="keyword">assert</span> pos_cis.shape == (x.shape[1], x.shape[-1])
-        <span class="comment"># 构建新的形状列表:只保留序列长度和特征维度,其他维度设为1</span>
-        shape = [d <span class="keyword">if</span> i == 1 <span class="keyword">or</span> i == ndim - 1 <span class="keyword">else</span> 1 <span class="keyword">for</span> i, d <span class="keyword">in</span> <span class="function">enumerate</span>(x.shape)]
-        <span class="keyword">return</span> pos_cis.view(*shape)
-    
+                            class="code-block language-python"><code><span class="comment"># 调整频率张量的形状以便于广播</span>
+<span class="keyword">def</span> <span class="function">reshape_for_broadcast</span>(<span class="parameter">freqs_cis</span>: <span class="builtin">torch</span>.Tensor, <span class="parameter">x</span>: <span class="builtin">torch</span>.Tensor):
+    ndim = x.ndim
+    <span class="comment"># 检查维度要求</span>
+    <span class="keyword">assert</span> 0 <= 1 < ndim
+    <span class="comment"># 确保freqs_cis的形状与输入张量在序列长度和特征维度上匹配</span>
+    <span class="keyword">assert</span> freqs_cis.shape == (x.shape[1], x.shape[-1])
+    <span class="comment"># 构建新的形状列表:只保留序列长度和特征维度,其他维度设为1</span>
+    shape = [d <span class="keyword">if</span> i == 1 <span class="keyword">or</span> i == ndim - 1 <span class="keyword">else</span> 1 <span class="keyword">for</span> i, d <span class="keyword">in</span> <span class="function">enumerate</span>(x.shape)]
+    <span class="keyword">return</span> freqs_cis.view(*shape)
+
+<span class="keyword">def</span> <span class="function">apply_rotary_emb</span>(
+    <span class="parameter">xq</span>: <span class="builtin">torch</span>.Tensor,
+    <span class="parameter">xk</span>: <span class="builtin">torch</span>.Tensor,
+    <span class="parameter">freqs_cis</span>: <span class="builtin">torch</span>.Tensor,
+) -> Tuple[<span class="builtin">torch</span>.Tensor, <span class="builtin">torch</span>.Tensor]:
     <span class="comment"># 将输入转换为复数形式</span>
-    <span class="comment"># reshape(..., -1, 2)将最后一个维度分成两半,分别作为实部和虚部</span>
-    <span class="builtin">xq_</span> = <span class="builtin">torch</span>.<span class="function">view_as_complex</span>(<span class="parameter">xq</span>.<span class="function">float</span>().<span class="function">reshape</span>(*<span class="parameter">xq</span>.shape[:-<span class="number">1</span>], -<span class="number">1</span>, <span class="number">2</span>))<br>
-    <span class="builtin">xk_</span> = <span class="builtin">torch</span>.<span class="function">view_as_complex</span>(<span class="parameter">xk</span>.<span class="function">float</span>().<span class="function">reshape</span>(*<span class="parameter">xk</span>.shape[:-<span class="number">1</span>], -<span class="number">1</span>, <span class="number">2</span>))
-
-    <span class="comment"># 调整位置编码的形状</span>
-    <span class="parameter">pos_cis</span> = <span class="function">unite_shape</span>(<span class="parameter">pos_cis</span>, <span class="parameter">xq_</span>)
-
-    <span class="comment"># 执行旋转操作(通过复数乘法)</span>
-    <span class="comment"># 然后转回实数形式并展平最后的维度</span>
-    <span class="parameter">xq_out</span> = <span class="builtin">torch</span>.<span class="function">view_as_real</span>(<span class="parameter">xq_</span> <span class="operator">*</span> <span class="parameter">pos_cis</span>).<span class="function">flatten</span>(<span class="number">3</span>)
-    <span class="parameter">xk_out</span> = <span class="builtin">torch</span>.<span class="function">view_as_real</span>(<span class="parameter">xk_</span> <span class="operator">*</span> <span class="parameter">pos_cis</span>).<span class="function">flatten</span>(<span class="number">3</span>)
-
+    <span class="builtin">xq_</span> = <span class="builtin">torch</span>.<span class="function">view_as_complex</span>(<span class="parameter">xq</span>.<span class="function">float</span>().<span class="function">reshape</span>(*<span class="parameter">xq</span>.shape[:-1], -1, 2))
+    <span class="builtin">xk_</span> = <span class="builtin">torch</span>.<span class="function">view_as_complex</span>(<span class="parameter">xk</span>.<span class="function">float</span>().<span class="function">reshape</span>(*<span class="parameter">xk</span>.shape[:-1], -1, 2))
+    
+    <span class="comment"># 调整频率张量的形状以便于广播</span>
+    <span class="parameter">freqs_cis</span> = <span class="function">reshape_for_broadcast</span>(<span class="parameter">freqs_cis</span>, <span class="parameter">xq_</span>)
+    
+    <span class="comment"># 执行旋转操作并转回实数形式</span>
+    <span class="parameter">xq_out</span> = <span class="builtin">torch</span>.<span class="function">view_as_real</span>(<span class="parameter">xq_</span> * <span class="parameter">freqs_cis</span>).<span class="function">flatten</span>(3)
+    <span class="parameter">xk_out</span> = <span class="builtin">torch</span>.<span class="function">view_as_real</span>(<span class="parameter">xk_</span> * <span class="parameter">freqs_cis</span>).<span class="function">flatten</span>(3)
+    
     <span class="comment"># 将结果转换回输入的原始数据类型</span>
     <span class="keyword">return</span> <span class="parameter">xq_out</span>.<span class="function">type_as</span>(<span class="parameter">xq</span>), <span class="parameter">xk_out</span>.<span class="function">type_as</span>(<span class="parameter">xk</span>)</code></pre>
                     </div>
