@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>旋转位置编码(RoPE)作用于QK矩阵可视化</title>
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        // 配置Tailwind
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                        secondary: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            200: '#99f6e4',
+                            300: '#5eead4',
+                            400: '#2dd4bf',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e',
+                            800: '#115e59',
+                            900: '#134e4a',
+                        },
+                        accent: {
+                            50: '#fff7ed',
+                            100: '#ffedd5',
+                            200: '#fed7aa',
+                            300: '#fdba74',
+                            400: '#fb923c',
+                            500: '#f97316',
+                            600: '#ea580c',
+                            700: '#c2410c',
+                            800: '#9a3412',
+                            900: '#7c2d12',
+                        },
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-up': 'slideUp 0.5s ease-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer components {
+            .section-title {
+                @apply text-lg md:text-xl font-semibold text-gray-800 dark:text-gray-100 mb-2;
+                font-family: "Microsoft YaHei", sans-serif;
+            }
+            .step-card {
+                @apply bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 
+                       p-4 md:p-6 mb-6 border border-gray-100 dark:border-gray-700
+                       transform hover:scale-[1.01];
+                font-family: "Microsoft YaHei", sans-serif;
+            }
+            .code-block {
+                @apply bg-gray-50 dark:bg-gray-900 p-3 rounded-md font-mono text-sm text-gray-800 dark:text-gray-300 
+                       overflow-x-auto border border-gray-200 dark:border-gray-700;
+                font-family: "Microsoft YaHei", sans-serif;
+            }
+            .dimension-info {
+                @apply text-sm text-gray-600 dark:text-gray-400 italic mt-2;
+                font-family: "Microsoft YaHei", sans-serif;
+            }
+            .explanation {
+                @apply text-gray-700 dark:text-gray-300 mt-3 text-sm md:text-base;
+                font-family: "Microsoft YaHei", sans-serif;
+            }
+            .canvas-container {
+                @apply flex justify-center items-center p-2 my-4 bg-gray-50 dark:bg-gray-900 rounded-lg 
+                       border border-gray-200 dark:border-gray-700 overflow-auto;
+                font-family: "Microsoft YaHei", sans-serif;
+            }
+            .step-number {
+                @apply flex items-center justify-center w-7 h-7 rounded-full bg-primary-500 text-white 
+                       font-semibold text-sm mr-2;
+                font-family: "Microsoft YaHei", sans-serif;
+            }
+            .step-header {
+                @apply flex items-center mb-3;
+                font-family: "Microsoft YaHei", sans-serif;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-300" style="font-family: 'Microsoft YaHei', sans-serif;">
+    <!-- 页面顶部导航 -->
+    <header class="sticky top-0 z-50 bg-white dark:bg-gray-800 shadow-sm">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <h1 class="text-xl md:text-2xl font-bold text-primary-600 dark:text-primary-400">
+                <i class="fas fa-rotate mr-2"></i>旋转位置编码(RoPE)作用于QK矩阵可视化
+            </h1>
+            <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                <i class="fas fa-moon text-gray-600 dark:hidden"></i>
+                <i class="fas fa-sun text-yellow-300 hidden dark:block"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 max-w-5xl animate-fade-in">
+        <!-- 简介 -->
+        <section class="mb-8 animate-slide-up">
+            <div class="step-card">
+                <h2 class="text-xl md:text-2xl font-bold text-gray-800 dark:text-gray-100 mb-4">
+                    <i class="fas fa-info-circle text-primary-500 mr-2"></i>旋转位置编码概述
+                </h2>
+                <p class="text-gray-700 dark:text-gray-300 mb-4">
+                    旋转位置编码(Rotary Position Embedding, RoPE)是一种在Transformer架构中表示序列位置信息的技术。
+                    它通过在复数空间中旋转向量来实现位置编码，使模型能够感知序列中元素的相对位置关系。
+                </p>
+                <div class="flex flex-wrap gap-3 text-sm">
+                    <span class="px-3 py-1 bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-100 rounded-full">
+                        <i class="fas fa-check-circle mr-1"></i>高效位置表示
+                    </span>
+                    <span class="px-3 py-1 bg-secondary-100 dark:bg-secondary-900 text-secondary-800 dark:text-secondary-100 rounded-full">
+                        <i class="fas fa-check-circle mr-1"></i>相对位置感知
+                    </span>
+                    <span class="px-3 py-1 bg-accent-100 dark:bg-accent-900 text-accent-800 dark:text-accent-100 rounded-full">
+                        <i class="fas fa-check-circle mr-1"></i>序列长度外推能力
+                    </span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 步骤 1: 初始状态 -->
+        <section id="step1" class="mb-8 opacity-0 transition-opacity duration-500">
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">1</div>
+                    <h3 class="section-title">初始状态与输入说明</h3>
+                </div>
+                <div class="explanation">
+                    <p class="mb-3">假设我们有以下输入:</p>
+                    <ul class="list-disc pl-5 mb-4 space-y-1">
+                        <li><strong>xq</strong>: 查询矩阵 - 形状为 [batch_size, seq_len, num_heads, head_dim]</li>
+                        <li><strong>xk</strong>: 键矩阵 - 与查询矩阵相同形状</li>
+                        <li><strong>pos_cis</strong>: 位置编码 - 形状为 [seq_len, head_dim/2]，包含复数形式的旋转编码</li>
+                    </ul>
+                </div>
+                <div class="canvas-container">
+                    <canvas id="initialState" width="800" height="400" class="max-w-full"></canvas>
+                </div>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">
+                    <i class="fas fa-lightbulb text-yellow-500 mr-1"></i>
+                    注意: head_dim需要是偶数，因为每相邻两个元素将被视为一个复数的实部和虚部
+                </p>
+            </div>
+        </section>
+
+        <!-- 步骤 2: 复数转换 -->
+        <section id="step2" class="mb-8 opacity-0 transition-opacity duration-500">
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">2</div>
+                    <h3 class="section-title">将查询和键矩阵转换为复数形式</h3>
+                </div>
+                <div class="code-block">
+xq_ = torch.view_as_complex(xq.float().reshape(*xq.shape[:-1], -1, 2))<br>
+xk_ = torch.view_as_complex(xk.float().reshape(*xk.shape[:-1], -1, 2))
+                </div>
+                <div class="explanation">
+                    <p>这一步将最后一维的每两个相邻元素合并为一个复数，实部和虚部分别对应。</p>
+                    <p>例如: [a, b, c, d] → [a+bi, c+di]</p>
+                    <br>
+                </div>
+                <div class="code-block">
+                    <p>维度变化:</p>
+                    <p>xq: [batch_size, seq_len, num_heads, head_dim] → xq_: [batch_size, seq_len, num_heads, head_dim/2]</p>
+                    <p>xk: [batch_size, seq_len, num_heads, head_dim] → xk_: [batch_size, seq_len, num_heads, head_dim/2]</p>
+                </div>
+                <div class="canvas-container">
+                    <canvas id="complexConversion" width="800" height="400" class="max-w-full"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- 步骤 3: 调整位置编码形状 -->
+        <section id="step3" class="mb-8 opacity-0 transition-opacity duration-500">
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">3</div>
+                    <h3 class="section-title">调整位置编码的形状</h3>
+                </div>
+                <div class="code-block">
+pos_cis = unite_shape(pos_cis, xq_)
+                </div>
+                <div class="explanation">
+                    <p>unite_shape函数将位置编码的形状调整为与查询/键矩阵兼容，使其能够进行广播操作。</p>
+                    <p>具体来说，它将 [seq_len, head_dim/2] 的张量转换为 [1, seq_len, 1, head_dim/2]</p>
+                </div>
+                <br>
+                <div class="code-block">
+                    <p>维度变化:</p>
+                    <p>pos_cis: [seq_len, head_dim/2] → [1, seq_len, 1, head_dim/2]</p>
+                </div>
+                <div class="canvas-container">
+                    <canvas id="reshapePosCis" width="800" height="500" class="max-w-full"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- 步骤 4: 旋转操作 -->
+        <section id="step4" class="mb-8 opacity-0 transition-opacity duration-500">
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">4</div>
+                    <h3 class="section-title">复数乘法实现旋转操作</h3>
+                </div>
+                <div class="code-block">
+xq_out = torch.view_as_real(xq_ * pos_cis).flatten(3)
+<br>
+xk_out = torch.view_as_real(xk_ * pos_cis).flatten(3)
+                </div>
+                <div class="explanation">
+                    <p>这是RoPE的核心操作 - 通过复数乘法实现向量的旋转。</p>
+                    <p>当我们把向量[x, y]表示为复数x+yi并与e^(iθ) = cos(θ) + i·sin(θ)相乘时，相当于将该向量旋转θ角度。</p>
+                    <p>此处，pos_cis包含了基于位置的cos和sin值(e^(iθ))，通过复数乘法实现了基于位置的旋转。</p>
+                </div>
+                
+                <!-- 复数旋转可视化 -->
+                <div class="flex flex-col md:flex-row gap-4 mt-4">
+                    <div class="flex-1">
+                        <h4 class="font-medium text-gray-800 dark:text-gray-200 mb-2">复数空间中的旋转</h4>
+                        <div class="canvas-container h-[400px]">
+                            <canvas id="complexRotation" width="400" height="400"></canvas>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="font-medium text-gray-800 dark:text-gray-200 mb-2">维度变化过程</h4>
+                        <div class="code-block mt-0 mb-2">
+                            <p>操作流程:</p>
+                            <p>1. xq_ * pos_cis: 复数乘法，维度保持 [batch_size, seq_len, num_heads, head_dim/2]</p>
+                            <p>2. torch.view_as_real(): 将复数转回实数对，维度变为 [batch_size, seq_len, num_heads, head_dim/2, 2]</p>
+                            <p>3. flatten(3): 将最后两维合并，恢复原始维度 [batch_size, seq_len, num_heads, head_dim]</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="canvas-container mt-4">
+                    <canvas id="rotationOperation" width="800" height="500" class="max-w-full"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- 步骤 5: 最终结果 -->
+        <section id="step5" class="mb-8 opacity-0 transition-opacity duration-500">
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-number">5</div>
+                    <h3 class="section-title">将结果转换回原始数据类型</h3>
+                </div>
+                <div class="code-block">
+return xq_out.type_as(xq), xk_out.type_as(xk)
+                </div>
+                <div class="explanation">
+                    <p>最后，将处理后的查询和键矩阵转换回与输入相同的数据类型，并返回结果。</p>
+                    <p>最终输出的xq_out和xk_out与输入的xq和xk具有相同的形状，但内容已经通过旋转位置编码进行了调整。</p>
+                </div>
+                <br>
+                <div class="code-block">
+                    <p>最终维度: [batch_size, seq_len, num_heads, head_dim]</p>
+                </div>
+                <div class="canvas-container">
+                    <canvas id="finalResult" width="800" height="450" class="max-w-full"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- 总结部分 -->
+        <section id="summary" class="mb-8 opacity-0 transition-opacity duration-500">
+            <div class="step-card">
+                <h3 class="section-title flex items-center">
+                    <i class="fas fa-check-circle text-green-500 mr-2"></i>总结
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg">
+                        <h4 class="font-medium text-primary-600 dark:text-primary-400 mb-2">主要步骤</h4>
+                        <ol class="list-decimal pl-5 space-y-1 text-gray-700 dark:text-gray-300">
+                            <li>初始化查询矩阵、键矩阵和位置编码</li>
+                            <li>将查询和键转换为复数形式</li>
+                            <li>调整位置编码的形状以便广播</li>
+                            <li>通过复数乘法实现向量旋转</li>
+                            <li>转回原始数据类型并返回结果</li>
+                        </ol>
+                    </div>
+                    <div class="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg">
+                        <h4 class="font-medium text-primary-600 dark:text-primary-400 mb-2">主要特点</h4>
+                        <ul class="list-disc pl-5 space-y-1 text-gray-700 dark:text-gray-300">
+                            <li>形状保持不变: 输入输出维度一致</li>
+                            <li>位置感知: 不同位置的向量被旋转不同角度</li>
+                            <li>相对性: 能够捕捉序列中的相对位置关系</li>
+                            <li>线性复杂度: 计算效率高，不依赖于序列长度的平方</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-4 p-4 bg-primary-50 dark:bg-gray-800 rounded-lg border border-primary-100 dark:border-gray-700">
+                    <p class="text-primary-800 dark:text-primary-300">
+                        <i class="fas fa-lightbulb mr-2"></i>
+                        旋转位置编码(RoPE)通过在特征空间中旋转向量来编码位置信息，使模型能够感知不同位置之间的关系。这种方法既保留了原始特征信息，又注入了位置信息，是现代大型语言模型中常用的位置编码技术。
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-4">
+        <div class="container mx-auto px-4 text-center text-gray-600 dark:text-gray-400 text-sm">
+            <p>旋转位置编码(RoPE)可视化教程</p>
+            <p class="mt-1">© 2025 深度学习可视化工具</p>
+        </div>
+    </footer>
+
+    <script>
+        // 设置一些示例值
+        const batchSize = 2;
+        const seqLen = 4;
+        const numHeads = 2;
+        const headDim = 8;
+
+        // 主题切换
+        document.addEventListener('DOMContentLoaded', () => {
+            // 初始主题设置
+            if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                document.documentElement.classList.add('dark');
+            }
+            
+            // 主题切换按钮
+            const themeToggle = document.getElementById('theme-toggle');
+            themeToggle.addEventListener('click', () => {
+                document.documentElement.classList.toggle('dark');
+            });
+            
+            // 观察器设置 - 实现滚动时的元素显示
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            // 为每个部分添加观察
+            document.querySelectorAll('section').forEach(section => {
+                observer.observe(section);
+            });
+        });
+
+        // 初始状态图
+        function drawInitialState() {
+            const canvas = document.getElementById('initialState');
+            const ctx = canvas.getContext('2d');
+            
+            // 根据亮/暗模式设置颜色
+            const isDark = document.documentElement.classList.contains('dark');
+            const textColor = isDark ? '#f3f4f6' : '#1f2937';
+            const bgColor = isDark ? '#1f2937' : '#ffffff';
+            const borderColor = isDark ? '#4b5563' : '#e5e7eb';
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = bgColor;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // 增加间距和调整位置
+            const spacing = 250;
+            const top = 50;
+            
+            // 绘制xq矩阵
+            ctx.fillStyle = isDark ? '#134e4a' : '#a8d5e5';
+            ctx.fillRect(50, top, 200, 120);
+            ctx.fillStyle = textColor;
+            ctx.font = '16px Microsoft YaHei';
+            ctx.fillText('xq: [' + batchSize + ', ' + seqLen + ', ' + numHeads + ', ' + headDim + ']', 100, top + 60);
+            ctx.fillText('查询矩阵', 120, top - 10);
+            
+            // 绘制xk矩阵
+            ctx.fillStyle = isDark ? '#7f1d1d' : '#ffcccc';
+            ctx.fillRect(50 + spacing, top, 200, 120);
+            ctx.fillStyle = textColor;
+            ctx.fillText('xk: [' + batchSize + ', ' + seqLen + ', ' + numHeads + ', ' + headDim + ']', 100 + spacing, top + 60);
+            ctx.fillText('键矩阵', 120 + spacing, top - 10);
+            
+            // 绘制pos_cis矩阵
+            ctx.fillStyle = isDark ? '#064e3b' : '#d8f0c8';
+            ctx.fillRect(50 + spacing * 2, top, 200, 120);
+            ctx.fillStyle = textColor;
+            ctx.fillText('pos_cis: [' + seqLen + ', ' + headDim/2 + ']', 100 + spacing * 2, top + 60);
+            ctx.fillText('位置编码', 120 + spacing * 2, top - 10);
+            
+            // 示例数据说明
+            ctx.font = '14px Microsoft YaHei';
+            ctx.fillText('* 图例中的矩阵表示多维张量，显示了其形状而非实际排列', 50, top + 180);
+            ctx.fillText('* head_dim需要是偶数，因为每相邻两个元素将被视为一个复数的实部和虚部', 50, top + 205);
+            ctx.fillText('* pos_cis中存储的是cos和sin值，表示在复数空间中的旋转', 50, top + 230);
+        }
+
+        // 绘制复数转换
+        function drawComplexConversion() {
+            const canvas = document.getElementById('complexConversion');
+            const ctx = canvas.getContext('2d');
+            
+            // 根据亮/暗模式设置颜色
+            const isDark = document.documentElement.classList.contains('dark');
+            const textColor = isDark ? '#f3f4f6' : '#1f2937';
+            const bgColor = isDark ? '#1f2937' : '#ffffff';
+            const arrowColor = isDark ? '#9ca3af' : '#6b7280';
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = bgColor;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            const spacing = 250;
+            const top = 50;
+            
+            // 原始xq矩阵
+            ctx.fillStyle = isDark ? '#134e4a' : '#a8d5e5';
+            ctx.fillRect(100, top, 200, 120);
+            ctx.fillStyle = textColor;
+            ctx.font = '16px Microsoft YaHei';
+            ctx.fillText('xq: [' + batchSize + ', ' + seqLen + ', ' + numHeads + ', ' + headDim + ']', 150, top + 60);
+            
+            // 箭头
+            ctx.beginPath();
+            ctx.moveTo(315, top + 60);          // 箭头起点位置
+            ctx.lineTo(380, top + 60);          // 箭头的直线部分终点
+            ctx.strokeStyle = arrowColor;       // 设置箭头颜色
+            ctx.stroke();                       // 绘制箭头线条
+
+            ctx.fillStyle = arrowColor;         // 设置箭头填充颜色 
+            ctx.beginPath();
+            ctx.moveTo(380, top + 60);          // 三角形的尖端位置
+            ctx.lineTo(370, top + 55);          // 三角形底边的一部分
+            ctx.lineTo(370, top + 65);          // 三角形底边的另一部分
+            ctx.fill();                         // 填充三角形
+            
+            // 变换后的矩阵
+            ctx.fillStyle = isDark ? '#0f766e' : '#c7e6f0';
+            ctx.fillRect(400, top, 160, 120);
+            ctx.fillStyle = textColor;
+            ctx.fillText('xq_: [' + batchSize + ', ' + seqLen + ', ' + numHeads + ', ' + headDim/2 + ']', 425, top + 60);
+            ctx.fillText('复数形式', 450, top - 10);
+            
+            // 绘制示例转换说明
+            ctx.font = '14px Microsoft YaHei';
+            ctx.fillText('将相邻两个实数组合为一个复数:', 100, top + 180);
+            ctx.fillText('[a, b, c, d, e, f, g, h]  →  [a+bi, c+di, e+fi, g+hi]', 100, top + 205);
+            
+            // 最后一维转换示意图
+            ctx.font = '14px Microsoft YaHei';
+            const y = 280;
+            const w = 30;
+            const h = 25;
+            
+            // 原始数组
+            for(let i = 0; i < 8; i++) {
+                ctx.fillStyle = isDark ? 
+                    (i % 2 === 0 ? '#134e4a' : '#0f766e') : 
+                    (i % 2 === 0 ? '#a8d5e5' : '#8ec5db');
+                ctx.fillRect(100 + i*w, y, w, h);
+                ctx.fillStyle = textColor;
+                ctx.fillText(String.fromCharCode(97 + i), 110 + i*w, y + 17);
+            }
+            
+            // 箭头
+            ctx.beginPath();
+            ctx.moveTo(360, y + h/2);
+            ctx.lineTo(400, y + h/2);
+            ctx.strokeStyle = arrowColor;
+            ctx.stroke();
+            ctx.fillStyle = arrowColor;
+            ctx.beginPath();
+            ctx.moveTo(400, y + h/2);
+            ctx.lineTo(390, y + h/2 - 5);
+            ctx.lineTo(390, y + h/2 + 5);
+            ctx.fill();
+            
+            // 复数数组
+            for(let i = 0; i < 4; i++) {
+                ctx.fillStyle = isDark ? '#0d9488' : '#c7e6f0';
+                ctx.fillRect(420 + i*2*w, y, 2*w, h);
+                ctx.fillStyle = textColor;
+                const real = String.fromCharCode(97 + i*2);
+                const imag = String.fromCharCode(98 + i*2);
+                ctx.fillText(real + '+' + imag + 'i', 430 + i*2*w, y + 17);
+            }
+        }
+
+        // 绘制位置编码形状调整
+        function drawReshapePosCis() {
+            const canvas = document.getElementById('reshapePosCis');
+            const ctx = canvas.getContext('2d');
+            
+            // 根据亮/暗模式设置颜色
+            const isDark = document.documentElement.classList.contains('dark');
+            const textColor = isDark ? '#f3f4f6' : '#1f2937';
+            const bgColor = isDark ? '#1f2937' : '#ffffff';
+            const arrowColor = isDark ? '#9ca3af' : '#6b7280';
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = bgColor;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            const spacing = 100;
+            const top = 50;
+            
+            // 原始pos_cis矩阵
+            ctx.fillStyle = isDark ? '#064e3b' : '#d8f0c8';
+            ctx.fillRect(100, top, 200, 120);
+            ctx.fillStyle = textColor;
+            ctx.font = '16px Arial';
+            ctx.fillText('pos_cis: [' + seqLen + ', ' + headDim/2 + ']', 150, top + 60);
+            
+            // 箭头
+            ctx.beginPath();
+            ctx.moveTo(330, top + 60);
+            ctx.lineTo(410, top + 60);
+            ctx.strokeStyle = arrowColor;
+            ctx.stroke();
+            ctx.fillStyle = arrowColor;
+            ctx.beginPath();
+            ctx.moveTo(410, top + 60);
+            ctx.lineTo(400, top + 55);
+            ctx.lineTo(400, top + 65);
+            ctx.fill();
+            
+            // 调整后的形状
+            ctx.fillStyle = isDark ? '#065f46' : '#e5f5dc';
+            ctx.fillRect(450, top, 200, 120);
+            ctx.fillStyle = textColor;
+            ctx.fillText('reshape后: [1, ' + seqLen + ', 1, ' + headDim/2 + ']', 470, top + 60);
+            
+            // unite_shape函数说明
+            ctx.font = '14px Arial';
+            ctx.fillText('unite_shape函数将pos_cis的形状调整为：', 100, top + 180);
+            ctx.fillText('[1, seq_len, 1, head_dim/2]', 100, top + 205);
+            ctx.fillText('目的是让pos_cis能够通过广播机制与xq_和xk_进行维度兼容的运算', 100, top + 230);
+            
+            // 广播示意图
+            ctx.font = '12px Arial';
+            const y1 = 330;
+            
+            // 广播示意图标题
+            ctx.font = '14px Arial';
+            ctx.fillText('广播机制示意图：', 100, 320);
+            
+            // 形状表示
+            ctx.fillStyle = isDark ? '#0f766e' : '#c7e6f0';
+            ctx.fillRect(100, y1, 180, 25);
+            ctx.fillStyle = textColor;
+            ctx.fillText('xq_： [' + batchSize + ', ' + seqLen + ', ' + numHeads + ', ' + headDim/2 + ']', 120, y1 + 17);
+            
+            ctx.fillStyle = isDark ? '#065f46' : '#e5f5dc';
+            ctx.fillRect(100, y1 + 35, 180, 25);
+            ctx.fillStyle = textColor;
+            ctx.fillText('pos_cis： [1, ' + seqLen + ', 1, ' + headDim/2 + ']', 120, y1 + 35 + 17);
+            
+            ctx.fillStyle = textColor;
+            ctx.fillText('↓ 广播运算', 300, y1 + 12);
+            
+            ctx.fillStyle = isDark ? '#92400e' : '#ffe0b2';
+            ctx.fillRect(100, y1 + 70, 180, 25);
+            ctx.fillStyle = textColor;
+            ctx.fillText('结果： [' + batchSize + ', ' + seqLen + ', ' + numHeads + ', ' + headDim/2 + ']', 120, y1 + 70 + 17);
+        }
+
+        // 旋转操作可视化
+        function drawRotationOperation() {
+            const canvas = document.getElementById('rotationOperation');
+            const ctx = canvas.getContext('2d');
+            
+            // 根据亮/暗模式设置颜色
+            const isDark = document.documentElement.classList.contains('dark');
+            const textColor = isDark ? '#f3f4f6' : '#1f2937';
+            const bgColor = isDark ? '#1f2937' : '#ffffff';
+            const arrowColor = isDark ? '#9ca3af' : '#6b7280';
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = bgColor;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            const spacing = 180;
+            const top = 120;
+            
+            // 复数形式的xq_
+            ctx.fillStyle = isDark ? '#0f766e' : '#c7e6f0';
+            ctx.fillRect(100, top, 160, 80);
+            ctx.fillStyle = textColor;
+            ctx.font = '14px Arial';
+            ctx.fillText('xq_', 170, top - 10);
+            ctx.fillText('[' + batchSize + ', ' + seqLen + ', ' + numHeads + ', ' + headDim/2 + ']', 150, top + 35);
+            ctx.fillText('复数形式', 150, top + 55);
+            
+            // 复数形式的pos_cis
+            ctx.fillStyle = isDark ? '#065f46' : '#e5f5dc';
+            ctx.fillRect(100, top + spacing, 160, 80);
+            ctx.fillStyle = textColor;
+            ctx.fillText('pos_cis', 160, top + spacing - 10);
+            ctx.fillText('[1, ' + seqLen + ', 1, ' + headDim/2 + ']', 145, top + spacing + 40);
+            ctx.fillText('复数形式(e^iθ)', 135, top + spacing + 60);
+            
+            // 乘法操作
+            ctx.font = '30px Arial';
+            ctx.fillText('×', 170, top + spacing/2 + 40);
+            
+            // 箭头
+            ctx.beginPath();
+            ctx.moveTo(280, top + 40);
+            ctx.lineTo(325, top + 40);
+            ctx.strokeStyle = arrowColor;
+            ctx.stroke();
+            ctx.fillStyle = arrowColor;
+            ctx.beginPath();
+            ctx.moveTo(335, top + 40);
+            ctx.lineTo(325, top + 35);
+            ctx.lineTo(325, top + 45);
+            ctx.fill();
+            
+            // 旋转后的结果(复数形式)
+            ctx.fillStyle = isDark ? '#92400e' : '#ffe0b2';
+            ctx.fillRect(350, top, 160, 80);
+            ctx.fillStyle = textColor;
+            ctx.font = '14px Arial';
+            ctx.fillText('xq_ * pos_cis', 385, top - 10);
+            ctx.fillText('[' + batchSize + ', ' + seqLen + ', ' + numHeads + ', ' + headDim/2 + ']', 395, top + 45);
+            ctx.fillText('复数形式(旋转后)', 380, top + 65);
+            
+            // 箭头
+            ctx.beginPath();
+            ctx.moveTo(430, top + 90);
+            ctx.lineTo(430, top + 130);
+            ctx.strokeStyle = arrowColor;
+            ctx.stroke();
+            ctx.fillStyle = arrowColor;
+            ctx.beginPath();
+            ctx.moveTo(430, top + 140);
+            ctx.lineTo(420, top + 130);
+            ctx.lineTo(440, top + 130);
+            ctx.fill();
+            
+            // 转回实数形式
+            ctx.fillStyle = isDark ? '#9a3412' : '#ffcc80';
+            ctx.fillRect(350, top + spacing, 160, 80);
+            ctx.fillStyle = textColor;
+            ctx.fillText('torch.view_as_real(...)', 360, top + spacing - 10);
+            ctx.fillText('[' + batchSize + ', ' + seqLen + ', ' + numHeads + ', ' + headDim/2 + ', 2]', 390, top + spacing + 45);
+            ctx.fillText('实数形式', 400, top + spacing + 65);
+            
+            // 箭头
+            ctx.beginPath();
+            ctx.moveTo(530, top + spacing + 40);
+            ctx.lineTo(570, top + spacing + 40);
+            ctx.strokeStyle = arrowColor;
+            ctx.stroke();
+            ctx.fillStyle = arrowColor;
+            ctx.beginPath();
+            ctx.moveTo(580, top + spacing + 40);
+            ctx.lineTo(570, top + spacing + 35);
+            ctx.lineTo(570, top + spacing + 45);
+            ctx.fill();
+            
+            // 最终结果
+            ctx.fillStyle = isDark ? '#b45309' : '#ffd699';
+            ctx.fillRect(600, top + spacing, 160, 80);
+            ctx.fillStyle = textColor;
+            ctx.fillText('flatten(3)', 650, top + spacing - 10);
+            ctx.fillText('[' + batchSize + ', ' + seqLen + ', ' + numHeads + ', ' + headDim + ']', 645, top + spacing + 45);
+            ctx.fillText('最终形状', 650, top + spacing + 65);
+            
+            // 说明文本
+            ctx.font = '14px Arial';
+            ctx.fillText('复数乘法等价于向量旋转', 100, top - 80);
+            ctx.fillText('每个位置索引在特征空间中有不同的旋转角度', 100, top - 60);
+            ctx.fillText('这种机制让模型能够感知序列中的相对位置关系', 100, top - 40);
+        }
+
+        // 绘制复数空间的旋转示意图
+        function drawComplexRotation() {
+            const canvas = document.getElementById('complexRotation');
+            const ctx = canvas.getContext('2d');
+            
+            // 根据亮/暗模式设置颜色
+            const isDark = document.documentElement.classList.contains('dark');
+            const textColor = isDark ? '#f3f4f6' : '#1f2937';
+            const bgColor = isDark ? '#1f2937' : '#ffffff';
+            const gridColor = isDark ? '#4b5563' : '#d1d5db';
+            const vector1Color = isDark ? '#3b82f6' : '#3498db';
+            const vector2Color = isDark ? '#ef4444' : '#e74c3c';
+            const arcColor = isDark ? '#10b981' : '#2ecc71';
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = bgColor;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = 100;
+            
+            // 绘制坐标轴
+            ctx.strokeStyle = gridColor;
+            ctx.beginPath();
+            ctx.moveTo(centerX - radius - 20, centerY);
+            ctx.lineTo(centerX + radius + 20, centerY);
+            ctx.moveTo(centerX, centerY - radius - 20);
+            ctx.lineTo(centerX, centerY + radius + 20);
+            ctx.stroke();
+            
+            // 标记坐标轴
+            ctx.font = '14px Arial';
+            ctx.fillStyle = textColor;
+            ctx.fillText('实轴', centerX + radius + 5, centerY + 15);
+            ctx.fillText('虚轴', centerX - 35, centerY - radius - 5);
+            
+            // 原始向量 (60度角)
+            const angle1 = Math.PI / 3;
+            const x1 = Math.cos(angle1) * radius;
+            const y1 = Math.sin(angle1) * radius;
+            
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.lineTo(centerX + x1, centerY - y1);
+            ctx.strokeStyle = vector1Color;
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // 绘制原向量的点
+            ctx.fillStyle = vector1Color;
+            ctx.beginPath();
+            ctx.arc(centerX + x1, centerY - y1, 5, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // 旋转后的向量 (增加30度)
+            const angle2 = angle1 + Math.PI / 6;
+            const x2 = Math.cos(angle2) * radius;
+            const y2 = Math.sin(angle2) * radius;
+            
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.lineTo(centerX + x2, centerY - y2);
+            ctx.strokeStyle = vector2Color;
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // 绘制旋转后向量的点
+            ctx.fillStyle = vector2Color;
+            ctx.beginPath();
+            ctx.arc(centerX + x2, centerY - y2, 5, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // 绘制旋转弧
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 30, -angle1, -angle2, true);
+            ctx.strokeStyle = arcColor;
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // 标记向量
+            ctx.font = '12px Arial';
+            ctx.fillStyle = vector1Color;
+            ctx.fillText('原始向量', centerX + x1 + 5, centerY - y1 - 5);
+            ctx.fillStyle = vector2Color;
+            ctx.fillText('旋转后', centerX + x2 + 5, centerY - y2 - 5);
+            ctx.fillStyle = arcColor;
+            ctx.fillText('θ', centerX + 15, centerY - 15);
+            
+            // 标题
+            ctx.font = '14px Arial';
+            ctx.fillStyle = textColor;
+            ctx.fillText('复数乘法 = 向量旋转', centerX - 65, 30);
+            ctx.fillText('(x+yi) × (cos(θ)+i·sin(θ)) = 旋转θ角度', centerX - 110, 50);
+        }
+
+        // 绘制最终结果
+        function drawFinalResult() {
+            const canvas = document.getElementById('finalResult');
+            const ctx = canvas.getContext('2d');
+            
+            // 根据亮/暗模式设置颜色
+            const isDark = document.documentElement.classList.contains('dark');
+            const textColor = isDark ? '#f3f4f6' : '#1f2937';
+            const bgColor = isDark ? '#1f2937' : '#ffffff';
+            const arrowColor = isDark ? '#9ca3af' : '#6b7280';
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = bgColor;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            const spacing = 250;
+            const top = 100;
+            
+            // 应用旋转后的xq矩阵
+            ctx.fillStyle = isDark ? '#b45309' : '#ffd699';
+            ctx.fillRect(100, top, 200, 120);
+            ctx.fillStyle = textColor;
+            ctx.font = '16px Arial';
+            ctx.fillText('xq_out: [' + batchSize + ', ' + seqLen + ', ' + numHeads + ', ' + headDim + ']', 135, top + 60);
+            ctx.fillText('旋转后的查询矩阵', 135, top - 10);
+            
+            // 应用旋转后的xk矩阵
+            ctx.fillStyle = isDark ? '#9a3412' : '#ffc299';
+            ctx.fillRect(100 + spacing, top, 200, 120);
+            ctx.fillStyle = textColor;
+            ctx.fillText('xk_out: [' + batchSize + ', ' + seqLen + ', ' + numHeads + ', ' + headDim + ']', 135 + spacing, top + 60);
+            ctx.fillText('旋转后的键矩阵', 135 + spacing, top - 10);
+            
+            // 箭头从原始到旋转后
+            const arrowY = 190;
+            
+            // 原始xq矩阵
+            ctx.fillStyle = isDark ? '#134e4a' : '#a8d5e5';
+            ctx.fillRect(100, arrowY, 200, 30);
+            ctx.fillStyle = textColor;
+            ctx.font = '14px Arial';
+            ctx.fillText('原始xq', 175, arrowY + 20);
+            
+            // 原始xk矩阵
+            ctx.fillStyle = isDark ? '#7f1d1d' : '#ffcccc';
+            ctx.fillRect(100 + spacing, arrowY, 200, 30);
+            ctx.fillStyle = textColor;
+            ctx.fillText('原始xk', 175 + spacing, arrowY + 20);
+            
+            // 箭头
+            ctx.beginPath();
+            ctx.moveTo(200, arrowY + 40);
+            ctx.lineTo(200, arrowY + 70);
+            ctx.strokeStyle = arrowColor;
+            ctx.stroke();
+            ctx.fillStyle = arrowColor;
+            ctx.beginPath();
+            ctx.moveTo(200, arrowY + 70);
+            ctx.lineTo(190, arrowY + 60);
+            ctx.lineTo(210, arrowY + 60);
+            ctx.fill();
+            
+            // 箭头2
+            ctx.beginPath();
+            ctx.moveTo(450, arrowY + 40);
+            ctx.lineTo(450, arrowY + 70);
+            ctx.strokeStyle = arrowColor;
+            ctx.stroke();
+            ctx.fillStyle = arrowColor;
+            ctx.beginPath();
+            ctx.moveTo(450, arrowY + 70);
+            ctx.lineTo(440, arrowY + 60);
+            ctx.lineTo(460, arrowY + 60);
+            ctx.fill();
+            
+            // 旋转后的xq矩阵
+            ctx.fillStyle = isDark ? '#b45309' : '#ffd699';
+            ctx.fillRect(100, arrowY + 80, 200, 30);
+            ctx.fillStyle = textColor;
+            ctx.fillText('旋转后的xq_out', 150, arrowY + 100);
+            
+            // 旋转后的xk矩阵
+            ctx.fillStyle = isDark ? '#9a3412' : '#ffc299';
+            ctx.fillRect(100 + spacing, arrowY + 80, 200, 30);
+            ctx.fillStyle = textColor;
+            ctx.fillText('旋转后的xk_out', 150 + spacing, arrowY + 100);
+            
+            // 摘要
+            ctx.font = '14px Arial';
+            ctx.fillText('1. 形状保持不变: [batch_size, seq_len, num_heads, head_dim]', 100, arrowY + 140);
+            ctx.fillText('2. 通过旋转编码，每个位置的向量在特征空间中被旋转了不同角度', 100, arrowY + 165);
+            ctx.fillText('3. 这使得模型能感知序列中的相对位置关系', 100, arrowY + 190);
+            ctx.fillText('4. 最后将结果转换回与输入相同的数据类型', 100, arrowY + 215);
+        }
+
+        // 渲染函数 - 用于根据当前主题重新绘制图形
+        function renderVisualizations() {
+            drawInitialState();
+            drawComplexConversion();
+            drawReshapePosCis();
+            drawComplexRotation();
+            drawRotationOperation();
+            drawFinalResult();
+        }
+        
+        // 监听主题变化事件
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.attributeName === 'class') {
+                    renderVisualizations();
+                }
+            });
+        });
+        
+        // 文档加载后初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            renderVisualizations();
+            
+            // 监听文档根元素的类名变化（深色/浅色模式切换）
+            observer.observe(document.documentElement, { attributes: true });
+            
+            // 添加窗口大小调整时的重绘
+            window.addEventListener('resize', renderVisualizations);
+        });
+    </script>
+</body>
+</html>
