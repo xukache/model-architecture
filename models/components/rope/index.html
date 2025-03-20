@@ -445,6 +445,263 @@
             </div>
         </section>
 
+        <!-- 动态演示部分 -->
+        <section id="animation-demo" class="mb-8 opacity-0 transition-opacity duration-500">
+            <div class="step-card">
+                <h3 class="section-title flex items-center">
+                    <i class="fas fa-play-circle text-primary-500 mr-2"></i>动态演示
+                </h3>
+
+                <!-- 动画控制面板 -->
+                <div class="flex flex-wrap gap-4 mb-6">
+                    <div class="flex-1 min-w-[200px]">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            旋转速度
+                        </label>
+                        <input type="range" id="rotation-speed"
+                            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+                            min="0" max="100" value="50">
+                    </div>
+                    <div class="flex-1 min-w-[200px]">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            序列位置
+                        </label>
+                        <input type="range" id="sequence-position"
+                            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+                            min="0" max="3" value="0" step="1">
+                    </div>
+                    <div class="flex items-end">
+                        <button id="toggle-animation"
+                            class="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-opacity-50 transition-colors">
+                            <i class="fas fa-play mr-2"></i>开始动画
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 动画展示区域 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- 复数平面动画 -->
+                    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg">
+                        <h4 class="font-medium text-gray-800 dark:text-gray-200 mb-4">复数平面旋转</h4>
+                        <div class="relative aspect-square">
+                            <canvas id="complex-plane-animation" class="w-full h-full"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- 向量状态展示 -->
+                    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg">
+                        <h4 class="font-medium text-gray-800 dark:text-gray-200 mb-4">向量状态</h4>
+                        <div class="space-y-4">
+                            <div>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">原始向量:</p>
+                                <p id="original-vector" class="font-mono text-primary-600 dark:text-primary-400"></p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">旋转角度:</p>
+                                <p id="rotation-angle" class="font-mono text-secondary-600 dark:text-secondary-400"></p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">旋转后向量:</p>
+                                <p id="rotated-vector" class="font-mono text-accent-600 dark:text-accent-400"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 在 script 标签内添加动画相关代码 -->
+        <script>
+            // 动画相关变量
+            let animationId = null;
+            let isAnimating = false;
+            const vectors = [
+                [1, 0],    // 位置 0 的初始向量
+                [1, 0.5],  // 位置 1 的初始向量
+                [0.5, 1],  // 位置 2 的初始向量
+                [0, 1]     // 位置 3 的初始向量
+            ];
+
+            // 初始化复数平面动画
+            function initComplexPlaneAnimation() {
+                const canvas = document.getElementById('complex-plane-animation');
+                const ctx = canvas.getContext('2d');
+
+                // 设置画布尺寸
+                function resizeCanvas() {
+                    const container = canvas.parentElement;
+                    canvas.width = container.clientWidth;
+                    canvas.height = container.clientHeight;
+                }
+
+                resizeCanvas();
+                window.addEventListener('resize', resizeCanvas);
+
+                return ctx;
+            }
+
+            // 绘制复数平面
+            function drawComplexPlane(ctx, width, height) {
+                const isDark = document.documentElement.classList.contains('dark');
+                const axisColor = isDark ? '#4b5563' : '#9ca3af';
+                const textColor = isDark ? '#f3f4f6' : '#1f2937';
+
+                ctx.clearRect(0, 0, width, height);
+
+                // 绘制坐标轴
+                const center = { x: width / 2, y: height / 2 };
+                const scale = Math.min(width, height) / 3;
+
+                ctx.beginPath();
+                ctx.strokeStyle = axisColor;
+                ctx.lineWidth = 1;
+
+                // x轴
+                ctx.moveTo(0, center.y);
+                ctx.lineTo(width, center.y);
+
+                // y轴
+                ctx.moveTo(center.x, 0);
+                ctx.lineTo(center.x, height);
+
+                ctx.stroke();
+
+                // 绘制刻度
+                ctx.font = '12px Arial';
+                ctx.fillStyle = textColor;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+
+                // x轴刻度
+                for (let i = -1; i <= 1; i += 0.5) {
+                    const x = center.x + i * scale;
+                    ctx.fillText(i.toString(), x, center.y + 20);
+                }
+
+                // y轴刻度
+                for (let i = -1; i <= 1; i += 0.5) {
+                    const y = center.y - i * scale;
+                    ctx.fillText(i.toString(), center.x - 20, y);
+                }
+            }
+
+            // 绘制向量
+            function drawVector(ctx, vector, angle, color, width, height) {
+                const center = { x: width / 2, y: height / 2 };
+                const scale = Math.min(width, height) / 3;
+
+                // 应用旋转
+                const rotatedX = vector[0] * Math.cos(angle) - vector[1] * Math.sin(angle);
+                const rotatedY = vector[0] * Math.sin(angle) + vector[1] * Math.cos(angle);
+
+                ctx.beginPath();
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 2;
+
+                ctx.moveTo(center.x, center.y);
+                ctx.lineTo(
+                    center.x + rotatedX * scale,
+                    center.y - rotatedY * scale
+                );
+
+                // 绘制箭头
+                const headLength = 10;
+                const dx = rotatedX * scale;
+                const dy = -rotatedY * scale;
+                const angle1 = Math.atan2(dy, dx);
+
+                ctx.lineTo(
+                    center.x + dx - headLength * Math.cos(angle1 - Math.PI / 6),
+                    center.y + dy - headLength * Math.sin(angle1 - Math.PI / 6)
+                );
+                ctx.moveTo(center.x + dx, center.y + dy);
+                ctx.lineTo(
+                    center.x + dx - headLength * Math.cos(angle1 + Math.PI / 6),
+                    center.y + dy - headLength * Math.sin(angle1 + Math.PI / 6)
+                );
+
+                ctx.stroke();
+            }
+
+            // 更新动画状态
+            function updateAnimationState(currentAngle, position) {
+                const originalVector = vectors[position];
+                const angle = currentAngle * Math.PI / 180;
+
+                // 更新显示信息
+                document.getElementById('original-vector').textContent =
+                    `[${originalVector[0].toFixed(2)}, ${originalVector[1].toFixed(2)}]`;
+                document.getElementById('rotation-angle').textContent =
+                    `${currentAngle.toFixed(1)}°`;
+
+                const rotatedX = originalVector[0] * Math.cos(angle) - originalVector[1] * Math.sin(angle);
+                const rotatedY = originalVector[0] * Math.sin(angle) + originalVector[1] * Math.cos(angle);
+
+                document.getElementById('rotated-vector').textContent =
+                    `[${rotatedX.toFixed(2)}, ${rotatedY.toFixed(2)}]`;
+            }
+
+            // 动画循环
+            function animate() {
+                const ctx = initComplexPlaneAnimation();
+                const canvas = ctx.canvas;
+                const speed = document.getElementById('rotation-speed').value;
+                const position = parseInt(document.getElementById('sequence-position').value);
+
+                let angle = 0;
+
+                function loop() {
+                    if (!isAnimating) return;
+
+                    drawComplexPlane(ctx, canvas.width, canvas.height);
+
+                    // 绘制原始向量
+                    drawVector(ctx, vectors[position], 0, '#3b82f6', canvas.width, canvas.height);
+                    // 绘制旋转后的向量
+                    drawVector(ctx, vectors[position], angle * Math.PI / 180, '#ef4444', canvas.width, canvas.height);
+
+                    updateAnimationState(angle, position);
+
+                    angle = (angle + speed / 50) % 360;
+                    animationId = requestAnimationFrame(loop);
+                }
+
+                loop();
+            }
+
+            // 初始化控制器
+            document.addEventListener('DOMContentLoaded', () => {
+                const toggleBtn = document.getElementById('toggle-animation');
+                const speedControl = document.getElementById('rotation-speed');
+                const positionControl = document.getElementById('sequence-position');
+
+                toggleBtn.addEventListener('click', () => {
+                    isAnimating = !isAnimating;
+                    if (isAnimating) {
+                        toggleBtn.innerHTML = '<i class="fas fa-pause mr-2"></i>暂停动画';
+                        animate();
+                    } else {
+                        toggleBtn.innerHTML = '<i class="fas fa-play mr-2"></i>开始动画';
+                        cancelAnimationFrame(animationId);
+                    }
+                });
+
+                speedControl.addEventListener('input', () => {
+                    if (isAnimating) {
+                        cancelAnimationFrame(animationId);
+                        animate();
+                    }
+                });
+
+                positionControl.addEventListener('input', () => {
+                    if (isAnimating) {
+                        cancelAnimationFrame(animationId);
+                        animate();
+                    }
+                });
+            });
+        </script>
+
         <!-- 总结部分 -->
         <section id="summary" class="mb-8 opacity-0 transition-opacity duration-500">
             <div class="step-card">
