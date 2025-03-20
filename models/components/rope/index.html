@@ -5,158 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RoPE旋转位置编码作用Q、K矩阵的过程 | 大模型架构可视化</title>
+
     <!-- TailwindCSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../../common/styles/tailwind.config.js"></script>
+
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script>
-        // 配置Tailwind
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        primary: {
-                            50: '#f0f9ff',
-                            100: '#e0f2fe',
-                            200: '#bae6fd',
-                            300: '#7dd3fc',
-                            400: '#38bdf8',
-                            500: '#0ea5e9',
-                            600: '#0284c7',
-                            700: '#0369a1',
-                            800: '#075985',
-                            900: '#0c4a6e',
-                        },
-                        secondary: {
-                            50: '#f0fdfa',
-                            100: '#ccfbf1',
-                            200: '#99f6e4',
-                            300: '#5eead4',
-                            400: '#2dd4bf',
-                            500: '#14b8a6',
-                            600: '#0d9488',
-                            700: '#0f766e',
-                            800: '#115e59',
-                            900: '#134e4a',
-                        },
-                        accent: {
-                            50: '#fff7ed',
-                            100: '#ffedd5',
-                            200: '#fed7aa',
-                            300: '#fdba74',
-                            400: '#fb923c',
-                            500: '#f97316',
-                            600: '#ea580c',
-                            700: '#c2410c',
-                            800: '#9a3412',
-                            900: '#7c2d12',
-                        },
-                    },
-                    animation: {
-                        'fade-in': 'fadeIn 0.5s ease-in-out',
-                        'slide-up': 'slideUp 0.5s ease-out',
-                    },
-                    keyframes: {
-                        fadeIn: {
-                            '0%': { opacity: '0' },
-                            '100%': { opacity: '1' },
-                        },
-                        slideUp: {
-                            '0%': { transform: 'translateY(20px)', opacity: '0' },
-                            '100%': { transform: 'translateY(0)', opacity: '1' },
-                        },
-                    },
-                }
-            }
-        }
-    </script>
-    <style type="text/tailwindcss">
-        @layer components {
-            .section-title {
-                @apply text-lg md:text-xl font-semibold text-gray-800 dark:text-gray-100 mb-2;
-                font-family: "Microsoft YaHei", sans-serif;
-            }
-            .step-card {
-                @apply bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 
-                       p-4 md:p-6 mb-6 border border-gray-100 dark:border-gray-700
-                       transform hover:scale-[1.01];
-                font-family: "Microsoft YaHei", sans-serif;
-            }
-            .code-block {
-                @apply bg-gray-50 dark:bg-gray-900 p-4 rounded-lg font-mono text-sm 
-                       border border-gray-200 dark:border-gray-700;
-            }
-            .dimension-info {
-                @apply text-sm text-gray-600 dark:text-gray-400 italic mt-2;
-                font-family: "Microsoft YaHei", sans-serif;
-            }
-            .explanation {
-                @apply text-gray-700 dark:text-gray-300 mt-3 text-sm md:text-base;
-                font-family: "Microsoft YaHei", sans-serif;
-            }
-            .canvas-container {
-                @apply flex justify-center items-center p-2 my-4 bg-gray-50 dark:bg-gray-900 rounded-lg 
-                       border border-gray-200 dark:border-gray-700 overflow-auto;
-                font-family: "Microsoft YaHei", sans-serif;
-            }
-            .step-number {
-                @apply flex items-center justify-center w-7 h-7 rounded-full bg-primary-500 text-white 
-                       font-semibold text-sm mr-2;
-                font-family: "Microsoft YaHei", sans-serif;
-            }
-            .step-header {
-                @apply flex items-center mb-3;
-                font-family: "Microsoft YaHei", sans-serif;
-            }
-            .header-link {
-                @apply px-4 py-2 rounded-lg text-gray-600 dark:text-gray-300 hover:text-primary-600 
-                       dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors;
-            }
-            .active-link {
-                @apply text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/30;
-            }
-            .code-container {
-                @apply relative;
-                
-                & ::-webkit-scrollbar {
-                    @apply h-2 w-2;
-                }
-                
-                & ::-webkit-scrollbar-track {
-                    @apply bg-transparent;
-                }
-                
-                & ::-webkit-scrollbar-thumb {
-                    @apply bg-gray-400 dark:bg-gray-600 rounded-full;
-                }
-            }
-            .language-python {
-                @apply text-gray-800;
-                & .keyword { @apply text-purple-700; }
-                & .string { @apply text-green-600; }
-                & .comment { @apply text-gray-500 italic; }
-                & .function { @apply text-blue-600; }
-                & .type-annotation { @apply text-orange-600; }
-                & .number { @apply text-blue-600; }
-                & .parameter { @apply text-orange-700; }
-                & .operator { @apply text-red-600; }
-                & .builtin { @apply text-indigo-600; }
-            }
-            .dark .language-python {
-                @apply text-gray-200;
-                & .keyword { @apply text-purple-400; }
-                & .string { @apply text-green-400; }
-                & .comment { @apply text-gray-400 italic; }
-                & .function { @apply text-blue-400; }
-                & .type-annotation { @apply text-orange-400; }
-                & .number { @apply text-blue-400; }
-                & .parameter { @apply text-orange-300; }
-                & .operator { @apply text-red-400; }
-                & .builtin { @apply text-indigo-400; }
-            }
-        }
-    </style>
+
+    <!-- 编译后的 CSS -->
+    <link rel="stylesheet" href="../../../common/styles/output.css">
 </head>
 
 <body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-300"
@@ -752,6 +610,19 @@
         <i class="fas fa-arrow-up"></i>
     </button>
 
+    <!-- Common Scripts -->
+    <script src="/common/js/theme.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 初始化主题管理器
+            const themeManager = ThemeManager.getInstance();
+
+            // 初始化导航功能
+            const navigation = Navigation.getInstance();
+        });
+    </script>
+
     <script>
         // 设置一些示例值
         const batchSize = 2;
@@ -761,16 +632,6 @@
 
         // 主题切换
         document.addEventListener('DOMContentLoaded', () => {
-            // 初始主题设置
-            if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                document.documentElement.classList.add('dark');
-            }
-
-            // 主题切换按钮
-            const themeToggle = document.getElementById('theme-toggle');
-            themeToggle.addEventListener('click', () => {
-                document.documentElement.classList.toggle('dark');
-            });
 
             // 观察器设置 - 实现滚动时的元素显示
             const observer = new IntersectionObserver((entries) => {
@@ -1348,24 +1209,6 @@
             // 添加窗口大小调整时的重绘
             window.addEventListener('resize', renderVisualizations);
         });
-
-        // 移动端菜单
-        const mobileMenuBtn = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-
-        // 修改或添加主题初始化相关代码
-        // 默认使用暗色主题
-        document.documentElement.classList.add('dark');
-        localStorage.setItem('theme', 'dark');
-
-        // 检查本地存储中的主题设置
-        if (localStorage.getItem('theme') === 'light') {
-            document.documentElement.classList.remove('dark');
-        }
 
         // 添加返回顶部功能
         const backToTopBtn = document.getElementById('back-to-top');

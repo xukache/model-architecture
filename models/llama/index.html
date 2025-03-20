@@ -7,129 +7,13 @@
     <title>LLaMA模型架构 | 大模型架构可视化</title>
     <!-- TailwindCSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../common/styles/tailwind.config.js"></script>
+
+    <!-- 编译后的 CSS -->
+    <link rel="stylesheet" href="../../../common/styles/output.css">
+
     <!-- 图标库 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script>
-        // 配置Tailwind
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        primary: {
-                            50: '#f0f9ff',
-                            100: '#e0f2fe',
-                            200: '#bae6fd',
-                            300: '#7dd3fc',
-                            400: '#38bdf8',
-                            500: '#0ea5e9',
-                            600: '#0284c7',
-                            700: '#0369a1',
-                            800: '#075985',
-                            900: '#0c4a6e',
-                        },
-                        secondary: {
-                            50: '#f0fdfa',
-                            100: '#ccfbf1',
-                            200: '#99f6e4',
-                            300: '#5eead4',
-                            400: '#2dd4bf',
-                            500: '#14b8a6',
-                            600: '#0d9488',
-                            700: '#0f766e',
-                            800: '#115e59',
-                            900: '#134e4a',
-                        },
-                        accent: {
-                            50: '#fff7ed',
-                            100: '#ffedd5',
-                            200: '#fed7aa',
-                            300: '#fdba74',
-                            400: '#fb923c',
-                            500: '#f97316',
-                            600: '#ea580c',
-                            700: '#c2410c',
-                            800: '#9a3412',
-                            900: '#7c2d12',
-                        },
-                        neutral: {
-                            50: '#fafafa',
-                            100: '#f5f5f5',
-                            200: '#e5e5e5',
-                            300: '#d4d4d4',
-                            400: '#a3a3a3',
-                            500: '#737373',
-                            600: '#525252',
-                            700: '#404040',
-                            800: '#262626',
-                            900: '#171717',
-                        }
-                    },
-                    animation: {
-                        'fade-in': 'fadeIn 0.5s ease-in-out',
-                        'slide-up': 'slideUp 0.5s ease-out',
-                    },
-                    keyframes: {
-                        fadeIn: {
-                            '0%': { opacity: '0' },
-                            '100%': { opacity: '1' },
-                        },
-                        slideUp: {
-                            '0%': { transform: 'translateY(20px)', opacity: '0' },
-                            '100%': { transform: 'translateY(0)', opacity: '1' },
-                        },
-                    },
-                }
-            }
-        }
-    </script>
-    <style type="text/tailwindcss">
-        @layer components {
-            .model-card {
-                @apply bg-white dark:bg-neutral-800 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 
-                       p-5 border border-neutral-100 dark:border-neutral-700
-                       transform hover:scale-[1.02];
-            }
-            
-            .model-card-title {
-                @apply text-lg font-semibold text-neutral-800 dark:text-neutral-100 mb-2;
-            }
-            
-            .model-card-description {
-                @apply text-sm text-neutral-600 dark:text-neutral-300 mb-4;
-            }
-            
-            .feature-tag {
-                @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
-                       bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-100
-                       mr-2 mb-2;
-            }
-            
-            .header-link {
-                @apply px-4 py-2 rounded-lg text-neutral-600 dark:text-neutral-300 hover:text-primary-600 
-                       dark:hover:text-primary-400 hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors;
-            }
-            
-            .active-link {
-                @apply text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/30;
-            }
-            
-            .section-title {
-                @apply text-2xl md:text-3xl font-bold text-neutral-800 dark:text-neutral-100 mb-6 mt-12;
-            }
-            
-            .btn-primary {
-                @apply px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg
-                       transform transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2
-                       focus:ring-primary-500 focus:ring-opacity-50;
-            }
-            
-            .step-card {
-                @apply bg-white dark:bg-neutral-800 rounded-xl shadow-sm p-6 border border-neutral-100 
-                       dark:border-neutral-700 mb-6;
-            }
-        }
-    </style>
 </head>
 
 <body class="bg-neutral-50 dark:bg-neutral-900 text-neutral-800 dark:text-neutral-200 transition-colors duration-300">
@@ -325,7 +209,8 @@
             </h2>
 
             <!-- 可视化的模型架构图 -->
-            <div class="bg-white dark:bg-neutral-800 rounded-xl shadow-sm border border-neutral-100 dark:border-neutral-700 p-6">
+            <div
+                class="bg-white dark:bg-neutral-800 rounded-xl shadow-sm border border-neutral-100 dark:border-neutral-700 p-6">
                 <div class="flex justify-center mb-6">
                     <svg viewBox="0 0 600 750" class="w-full max-w-3xl">
                         <!-- 背景 -->
@@ -333,73 +218,93 @@
 
                         <!-- Softmax 输出层 -->
                         <rect x="150" y="30" width="300" height="40" rx="5" fill="#90ee90" class="dark:opacity-90" />
-                        <text x="300" y="55" text-anchor="middle" fill="#1e293b" class="dark:fill-white" font-size="14">Softmax</text>
+                        <text x="300" y="55" text-anchor="middle" fill="#1e293b" class="dark:fill-white"
+                            font-size="14">Softmax</text>
 
                         <!-- Linear 层 -->
                         <rect x="150" y="100" width="300" height="40" rx="5" fill="#b0c4de" class="dark:opacity-90" />
-                        <text x="300" y="125" text-anchor="middle" fill="#1e293b" class="dark:fill-white" font-size="14">Linear</text>
+                        <text x="300" y="125" text-anchor="middle" fill="#1e293b" class="dark:fill-white"
+                            font-size="14">Linear</text>
 
                         <!-- 最后的 RMS Norm -->
                         <rect x="150" y="170" width="300" height="40" rx="5" fill="#F2F4C1" class="dark:opacity-90" />
-                        <text x="300" y="195" text-anchor="middle" fill="#1e293b" class="dark:fill-white" font-size="14">RMS Norm</text>
+                        <text x="300" y="195" text-anchor="middle" fill="#1e293b" class="dark:fill-white"
+                            font-size="14">RMS Norm</text>
 
                         <!-- Nx标记和虚线框 - 整个块 -->
-                        <rect x="110" y="230" width="380" height="425" rx="5" stroke="#64748b" stroke-width="2" stroke-dasharray="5,5" fill="transparent" />
+                        <rect x="110" y="230" width="380" height="425" rx="5" stroke="#64748b" stroke-width="2"
+                            stroke-dasharray="5,5" fill="transparent" />
                         <text x="520" y="420" text-anchor="middle" fill="#64748b" font-size="24">Nx</text>
 
                         <!-- 最上层残差连接 -->
-                        <circle cx="300" cy="255" r="15" stroke="#64748b" stroke-width="2" fill="white" class="dark:fill-neutral-700" />
+                        <circle cx="300" cy="255" r="15" stroke="#64748b" stroke-width="2" fill="white"
+                            class="dark:fill-neutral-700" />
                         <text x="300" y="260" text-anchor="middle" fill="#64748b" font-size="20">+</text>
 
                         <!-- Feed Forward SwiGLU -->
                         <rect x="200" y="300" width="200" height="30" rx="3" fill="#C2E8F7" class="dark:opacity-90" />
-                        <text x="300" y="320" text-anchor="middle" fill="#1e293b" class="dark:fill-white" font-size="12">Feed Forward SwiGLU</text>
+                        <text x="300" y="320" text-anchor="middle" fill="#1e293b" class="dark:fill-white"
+                            font-size="12">Feed Forward SwiGLU</text>
 
                         <!-- 中间的 RMS Norm -->
                         <rect x="200" y="360" width="200" height="30" rx="3" fill="#F2F4C1" class="dark:opacity-90" />
-                        <text x="300" y="380" text-anchor="middle" fill="#1e293b" class="dark:fill-white" font-size="12">RMS Norm</text>
+                        <text x="300" y="380" text-anchor="middle" fill="#1e293b" class="dark:fill-white"
+                            font-size="12">RMS Norm</text>
 
                         <!-- 中间残差连接 -->
-                        <circle cx="300" cy="435" r="15" stroke="#64748b" stroke-width="2" fill="white" class="dark:fill-neutral-700" />
+                        <circle cx="300" cy="435" r="15" stroke="#64748b" stroke-width="2" fill="white"
+                            class="dark:fill-neutral-700" />
                         <text x="300" y="440" text-anchor="middle" fill="#64748b" font-size="20">+</text>
 
                         <!-- 自注意力机制 -->
                         <rect x="150" y="480" width="300" height="45" rx="3" fill="#faa460" class="dark:opacity-90" />
-                        <text x="300" y="500" text-anchor="middle" fill="white" font-size="12">Self-Attention (Grouped Multi-Query Attention)</text>
+                        <text x="300" y="500" text-anchor="middle" fill="white" font-size="12">Self-Attention (Grouped
+                            Multi-Query Attention)</text>
                         <text x="300" y="515" text-anchor="middle" fill="white" font-size="10">with KV Cache</text>
 
                         <!-- Q, K, V 标识和对应的方框 -->
                         <rect x="150" y="530" width="40" height="30" rx="3" fill="#b0e0e6" class="dark:opacity-90" />
-                        <text x="170" y="550" text-anchor="middle" fill="#1e293b" class="dark:fill-white" font-size="14">Q</text>
-                        
+                        <text x="170" y="550" text-anchor="middle" fill="#1e293b" class="dark:fill-white"
+                            font-size="14">Q</text>
+
                         <rect x="280" y="530" width="40" height="30" rx="3" fill="#b0e0e6" class="dark:opacity-90" />
-                        <text x="300" y="550" text-anchor="middle" fill="#1e293b" class="dark:fill-white" font-size="14">K</text>
-                        
+                        <text x="300" y="550" text-anchor="middle" fill="#1e293b" class="dark:fill-white"
+                            font-size="14">K</text>
+
                         <rect x="410" y="530" width="40" height="30" rx="3" fill="#b0e0e6" class="dark:opacity-90" />
-                        <text x="430" y="550" text-anchor="middle" fill="#1e293b" class="dark:fill-white" font-size="14">V</text>
+                        <text x="430" y="550" text-anchor="middle" fill="#1e293b" class="dark:fill-white"
+                            font-size="14">V</text>
 
                         <!-- 旋转位置编码图形 - 在Q和K旁边 -->
                         <circle cx="210" cy="545" r="10" stroke="#1e74f1" stroke-width="1" fill="none" />
-                        <path d="M200,545 Q205,540 210,545 Q215,550 220,545" stroke="#1e74f1" stroke-width="1" fill="none" />
-                        
+                        <path d="M200,545 Q205,540 210,545 Q215,550 220,545" stroke="#1e74f1" stroke-width="1"
+                            fill="none" />
+
                         <circle cx="340" cy="545" r="10" stroke="#1e74f1" stroke-width="1" fill="none" />
-                        <path d="M330,545 Q335,540 340,545 Q345,550 350,545" stroke="#1e74f1" stroke-width="1" fill="none" />
-                        
+                        <path d="M330,545 Q335,540 340,545 Q345,550 350,545" stroke="#1e74f1" stroke-width="1"
+                            fill="none" />
+
                         <circle cx="510" cy="545" r="10" stroke="#1e74f1" stroke-width="1" fill="none" />
-                        <path d="M500,545 Q505,540 510,545 Q515,550 520,545" stroke="#1e74f1" stroke-width="1" fill="none" />
-                        <text x="560" y="545" text-anchor="middle" fill="#1e293b" class="dark:fill-white" font-size="8">Rotary Positional</text>
-                        <text x="548" y="555" text-anchor="middle" fill="#1e293b" class="dark:fill-white" font-size="8">Encodings</text>
+                        <path d="M500,545 Q505,540 510,545 Q515,550 520,545" stroke="#1e74f1" stroke-width="1"
+                            fill="none" />
+                        <text x="560" y="545" text-anchor="middle" fill="#1e293b" class="dark:fill-white"
+                            font-size="8">Rotary Positional</text>
+                        <text x="548" y="555" text-anchor="middle" fill="#1e293b" class="dark:fill-white"
+                            font-size="8">Encodings</text>
 
                         <!-- 第一层 RMS Norm -->
                         <rect x="200" y="600" width="200" height="30" rx="3" fill="#F2F4C1" class="dark:opacity-90" />
-                        <text x="300" y="620" text-anchor="middle" fill="#1e293b" class="dark:fill-white" font-size="12">RMS Norm</text>
+                        <text x="300" y="620" text-anchor="middle" fill="#1e293b" class="dark:fill-white"
+                            font-size="12">RMS Norm</text>
 
                         <!-- 输入嵌入层 -->
                         <rect x="150" y="660" width="300" height="30" rx="5" fill="#ffb6c1" class="dark:opacity-90" />
-                        <text x="300" y="680" text-anchor="middle" fill="#1e293b" class="dark:fill-white" font-size="14">Embeddings</text>
+                        <text x="300" y="680" text-anchor="middle" fill="#1e293b" class="dark:fill-white"
+                            font-size="14">Embeddings</text>
 
                         <!-- 输入指示 -->
-                        <text x="300" y="730" text-anchor="middle" fill="#1e293b" class="dark:fill-white" font-size="12">Input</text>
+                        <text x="300" y="730" text-anchor="middle" fill="#1e293b" class="dark:fill-white"
+                            font-size="12">Input</text>
 
                         <!-- 为所有连接线添加箭头 -->
                         <defs>
@@ -410,55 +315,69 @@
 
                         <!-- 带箭头的连接线 - 从下到上的流向 -->
                         <!-- 输入到Embeddings -->
-                        <line x1="300" y1="720" x2="300" y2="690" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)" />
-                        
+                        <line x1="300" y1="720" x2="300" y2="690" stroke="#64748b" stroke-width="2"
+                            marker-end="url(#arrowhead)" />
+
                         <!-- Embeddings到RMS Norm -->
-                        <line x1="300" y1="660" x2="300" y2="630" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)" />
-                        
+                        <line x1="300" y1="660" x2="300" y2="630" stroke="#64748b" stroke-width="2"
+                            marker-end="url(#arrowhead)" />
+
                         <!-- RMS Norm到Self-Attention -->
                         <line x1="300" y1="600" x2="300" y2="590" stroke="#64748b" stroke-width="2" />
-                        
+
                         <!-- RMS Norm到QKV - 直线连接 -->
                         <!-- 从RMS Norm分出三条线 -->
                         <line x1="300" y1="590" x2="170" y2="590" stroke="#64748b" stroke-width="2" />
                         <line x1="300" y1="590" x2="300" y2="590" stroke="#64748b" stroke-width="2" />
                         <line x1="300" y1="590" x2="430" y2="590" stroke="#64748b" stroke-width="2" />
-                        
+
                         <!-- 从分支点垂直向上连接到Q、K、V -->
-                        <line x1="170" y1="590" x2="170" y2="560" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)" />
-                        <line x1="300" y1="590" x2="300" y2="560" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)" />
-                        <line x1="430" y1="590" x2="430" y2="560" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)" />
-                        
+                        <line x1="170" y1="590" x2="170" y2="560" stroke="#64748b" stroke-width="2"
+                            marker-end="url(#arrowhead)" />
+                        <line x1="300" y1="590" x2="300" y2="560" stroke="#64748b" stroke-width="2"
+                            marker-end="url(#arrowhead)" />
+                        <line x1="430" y1="590" x2="430" y2="560" stroke="#64748b" stroke-width="2"
+                            marker-end="url(#arrowhead)" />
+
                         <!-- Self-Attention到残差连接 -->
-                        <line x1="300" y1="480" x2="300" y2="450" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)" />
-                        
+                        <line x1="300" y1="480" x2="300" y2="450" stroke="#64748b" stroke-width="2"
+                            marker-end="url(#arrowhead)" />
+
                         <!-- 残差连接的横向分支 -->
                         <line x1="300" y1="650" x2="130" y2="650" stroke="#64748b" stroke-width="2" />
                         <line x1="130" y1="650" x2="130" y2="435" stroke="#64748b" stroke-width="2" />
-                        <line x1="130" y1="435" x2="285" y2="435" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)" />
-                        
+                        <line x1="130" y1="435" x2="285" y2="435" stroke="#64748b" stroke-width="2"
+                            marker-end="url(#arrowhead)" />
+
                         <!-- 残差连接到RMS Norm -->
-                        <line x1="300" y1="420" x2="300" y2="390" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)" />
-                        
+                        <line x1="300" y1="420" x2="300" y2="390" stroke="#64748b" stroke-width="2"
+                            marker-end="url(#arrowhead)" />
+
                         <!-- RMS Norm到Feed Forward -->
-                        <line x1="300" y1="360" x2="300" y2="330" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)" />
-                        
+                        <line x1="300" y1="360" x2="300" y2="330" stroke="#64748b" stroke-width="2"
+                            marker-end="url(#arrowhead)" />
+
                         <!-- Feed Forward到残差连接 -->
-                        <line x1="300" y1="300" x2="300" y2="270" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)" />
-                        
+                        <line x1="300" y1="300" x2="300" y2="270" stroke="#64748b" stroke-width="2"
+                            marker-end="url(#arrowhead)" />
+
                         <!-- 第二个残差连接的横向分支 -->
                         <line x1="300" y1="410" x2="150" y2="410" stroke="#64748b" stroke-width="2" />
                         <line x1="150" y1="410" x2="150" y2="255" stroke="#64748b" stroke-width="2" />
-                        <line x1="150" y1="255" x2="285" y2="255" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)" />
-                        
+                        <line x1="150" y1="255" x2="285" y2="255" stroke="#64748b" stroke-width="2"
+                            marker-end="url(#arrowhead)" />
+
                         <!-- 残差连接到最后的RMS Norm -->
-                        <line x1="300" y1="240" x2="300" y2="210" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)" />
-                        
+                        <line x1="300" y1="240" x2="300" y2="210" stroke="#64748b" stroke-width="2"
+                            marker-end="url(#arrowhead)" />
+
                         <!-- RMS Norm到Linear -->
-                        <line x1="300" y1="170" x2="300" y2="140" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)" />
-                        
+                        <line x1="300" y1="170" x2="300" y2="140" stroke="#64748b" stroke-width="2"
+                            marker-end="url(#arrowhead)" />
+
                         <!-- Linear到Softmax -->
-                        <line x1="300" y1="100" x2="300" y2="70" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)" />
+                        <line x1="300" y1="100" x2="300" y2="70" stroke="#64748b" stroke-width="2"
+                            marker-end="url(#arrowhead)" />
 
                         <!-- 渐变定义 -->
                         <defs>
@@ -489,45 +408,31 @@
         <!-- 前馈网络 -->
     </main>
 
+    <!-- 添加返回顶部按钮 -->
+    <button id="back-to-top"
+        class="fixed bottom-6 right-6 p-3 rounded-full bg-primary-500 text-white shadow-lg opacity-0 invisible transition-all duration-300 hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-400">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Common Scripts -->
+    <script src="/common/js/theme.js"></script>
+
     <script>
-        // 主题切换功能
         document.addEventListener('DOMContentLoaded', () => {
-            // 获取主题切换按钮
-            const themeToggle = document.getElementById('theme-toggle');
-            const mobileThemeToggle = document.getElementById('mobile-menu-button');
-            const mobileMenu = document.getElementById('mobile-menu');
+            // 初始化主题管理器
+            const themeManager = ThemeManager.getInstance();
 
-            // 检查系统主题偏好
-            const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
-            
-            // 从localStorage获取用户的主题偏好
-            const currentTheme = localStorage.getItem('theme');
-            if (currentTheme === 'dark') {
-                document.documentElement.classList.add('dark');
-            } else if (currentTheme === 'light') {
-                document.documentElement.classList.remove('dark');
-            } else if (prefersDarkScheme.matches) {
-                document.documentElement.classList.add('dark');
-            }
-
-            // 主题切换按钮点击事件
-            themeToggle.addEventListener('click', () => {
-                document.documentElement.classList.toggle('dark');
-                
-                // 保存主题偏好到localStorage
-                const theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
-                localStorage.setItem('theme', theme);
-            });
-
-            // 移动端菜单切换
-            mobileThemeToggle.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
-            });
+            // 初始化导航功能
+            const navigation = Navigation.getInstance();
         });
+    </script>
 
-        // 返回顶部按钮功能
+    <script>
+        // 添加返回顶部功能
+        const backToTopBtn = document.getElementById('back-to-top');
+
+        // 控制返回顶部按钮的显示
         window.addEventListener('scroll', () => {
-            const backToTopBtn = document.getElementById('back-to-top');
             if (window.pageYOffset > 300) {
                 backToTopBtn.classList.remove('opacity-0', 'invisible');
                 backToTopBtn.classList.add('opacity-100', 'visible');
@@ -537,8 +442,8 @@
             }
         });
 
-        // 平滑滚动到顶部
-        document.getElementById('back-to-top')?.addEventListener('click', () => {
+        // 点击返回顶部
+        backToTopBtn.addEventListener('click', () => {
             window.scrollTo({
                 top: 0,
                 behavior: 'smooth'
@@ -546,4 +451,5 @@
         });
     </script>
 </body>
+
 </html>

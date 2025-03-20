@@ -5,127 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>大模型架构可视化</title>
+
     <!-- TailwindCSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="./common/styles/tailwind.config.js"></script>
+
+    <!-- 编译后的 CSS -->
+    <link rel="stylesheet" href="../../../common/styles/output.css">
+
     <!-- 图标库 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script>
-        // 配置Tailwind
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        primary: {
-                            50: '#f0f9ff',
-                            100: '#e0f2fe',
-                            200: '#bae6fd',
-                            300: '#7dd3fc',
-                            400: '#38bdf8',
-                            500: '#0ea5e9',
-                            600: '#0284c7',
-                            700: '#0369a1',
-                            800: '#075985',
-                            900: '#0c4a6e',
-                        },
-                        secondary: {
-                            50: '#f0fdfa',
-                            100: '#ccfbf1',
-                            200: '#99f6e4',
-                            300: '#5eead4',
-                            400: '#2dd4bf',
-                            500: '#14b8a6',
-                            600: '#0d9488',
-                            700: '#0f766e',
-                            800: '#115e59',
-                            900: '#134e4a',
-                        },
-                        accent: {
-                            50: '#fff7ed',
-                            100: '#ffedd5',
-                            200: '#fed7aa',
-                            300: '#fdba74',
-                            400: '#fb923c',
-                            500: '#f97316',
-                            600: '#ea580c',
-                            700: '#c2410c',
-                            800: '#9a3412',
-                            900: '#7c2d12',
-                        },
-                        neutral: {
-                            50: '#fafafa',
-                            100: '#f5f5f5',
-                            200: '#e5e5e5',
-                            300: '#d4d4d4',
-                            400: '#a3a3a3',
-                            500: '#737373',
-                            600: '#525252',
-                            700: '#404040',
-                            800: '#262626',
-                            900: '#171717',
-                        }
-                    },
-                    animation: {
-                        'fade-in': 'fadeIn 0.5s ease-in-out',
-                        'slide-up': 'slideUp 0.5s ease-out',
-                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                    },
-                    keyframes: {
-                        fadeIn: {
-                            '0%': { opacity: '0' },
-                            '100%': { opacity: '1' },
-                        },
-                        slideUp: {
-                            '0%': { transform: 'translateY(20px)', opacity: '0' },
-                            '100%': { transform: 'translateY(0)', opacity: '1' },
-                        },
-                    },
-                }
-            }
-        }
-    </script>
-    <style type="text/tailwindcss">
-        @layer components {
-            .model-card {
-                @apply bg-white dark:bg-neutral-800 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 
-                       p-5 border border-neutral-100 dark:border-neutral-700
-                       transform hover:scale-[1.02];
-            }
-            
-            .model-card-title {
-                @apply text-lg font-semibold text-neutral-800 dark:text-neutral-100 mb-2;
-            }
-            
-            .model-card-description {
-                @apply text-sm text-neutral-600 dark:text-neutral-300 mb-4;
-            }
-            
-            .feature-tag {
-                @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
-                       bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-100
-                       mr-2 mb-2;
-            }
-            
-            .header-link {
-                @apply px-4 py-2 rounded-lg text-neutral-600 dark:text-neutral-300 hover:text-primary-600 
-                       dark:hover:text-primary-400 hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors;
-            }
-            
-            .active-link {
-                @apply text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/30;
-            }
-            
-            .section-title {
-                @apply text-2xl md:text-3xl font-bold text-neutral-800 dark:text-neutral-100 mb-6 mt-12;
-            }
-            
-            .btn-primary {
-                @apply px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg
-                       transform transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2
-                       focus:ring-primary-500 focus:ring-opacity-50;
-            }
-        }
-    </style>
 </head>
 
 <body class="bg-neutral-50 dark:bg-neutral-900 text-neutral-800 dark:text-neutral-200 transition-colors duration-300">
@@ -671,41 +560,27 @@
         </div>
     </footer>
 
+    <!-- 添加返回顶部按钮 -->
+    <button id="back-to-top"
+        class="fixed bottom-6 right-6 p-3 rounded-full bg-primary-500 text-white shadow-lg opacity-0 invisible transition-all duration-300 hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-400">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Common Scripts -->
+    <script src="/common/js/theme.js"></script>
+    <script src="/common/js/navigation.js"></script>
+
     <script>
-        // 深色模式切换
-        const themeToggleBtn = document.getElementById('theme-toggle');
+        document.addEventListener('DOMContentLoaded', () => {
+            // 初始化主题管理器
+            const themeManager = ThemeManager.getInstance();
 
-        // 检查系统偏好设置
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            document.documentElement.classList.add('dark');
-        }
-
-        // 检查本地存储中的主题设置
-        if (localStorage.getItem('theme') === 'dark') {
-            document.documentElement.classList.add('dark');
-        } else if (localStorage.getItem('theme') === 'light') {
-            document.documentElement.classList.remove('dark');
-        }
-
-        // 切换主题
-        themeToggleBtn.addEventListener('click', () => {
-            if (document.documentElement.classList.contains('dark')) {
-                document.documentElement.classList.remove('dark');
-                localStorage.setItem('theme', 'light');
-            } else {
-                document.documentElement.classList.add('dark');
-                localStorage.setItem('theme', 'dark');
-            }
+            // 初始化导航功能
+            const navigation = Navigation.getInstance();
         });
+    </script>
 
-        // 移动端菜单
-        const mobileMenuBtn = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-
+    <script>
         // 页面滚动动画
         function handleScrollAnimation() {
             const elements = document.querySelectorAll('section');
@@ -769,6 +644,28 @@
 
             lazyImages.forEach(img => {
                 imageObserver.observe(img);
+            });
+        });
+
+        // 添加返回顶部功能
+        const backToTopBtn = document.getElementById('back-to-top');
+
+        // 控制返回顶部按钮的显示
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopBtn.classList.remove('opacity-0', 'invisible');
+                backToTopBtn.classList.add('opacity-100', 'visible');
+            } else {
+                backToTopBtn.classList.add('opacity-0', 'invisible');
+                backToTopBtn.classList.remove('opacity-100', 'visible');
+            }
+        });
+
+        // 点击返回顶部
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
             });
         });
     </script>
