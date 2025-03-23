@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="探索大型语言模型内部架构原理的可视化平台 - 大模型原理">
+    <meta name="keywords" content="大语言模型, AI, 机器学习, Transformer, GPT, LLaMA">
+    <meta name="author" content="AI 架构可视化团队">
+    <meta name="theme-color" content="#0ea5e9"> 
+    <title>大模型原理 - 大模型全栈平台</title>
+
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Preline UI -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/preline@2.0.3/dist/preline.min.css" />
+    
+    <!-- 编译后的 CSS -->
+    <link rel="stylesheet" href="../../common/styles/output.css">
+
+    <!-- 图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="bg-neutral-50 dark:bg-neutral-900 text-neutral-800 dark:text-neutral-200 transition-colors duration-300">
+    <!-- 页面顶部导航 -->
+    <header class="sticky top-0 z-50 bg-neutral-50/80 dark:bg-neutral-900/80 glassmorphism border-b border-light">
+        <div class="container mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center">
+                <a href="../../index.html" class="flex items-center">
+                    <div class="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center mr-3">
+                        <i class="fas fa-brain text-white text-lg"></i>
+                    </div>
+                    <h1 class="text-lg font-medium text-neutral-800 dark:text-neutral-100">
+                        大模型全栈平台
+                    </h1>
+                </a>
+            </div>
+
+            <nav class="hidden md:flex items-center space-x-1">
+                <a href="../../index.html" class="px-3 py-2 rounded-md text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100">
+                    首页
+                </a>
+                <a href="#" class="px-3 py-2 rounded-md text-sm font-medium text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20">
+                    大模型原理
+                </a>
+                <a href="../../index.html#applications" class="px-3 py-2 rounded-md text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100">
+                    应用开发
+                </a>
+                <a href="../../index.html#components" class="px-3 py-2 rounded-md text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100">
+                    核心组件
+                </a>
+                <a href="../../index.html#about" class="px-3 py-2 rounded-md text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100">
+                    关于
+                </a>
+            </nav>
+
+            <div class="flex items-center space-x-3">
+                <a href="https://github.com/xukache" target="_blank" 
+                   class="text-neutral-700 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-200">
+                    <i class="fab fa-github text-lg"></i>
+                </a>
+                <button id="theme-toggle" 
+                    class="p-2 rounded-md text-neutral-700 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-200">
+                    <i class="fas fa-moon text-lg dark:hidden"></i>
+                    <i class="fas fa-sun text-lg hidden dark:block"></i>
+                </button>
+                <button class="md:hidden p-2 rounded-md text-neutral-700 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+                    id="mobile-menu-button">
+                    <i class="fas fa-bars text-lg"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- 移动端菜单 -->
+        <div id="mobile-menu"
+            class="md:hidden hidden bg-neutral-50 dark:bg-neutral-900 border-t border-light">
+            <div class="container mx-auto px-4 py-3 space-y-2">
+                <a href="../../index.html"
+                    class="block px-3 py-2 rounded-md text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 text-sm font-medium">
+                    首页
+                </a>
+                <a href="#"
+                    class="block px-3 py-2 rounded-md text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20 text-sm font-medium">
+                    大模型原理
+                </a>
+                <a href="../../index.html#applications"
+                    class="block px-3 py-2 rounded-md text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 text-sm font-medium">
+                    应用开发
+                </a>
+                <a href="../../index.html#components"
+                    class="block px-3 py-2 rounded-md text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 text-sm font-medium">
+                    核心组件
+                </a>
+                <a href="../../index.html#about"
+                    class="block px-3 py-2 rounded-md text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 text-sm font-medium">
+                    关于
+                </a>
+                <div class="border-t border-light my-3"></div>
+                <a href="https://github.com/xukache" target="_blank"
+                    class="block px-3 py-2 rounded-md text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 text-sm font-medium">
+                    <i class="fab fa-github mr-2"></i> GitHub
+                </a>
+                <button id="mobile-theme-toggle"
+                    class="w-full text-left px-3 py-2 rounded-md text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 text-sm font-medium">
+                    <i class="fas fa-moon mr-2 dark:hidden"></i>
+                    <i class="fas fa-sun mr-2 hidden dark:block"></i>
+                    <span class="dark:hidden">切换到深色模式</span>
+                    <span class="hidden dark:block">切换到浅色模式</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-10 max-w-6xl">
+        <!-- 页面标题 - 左右布局 -->
+        <section class="py-12 md:py-16">
+            <div class="max-w-6xl mx-auto">
+                <div class="flex flex-col md:flex-row items-center md:items-start gap-8 md:gap-12">
+                    <!-- 左侧标题内容 -->
+                    <div class="w-full md:w-1/2 md:pt-8">
+                        <div class="inline-block mb-4">
+                            <span class="px-3 py-1 rounded-full text-xs font-medium bg-purple-50 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400">
+                                深入了解大型语言模型
+                            </span>
+                        </div>
+                        <h1 class="text-4xl md:text-5xl font-bold mb-6 text-neutral-800 dark:text-neutral-100">
+                            大模型原理与架构
+                        </h1>
+                        <p class="text-lg text-neutral-600 dark:text-neutral-400 mb-8 max-w-xl">
+                            探索现代大型语言模型的内部工作原理、架构设计和核心组件，从基础理论到实际实现的深度解析
+                        </p>
+                        <div class="flex flex-wrap gap-3">
+                            <a href="#models" class="inline-flex items-center px-4 py-2 rounded-lg bg-primary-600 hover:bg-primary-700 text-white font-medium transition-colors">
+                                <i class="fas fa-cubes mr-2"></i>
+                                浏览模型架构
+                            </a>
+                            <a href="#components" class="inline-flex items-center px-4 py-2 rounded-lg bg-neutral-200 hover:bg-neutral-300 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-700 dark:text-neutral-300 font-medium transition-colors">
+                                <i class="fas fa-microchip mr-2"></i>
+                                探索核心组件
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- 右侧图形 -->
+                    <div class="w-full md:w-1/2">
+                        <div class="bg-gradient-to-br from-purple-50 to-sky-50 dark:from-purple-900/20 dark:to-sky-900/20 rounded-2xl p-6 md:p-8 backdrop-blur-sm border border-light">
+                            <div class="relative">
+                                <svg viewBox="0 0 400 260" class="w-full h-auto">
+                                    <defs>
+                                        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+                                            <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.8" />
+                                            <stop offset="100%" stop-color="#0ea5e9" stop-opacity="0.8" />
+                                        </linearGradient>
+                                        <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+                                            <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#8b5cf6" flood-opacity="0.2"/>
+                                        </filter>
+                                    </defs>
+                                    
+                                    <!-- 模型架构图 -->
+                                    <g filter="url(#shadow)">
+                                        <rect x="80" y="20" width="240" height="40" rx="6" fill="url(#grad1)" />
+                                        <text x="200" y="45" text-anchor="middle" fill="white" font-size="16">输入 Embedding</text>
+                                        
+                                        <rect x="120" y="80" width="160" height="40" rx="6" fill="url(#grad1)" />
+                                        <text x="200" y="105" text-anchor="middle" fill="white" font-size="16">位置编码</text>
+                                        
+                                        <rect x="80" y="140" width="240" height="40" rx="6" fill="url(#grad1)" />
+                                        <text x="200" y="165" text-anchor="middle" fill="white" font-size="16">多头自注意力机制</text>
+                                        
+                                        <rect x="100" y="200" width="200" height="40" rx="6" fill="url(#grad1)" />
+                                        <text x="200" y="225" text-anchor="middle" fill="white" font-size="16">前馈神经网络</text>
+                                    </g>
+                                    
+                                    <!-- 连接线 -->
+                                    <line x1="200" y1="60" x2="200" y2="80" stroke="#8b5cf6" stroke-width="2" />
+                                    <line x1="200" y1="120" x2="200" y2="140" stroke="#8b5cf6" stroke-width="2" />
+                                    <line x1="200" y1="180" x2="200" y2="200" stroke="#8b5cf6" stroke-width="2" />
+                                    
+                                    <!-- 装饰元素 -->
+                                    <circle cx="80" cy="45" r="8" fill="white" opacity="0.3" />
+                                    <circle cx="320" cy="45" r="8" fill="white" opacity="0.3" />
+                                    <circle cx="120" cy="225" r="8" fill="white" opacity="0.3" />
+                                    <circle cx="280" cy="225" r="8" fill="white" opacity="0.3" />
+                                </svg>
+                                
+                                <!-- 装饰性点阵 -->
+                                <div class="absolute top-0 right-0 w-20 h-20 grid grid-cols-4 grid-rows-4 gap-2 opacity-20">
+                                    <div class="w-1 h-1 rounded-full bg-primary-500"></div>
+                                    <div class="w-1 h-1 rounded-full bg-primary-500"></div>
+                                    <div class="w-1 h-1 rounded-full bg-primary-500"></div>
+                                    <div class="w-1 h-1 rounded-full bg-primary-500"></div>
+                                    <div class="w-1 h-1 rounded-full bg-primary-500"></div>
+                                    <div class="w-1 h-1 rounded-full bg-primary-500"></div>
+                                    <div class="w-1 h-1 rounded-full bg-primary-500"></div>
+                                    <div class="w-1 h-1 rounded-full bg-primary-500"></div>
+                                    <div class="w-1 h-1 rounded-full bg-primary-500"></div>
+                                    <div class="w-1 h-1 rounded-full bg-primary-500"></div>
+                                    <div class="w-1 h-1 rounded-full bg-primary-500"></div>
+                                    <div class="w-1 h-1 rounded-full bg-primary-500"></div>
+                                    <div class="w-1 h-1 rounded-full bg-primary-500"></div>
+                                    <div class="w-1 h-1 rounded-full bg-primary-500"></div>
+                                    <div class="w-1 h-1 rounded-full bg-primary-500"></div>
+                                    <div class="w-1 h-1 rounded-full bg-primary-500"></div>
+                                </div>
+                            </div>
+                            
+                            <p class="text-sm text-center text-neutral-600 dark:text-neutral-400 mt-4">
+                                Transformer 架构是现代大型语言模型的基础
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 模型架构分类 -->
+        <section class="py-12" id="models">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-2xl md:text-3xl font-bold mb-8 text-neutral-800 dark:text-neutral-100">
+                    <i class="fas fa-cubes text-purple-500 dark:text-purple-400 mr-2"></i>
+                    主流大语言模型架构
+                </h2>
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- GPT 模型卡片 -->
+                    <div class="model-card bg-white dark:bg-neutral-800 rounded-xl border border-light p-6 hover:shadow-lg transition-all duration-300">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-neutral-800 dark:text-neutral-100 mb-2">GPT 系列</h3>
+                                <span class="px-2 py-1 rounded-md text-xs font-medium bg-green-50 text-green-700 dark:bg-green-900/30 dark:text-green-400">
+                                    Autoregressive
+                                </span>
+                            </div>
+                            <div class="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
+                                <i class="fas fa-robot text-green-600 dark:text-green-400 text-xl"></i>
+                            </div>
+                        </div>
+                        
+                        <p class="text-neutral-600 dark:text-neutral-400 mb-4">
+                            OpenAI 开发的生成式预训练语言模型，采用自回归解码方式生成文本，通过海量文本数据训练，具有强大的语言理解和生成能力。
+                        </p>
+                        
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-2 py-1 rounded-md text-xs font-medium bg-neutral-100 text-neutral-700 dark:bg-neutral-700 dark:text-neutral-300">
+                                <i class="fas fa-layer-group mr-1"></i>96-175B 参数
+                            </span>
+                            <span class="px-2 py-1 rounded-md text-xs font-medium bg-neutral-100 text-neutral-700 dark:bg-neutral-700 dark:text-neutral-300">
+                                <i class="fas fa-calendar mr-1"></i>2018-2023
+                            </span>
+                        </div>
+                        
+                        <a href="../gpt/index.html" class="inline-flex items-center justify-center w-full py-3 px-4 rounded-lg bg-purple-600 hover:bg-purple-700 text-white font-medium transition-colors">
+                            深入了解 GPT 架构
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+
+                    <!-- LLaMA 模型卡片 -->
+                    <div class="model-card bg-white dark:bg-neutral-800 rounded-xl border border-light p-6 hover:shadow-lg transition-all duration-300">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-neutral-800 dark:text-neutral-100 mb-2">LLaMA 系列</h3>
+                                <span class="px-2 py-1 rounded-md text-xs font-medium bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
+                                    Open Foundation
+                                </span>
+                            </div>
+                            <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center">
+                                <i class="fas fa-fire text-blue-600 dark:text-blue-400 text-xl"></i>
+                            </div>
+                        </div>
+                        
+                        <p class="text-neutral-600 dark:text-neutral-400 mb-4">
+                            Meta AI 开发的开源大语言模型，优化了模型架构和训练方法，成为开源社区的重要基础模型，衍生出众多模型变体。
+                        </p>
+                        
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-2 py-1 rounded-md text-xs font-medium bg-neutral-100 text-neutral-700 dark:bg-neutral-700 dark:text-neutral-300">
+                                <i class="fas fa-layer-group mr-1"></i>7B-70B 参数
+                            </span>
+                            <span class="px-2 py-1 rounded-md text-xs font-medium bg-neutral-100 text-neutral-700 dark:bg-neutral-700 dark:text-neutral-300">
+                                <i class="fas fa-calendar mr-1"></i>2023-至今
+                            </span>
+                        </div>
+                        
+                        <a href="../llama/index.html" class="inline-flex items-center justify-center w-full py-3 px-4 rounded-lg bg-purple-600 hover:bg-purple-700 text-white font-medium transition-colors">
+                            深入了解 LLaMA 架构
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+
+                    <!-- Transformer 模型卡片 -->
+                    <div class="model-card bg-white dark:bg-neutral-800 rounded-xl border border-light p-6 hover:shadow-lg transition-all duration-300">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-neutral-800 dark:text-neutral-100 mb-2">Transformer</h3>
+                                <span class="px-2 py-1 rounded-md text-xs font-medium bg-amber-50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">
+                                    Foundation
+                                </span>
+                            </div>
+                            <div class="w-12 h-12 bg-amber-100 dark:bg-amber-900/30 rounded-full flex items-center justify-center">
+                                <i class="fas fa-cogs text-amber-600 dark:text-amber-400 text-xl"></i>
+                            </div>
+                        </div>
+                        
+                        <p class="text-neutral-600 dark:text-neutral-400 mb-4">
+                            现代大语言模型的基础架构，由 Google 在 2017 年提出，通过自注意力机制实现并行处理序列数据，彻底改变了NLP领域。
+                        </p>
+                        
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-2 py-1 rounded-md text-xs font-medium bg-neutral-100 text-neutral-700 dark:bg-neutral-700 dark:text-neutral-300">
+                                <i class="fas fa-network-wired mr-1"></i>注意力机制为核心
+                            </span>
+                            <span class="px-2 py-1 rounded-md text-xs font-medium bg-neutral-100 text-neutral-700 dark:bg-neutral-700 dark:text-neutral-300">
+                                <i class="fas fa-calendar mr-1"></i>2017
+                            </span>
+                        </div>
+                        
+                        <a href="../transformer/index.html" class="inline-flex items-center justify-center w-full py-3 px-4 rounded-lg bg-purple-600 hover:bg-purple-700 text-white font-medium transition-colors">
+                            深入了解 Transformer 架构
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+
+                    <!-- BERT 模型卡片 -->
+                    <div class="model-card bg-white dark:bg-neutral-800 rounded-xl border border-light p-6 hover:shadow-lg transition-all duration-300">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-neutral-800 dark:text-neutral-100 mb-2">BERT</h3>
+                                <span class="px-2 py-1 rounded-md text-xs font-medium bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400">
+                                    Bidirectional
+                                </span>
+                            </div>
+                            <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/30 rounded-full flex items-center justify-center">
+                                <i class="fas fa-project-diagram text-indigo-600 dark:text-indigo-400 text-xl"></i>
+                            </div>
+                        </div>
+                        
+                        <p class="text-neutral-600 dark:text-neutral-400 mb-4">
+                            Google 开发的双向 Transformer 预训练模型，通过掩码语言建模实现上下文理解，在自然语言理解任务中表现卓越。
+                        </p>
+                        
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-2 py-1 rounded-md text-xs font-medium bg-neutral-100 text-neutral-700 dark:bg-neutral-700 dark:text-neutral-300">
+                                <i class="fas fa-layer-group mr-1"></i>110M-340M 参数
+                            </span>
+                            <span class="px-2 py-1 rounded-md text-xs font-medium bg-neutral-100 text-neutral-700 dark:bg-neutral-700 dark:text-neutral-300">
+                                <i class="fas fa-calendar mr-1"></i>2018
+                            </span>
+                        </div>
+                        
+                        <a href="../bert/index.html" class="inline-flex items-center justify-center w-full py-3 px-4 rounded-lg bg-purple-600 hover:bg-purple-700 text-white font-medium transition-colors">
+                            深入了解 BERT 架构
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 核心组件部分 -->
+        <section class="py-12" id="components">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-2xl md:text-3xl font-bold mb-8 text-neutral-800 dark:text-neutral-100">
+                    <i class="fas fa-microchip text-sky-500 dark:text-sky-400 mr-2"></i>
+                    核心技术组件
+                </h2>
+                <p class="text-lg text-neutral-600 dark:text-neutral-400 mb-6">
+                    大型语言模型的内部结构由多个关键组件构成，这些组件共同协作实现模型的强大功能。深入了解这些组件的工作原理，有助于全面掌握大模型技术。
+                </p>
+                
+                <div class="grid md:grid-cols-3 gap-6 mt-8">
+                    <!-- 自注意力机制 -->
+                    <a href="../../components/attention.html" class="bg-white dark:bg-neutral-800 rounded-xl border border-light p-5 hover:shadow-lg transition-all duration-300 group">
+                        <div class="flex items-center mb-3">
+                            <div class="w-10 h-10 bg-primary-100 dark:bg-primary-900/40 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-network-wired text-primary-500 dark:text-primary-400"></i>
+                            </div>
+                            <h3 class="text-lg font-semibold text-neutral-800 dark:text-neutral-100">自注意力机制</h3>
+                        </div>
+                        <p class="text-neutral-600 dark:text-neutral-400 text-sm mb-4">捕获长距离依赖关系的关键机制，是大模型处理序列数据的核心。通过计算序列中元素之间的关联性，实现信息的灵活获取。</p>
+                        <span class="text-primary-600 dark:text-primary-400 text-sm font-medium group-hover:underline flex items-center">
+                            了解更多 
+                            <i class="fas fa-arrow-right ml-1 transition-transform group-hover:translate-x-1"></i>
+                        </span>
+                    </a>
+
+                    <!-- 位置编码 -->
+                    <a href="../../components/positional-encoding.html" class="bg-white dark:bg-neutral-800 rounded-xl border border-light p-5 hover:shadow-lg transition-all duration-300 group">
+                        <div class="flex items-center mb-3">
+                            <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900/40 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-wave-square text-blue-500 dark:text-blue-400"></i>
+                            </div>
+                            <h3 class="text-lg font-semibold text-neutral-800 dark:text-neutral-100">位置编码</h3>
+                        </div>
+                        <p class="text-neutral-600 dark:text-neutral-400 text-sm mb-4">为无序的 Token 嵌入位置信息，使模型理解序列的相对或绝对位置。不同模型采用不同的位置编码方案，如正弦余弦编码或RoPE。</p>
+                        <span class="text-primary-600 dark:text-primary-400 text-sm font-medium group-hover:underline flex items-center">
+                            了解更多 
+                            <i class="fas fa-arrow-right ml-1 transition-transform group-hover:translate-x-1"></i>
+                        </span>
+                    </a>
+
+                    <!-- 多头注意力 -->
+                    <a href="../../components/multi-head-attention.html" class="bg-white dark:bg-neutral-800 rounded-xl border border-light p-5 hover:shadow-lg transition-all duration-300 group">
+                        <div class="flex items-center mb-3">
+                            <div class="w-10 h-10 bg-sky-100 dark:bg-sky-900/40 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-sitemap text-sky-500 dark:text-sky-400"></i>
+                            </div>
+                            <h3 class="text-lg font-semibold text-neutral-800 dark:text-neutral-100">多头注意力</h3>
+                        </div>
+                        <p class="text-neutral-600 dark:text-neutral-400 text-sm mb-4">并行捕获不同表示子空间的信息，增强模型的表达能力和灵活性。通过多个注意力头并行学习不同特征，实现全面的信息提取。</p>
+                        <span class="text-primary-600 dark:text-primary-400 text-sm font-medium group-hover:underline flex items-center">
+                            了解更多 
+                            <i class="fas fa-arrow-right ml-1 transition-transform group-hover:translate-x-1"></i>
+                        </span>
+                    </a>
+
+                    <!-- RoPE 位置编码 -->
+                    <a href="../components/rope/index.html" class="bg-white dark:bg-neutral-800 rounded-xl border border-light p-5 hover:shadow-lg transition-all duration-300 group">
+                        <div class="flex items-center mb-3">
+                            <div class="w-10 h-10 bg-amber-100 dark:bg-amber-900/40 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-rotate text-amber-500 dark:text-amber-400"></i>
+                            </div>
+                            <h3 class="text-lg font-semibold text-neutral-800 dark:text-neutral-100">RoPE 位置编码</h3>
+                        </div>
+                        <p class="text-neutral-600 dark:text-neutral-400 text-sm mb-4">旋转位置编码是一种高效的位置信息注入方法，通过在复数空间中的旋转操作将位置信息整合到模型中，常用于LLaMA等模型。</p>
+                        <span class="text-primary-600 dark:text-primary-400 text-sm font-medium group-hover:underline flex items-center">
+                            了解更多 
+                            <i class="fas fa-arrow-right ml-1 transition-transform group-hover:translate-x-1"></i>
+                        </span>
+                    </a>
+
+                    <!-- 前馈神经网络 -->
+                    <a href="../../components/ffn.html" class="bg-white dark:bg-neutral-800 rounded-xl border border-light p-5 hover:shadow-lg transition-all duration-300 group">
+                        <div class="flex items-center mb-3">
+                            <div class="w-10 h-10 bg-indigo-100 dark:bg-indigo-900/40 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-sort-amount-up text-indigo-500 dark:text-indigo-400"></i>
+                            </div>
+                            <h3 class="text-lg font-semibold text-neutral-800 dark:text-neutral-100">前馈神经网络</h3>
+                        </div>
+                        <p class="text-neutral-600 dark:text-neutral-400 text-sm mb-4">Transformer 块中的非线性变换组件，通常由两个线性变换和一个激活函数组成，增强模型的表示能力和特征变换能力。</p>
+                        <span class="text-primary-600 dark:text-primary-400 text-sm font-medium group-hover:underline flex items-center">
+                            了解更多 
+                            <i class="fas fa-arrow-right ml-1 transition-transform group-hover:translate-x-1"></i>
+                        </span>
+                    </a>
+
+                    <!-- Layer Normalization -->
+                    <a href="../../components/layernorm.html" class="bg-white dark:bg-neutral-800 rounded-xl border border-light p-5 hover:shadow-lg transition-all duration-300 group">
+                        <div class="flex items-center mb-3">
+                            <div class="w-10 h-10 bg-green-100 dark:bg-green-900/40 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-balance-scale text-green-500 dark:text-green-400"></i>
+                            </div>
+                            <h3 class="text-lg font-semibold text-neutral-800 dark:text-neutral-100">Layer Normalization</h3>
+                        </div>
+                        <p class="text-neutral-600 dark:text-neutral-400 text-sm mb-4">标准化层内神经元的输入，提高训练稳定性和收敛速度，是大型语言模型不可或缺的组件，有多种实现变体。</p>
+                        <span class="text-primary-600 dark:text-primary-400 text-sm font-medium group-hover:underline flex items-center">
+                            了解更多 
+                            <i class="fas fa-arrow-right ml-1 transition-transform group-hover:translate-x-1"></i>
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="py-8 border-t border-light bg-neutral-50/30 dark:bg-neutral-900/30">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <a href="../../index.html" class="flex items-center mb-2">
+                        <div class="w-6 h-6 bg-gradient-primary rounded-md flex items-center justify-center mr-2">
+                            <i class="fas fa-brain text-white text-xs"></i>
+                        </div>
+                        <span class="text-neutral-700 dark:text-neutral-300 font-medium">大模型全栈平台</span>
+                    </a>
+                    <p class="text-neutral-500 dark:text-neutral-400 text-sm">
+                        探索大语言模型的原理与应用，从理论到实践的全栈学习平台
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-2 gap-8 md:gap-16">
+                    <div>
+                        <h4 class="text-sm font-semibold mb-3 text-neutral-800 dark:text-neutral-200">学习资源</h4>
+                        <ul class="space-y-2">
+                            <li>
+                                <a href="../../index.html#theory" class="text-sm text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">模型原理</a>
+                            </li>
+                            <li>
+                                <a href="../../index.html#applications" class="text-sm text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">应用开发</a>
+                            </li>
+                            <li>
+                                <a href="../../index.html#components" class="text-sm text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">技术组件</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-semibold mb-3 text-neutral-800 dark:text-neutral-200">热门主题</h4>
+                        <ul class="space-y-2">
+                            <li>
+                                <a href="../gpt/index.html" class="text-sm text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">GPT 模型</a>
+                            </li>
+                            <li>
+                                <a href="../llama/index.html" class="text-sm text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">LLaMA 模型</a>
+                            </li>
+                            <li>
+                                <a href="../components/rope/index.html" class="text-sm text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">RoPE 位置编码</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-8 pt-6 border-t border-light flex flex-col md:flex-row justify-between items-center">
+                <p class="text-sm text-neutral-500 dark:text-neutral-400 mb-4 md:mb-0">
+                    &copy; 2023-2024 大模型全栈平台. 保留所有权利.
+                </p>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-neutral-400 hover:text-primary-500 dark:hover:text-primary-400 transition-colors">
+                        <i class="fas fa-rss"></i>
+                    </a>
+                    <a href="#" class="text-neutral-400 hover:text-primary-500 dark:hover:text-primary-400 transition-colors">
+                        <i class="fas fa-book"></i>
+                    </a>
+                    <a href="#" class="text-neutral-400 hover:text-primary-500 dark:hover:text-primary-400 transition-colors">
+                        <i class="fas fa-graduation-cap"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 返回顶部按钮 -->
+    <button id="back-to-top" 
+        class="fixed bottom-6 right-6 p-2 rounded-full bg-primary-500 text-white shadow-lg opacity-0 invisible transition-all duration-300 hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-neutral-900">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Preline UI 初始化 -->
+    <script src="https://cdn.jsdelivr.net/npm/preline@2.0.3/dist/preline.min.js"></script>
+    
+    <!-- 导航和主题切换脚本 -->
+    <script src="../../common/js/navigation.js"></script>
+    <script src="../../common/js/theme.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 初始化主题管理器
+            const themeManager = ThemeManager.getInstance();
+
+            // 初始化导航功能
+            const navigation = Navigation.getInstance();
+            
+            // 添加滚动动画
+            function handleScrollAnimation() {
+                const elements = document.querySelectorAll('section');
+                elements.forEach(element => {
+                    const position = element.getBoundingClientRect();
+                    if (position.top < window.innerHeight * 0.8) {
+                        element.classList.add('animate-fade-in');
+                    }
+                });
+            }
+
+            // 初始化时执行一次
+            handleScrollAnimation();
+            // 滚动时执行
+            window.addEventListener('scroll', handleScrollAnimation);
+        });
+    </script>
+</body>
+</html>

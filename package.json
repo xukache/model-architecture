@@ -5,13 +5,20 @@
   "scripts": {
     "build:css": "postcss common/styles/input.css -o common/styles/output.css",
     "watch:css": "postcss common/styles/input.css -o common/styles/output.css --watch",
-    "dev": "npm run watch:css"
+    "dev": "pnpm run watch:css",
+    "build": "pnpm run build:css && pnpm run copy-assets",
+    "copy-assets": "if not exist dist mkdir dist && xcopy index.html dist\\ /Y && xcopy models dist\\models\\ /S /E /Y && xcopy common dist\\common\\ /S /E /Y && xcopy tailwind.config.js dist\\ /Y",
+    "serve": "cd dist && pnpm dlx http-server -p 3000",
+    "clean": "if exist dist rd /s /q dist",
+    "deploy": "pnpm run clean && pnpm run build && pnpm run serve"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.16",
     "autoprefixer": "^10.4.17",
+    "http-server": "^14.1.1",
     "postcss": "^8.4.35",
     "postcss-cli": "^11.0.0",
     "tailwindcss": "^3.3.0"
