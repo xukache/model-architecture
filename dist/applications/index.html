@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="探索大型语言模型应用开发的实战指南 - 大模型应用开发">
+    <meta name="keywords" content="大语言模型, AI应用开发, 模型微调, RAG, Agent, LLM应用">
+    <meta name="author" content="AI 架构可视化团队">
+    <meta name="theme-color" content="#0ea5e9"> 
+    <title>大模型应用开发 - 大模型全栈平台</title>
+
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Preline UI -->
+    <link rel="stylesheet" href="../common/styles/variants.min.css" />
+    
+    <!-- 编译后的 CSS -->
+    <link rel="stylesheet" href="../common/styles/output.css">
+
+    <!-- 图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="bg-neutral-50 dark:bg-neutral-900 text-neutral-800 dark:text-neutral-200 transition-colors duration-300">
+    <!-- 页面顶部导航 -->
+    <header class="sticky top-0 z-50 bg-neutral-50/80 dark:bg-neutral-900/80 glassmorphism border-b border-light">
+        <div class="container mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center">
+                <a href="../index.html" class="flex items-center">
+                    <div class="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center mr-3">
+                        <i class="fas fa-brain text-white text-lg"></i>
+                    </div>
+                    <h1 class="text-lg font-medium text-neutral-800 dark:text-neutral-100">
+                        大模型全栈平台
+                    </h1>
+                </a>
+            </div>
+
+            <nav class="hidden md:flex items-center space-x-1">
+                <a href="../index.html" class="px-3 py-2 rounded-md text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100">
+                    首页
+                </a>
+                <a href="../models/theory/index.html" class="px-3 py-2 rounded-md text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100">
+                    大模型原理
+                </a>
+                <a href="#" class="px-3 py-2 rounded-md text-sm font-medium text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20">
+                    应用开发
+                </a>
+                <a href="../index.html#components" class="px-3 py-2 rounded-md text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100">
+                    核心组件
+                </a>
+                <a href="../index.html#about" class="px-3 py-2 rounded-md text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100">
+                    关于
+                </a>
+            </nav>
+
+            <div class="flex items-center space-x-3">
+                <a href="https://github.com/xukache" target="_blank" 
+                   class="text-neutral-700 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-200">
+                    <i class="fab fa-github text-lg"></i>
+                </a>
+                <button id="theme-toggle" 
+                    class="p-2 rounded-md text-neutral-700 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-200">
+                    <i class="fas fa-moon text-lg dark:hidden"></i>
+                    <i class="fas fa-sun text-lg hidden dark:block"></i>
+                </button>
+                <button class="md:hidden p-2 rounded-md text-neutral-700 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+                    id="mobile-menu-button">
+                    <i class="fas fa-bars text-lg"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- 移动端菜单 -->
+        <div id="mobile-menu"
+            class="md:hidden hidden bg-neutral-50 dark:bg-neutral-900 border-t border-light">
+            <div class="container mx-auto px-4 py-3 space-y-2">
+                <a href="../index.html"
+                    class="block px-3 py-2 rounded-md text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 text-sm font-medium">
+                    首页
+                </a>
+                <a href="../models/theory/index.html"
+                    class="block px-3 py-2 rounded-md text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 text-sm font-medium">
+                    大模型原理
+                </a>
+                <a href="#"
+                    class="block px-3 py-2 rounded-md text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20 text-sm font-medium">
+                    应用开发
+                </a>
+                <a href="../index.html#components"
+                    class="block px-3 py-2 rounded-md text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 text-sm font-medium">
+                    核心组件
+                </a>
+                <a href="../index.html#about"
+                    class="block px-3 py-2 rounded-md text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 text-sm font-medium">
+                    关于
+                </a>
+                <div class="border-t border-light my-3"></div>
+                <a href="https://github.com/xukache" target="_blank"
+                    class="block px-3 py-2 rounded-md text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 text-sm font-medium">
+                    <i class="fab fa-github mr-2"></i> GitHub
+                </a>
+                <button id="mobile-theme-toggle"
+                    class="w-full text-left px-3 py-2 rounded-md text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 text-sm font-medium">
+                    <i class="fas fa-moon mr-2 dark:hidden"></i>
+                    <i class="fas fa-sun mr-2 hidden dark:block"></i>
+                    <span class="dark:hidden">切换到深色模式</span>
+                    <span class="hidden dark:block">切换到浅色模式</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-10 max-w-6xl">
+        <!-- 页面标题 - 左右布局 -->
+        <section class="py-12 md:py-16">
+            <div class="max-w-6xl mx-auto">
+                <div class="flex flex-col md:flex-row items-center md:items-start gap-8 md:gap-12">
+                    <!-- 左侧标题内容 -->
+                    <div class="w-full md:w-1/2 md:pt-8">
+                        <div class="inline-block mb-4">
+                            <span class="px-3 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700 dark:bg-green-900/30 dark:text-green-400">
+                                大型语言模型实战应用开发
+                            </span>
+                        </div>
+                        <h1 class="text-4xl md:text-5xl font-bold mb-6 text-neutral-800 dark:text-neutral-100">
+                            大模型应用开发指南
+                        </h1>
+                        <p class="text-lg text-neutral-600 dark:text-neutral-400 mb-8 max-w-xl">
+                            从模型微调、部署到 RAG 系统构建与 Agent 开发，掌握大语言模型应用开发的全流程与最佳实践
+                        </p>
+                        <div class="flex flex-wrap gap-3">
+                            <a href="#development-paths" class="inline-flex items-center px-4 py-2 rounded-lg bg-primary-600 hover:bg-primary-700 text-white font-medium transition-colors">
+                                <i class="fas fa-code mr-2"></i>
+                                开发路径
+                            </a>
+                            <a href="#techniques" class="inline-flex items-center px-4 py-2 rounded-lg bg-neutral-200 hover:bg-neutral-300 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-700 dark:text-neutral-300 font-medium transition-colors">
+                                <i class="fas fa-cog mr-2"></i>
+                                核心技术
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- 右侧图形 -->
+                    <div class="w-full md:w-1/2">
+                        <div class="bg-gradient-to-br from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 rounded-2xl p-6 md:p-8 backdrop-blur-sm border border-light">
+                            <div class="relative">
+                                <svg viewBox="0 0 400 260" class="w-full h-auto">
+                                    <defs>
+                                        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+                                            <stop offset="0%" stop-color="#10b981" stop-opacity="0.8" />
+                                            <stop offset="100%" stop-color="#0ea5e9" stop-opacity="0.8" />
+                                        </linearGradient>
+                                        <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+                                            <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#10b981" flood-opacity="0.2"/>
+                                        </filter>
+                                    </defs>
+                                    
+                                    <!-- 应用架构图 -->
+                                    <g filter="url(#shadow)">
+                                        <rect x="80" y="20" width="240" height="40" rx="6" fill="url(#grad1)" />
+                                        <text x="200" y="45" text-anchor="middle" fill="white" font-size="16">大语言模型</text>
+                                        
+                                        <rect x="50" y="80" width="100" height="40" rx="6" fill="url(#grad1)" />
+                                        <text x="100" y="105" text-anchor="middle" fill="white" font-size="14">模型微调</text>
+                                        
+                                        <rect x="160" y="80" width="80" height="40" rx="6" fill="url(#grad1)" />
+                                        <text x="200" y="105" text-anchor="middle" fill="white" font-size="14">推理</text>
+                                        
+                                        <rect x="250" y="80" width="100" height="40" rx="6" fill="url(#grad1)" />
+                                        <text x="300" y="105" text-anchor="middle" fill="white" font-size="14">应用集成</text>
+                                        
+                                        <rect x="80" y="140" width="100" height="40" rx="6" fill="url(#grad1)" />
+                                        <text x="130" y="165" text-anchor="middle" fill="white" font-size="14">RAG系统</text>
+                                        
+                                        <rect x="220" y="140" width="100" height="40" rx="6" fill="url(#grad1)" />
+                                        <text x="270" y="165" text-anchor="middle" fill="white" font-size="14">Agent开发</text>
+                                        
+                                        <rect x="80" y="200" width="240" height="40" rx="6" fill="url(#grad1)" />
+                                        <text x="200" y="225" text-anchor="middle" fill="white" font-size="16">应用部署与服务化</text>
+                                    </g>
+                                    
+                                    <!-- 连接线 -->
+                                    <line x1="100" y1="60" x2="100" y2="80" stroke="#10b981" stroke-width="2" />
+                                    <line x1="200" y1="60" x2="200" y2="80" stroke="#10b981" stroke-width="2" />
+                                    <line x1="300" y1="60" x2="300" y2="80" stroke="#10b981" stroke-width="2" />
+                                    <line x1="130" y1="120" x2="130" y2="140" stroke="#10b981" stroke-width="2" />
+                                    <line x1="270" y1="120" x2="270" y2="140" stroke="#10b981" stroke-width="2" />
+                                    <line x1="130" y1="180" x2="130" y2="200" stroke="#10b981" stroke-width="2" />
+                                    <line x1="270" y1="180" x2="270" y2="200" stroke="#10b981" stroke-width="2" />
+                                    
+                                    <!-- 装饰元素 -->
+                                    <circle cx="80" cy="45" r="8" fill="white" opacity="0.3" />
+                                    <circle cx="320" cy="45" r="8" fill="white" opacity="0.3" />
+                                    <circle cx="100" cy="225" r="8" fill="white" opacity="0.3" />
+                                    <circle cx="300" cy="225" r="8" fill="white" opacity="0.3" />
+                                </svg>
+                                
+                                <!-- 装饰性点阵 -->
+                                <div class="absolute top-0 right-0 w-20 h-20 grid grid-cols-4 grid-rows-4 gap-2 opacity-20">
+                                    <div class="w-1 h-1 rounded-full bg-green-500"></div>
+                                    <div class="w-1 h-1 rounded-full bg-green-500"></div>
+                                    <div class="w-1 h-1 rounded-full bg-green-500"></div>
+                                    <div class="w-1 h-1 rounded-full bg-green-500"></div>
+                                    <div class="w-1 h-1 rounded-full bg-green-500"></div>
+                                    <div class="w-1 h-1 rounded-full bg-green-500"></div>
+                                    <div class="w-1 h-1 rounded-full bg-green-500"></div>
+                                    <div class="w-1 h-1 rounded-full bg-green-500"></div>
+                                    <div class="w-1 h-1 rounded-full bg-green-500"></div>
+                                    <div class="w-1 h-1 rounded-full bg-green-500"></div>
+                                    <div class="w-1 h-1 rounded-full bg-green-500"></div>
+                                    <div class="w-1 h-1 rounded-full bg-green-500"></div>
+                                    <div class="w-1 h-1 rounded-full bg-green-500"></div>
+                                    <div class="w-1 h-1 rounded-full bg-green-500"></div>
+                                    <div class="w-1 h-1 rounded-full bg-green-500"></div>
+                                    <div class="w-1 h-1 rounded-full bg-green-500"></div>
+                                </div>
+                            </div>
+                            
+                            <p class="text-sm text-center text-neutral-600 dark:text-neutral-400 mt-4">
+                                现代大语言模型应用的开发架构与流程
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 开发路径分类 -->
+        <section class="py-12" id="development-paths">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-2xl md:text-3xl font-bold mb-8 text-neutral-800 dark:text-neutral-100">
+                    <i class="fas fa-code-branch text-green-500 dark:text-green-400 mr-2"></i>
+                    大模型应用开发路径
+                </h2>
+
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- 模型训练微调与部署 -->
+                    <div class="model-card bg-white dark:bg-neutral-800 rounded-xl border border-light p-6 hover:shadow-lg transition-all duration-300">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-neutral-800 dark:text-neutral-100 mb-2">模型训练微调与部署</h3>
+                                <span class="px-2 py-1 rounded-md text-xs font-medium bg-green-50 text-green-700 dark:bg-green-900/30 dark:text-green-400">
+                                    模型能力定制
+                                </span>
+                            </div>
+                            <div class="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
+                                <i class="fas fa-sliders-h text-green-600 dark:text-green-400 text-xl"></i>
+                            </div>
+                        </div>
+                        
+                        <p class="text-neutral-600 dark:text-neutral-400 mb-4">
+                            通过有监督微调（SFT）、强化学习人类反馈（RLHF）等技术，在预训练大模型基础上定制特定领域能力，并采用量化加速技术实现高效部署。
+                        </p>
+                        
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-2 py-1 rounded-md text-xs font-medium bg-neutral-100 text-neutral-700 dark:bg-neutral-700 dark:text-neutral-300">
+                                <i class="fas fa-code mr-1"></i>LoRA/QLoRA
+                            </span>
+                            <span class="px-2 py-1 rounded-md text-xs font-medium bg-neutral-100 text-neutral-700 dark:bg-neutral-700 dark:text-neutral-300">
+                                <i class="fas fa-microchip mr-1"></i>模型量化
+                            </span>
+                            <span class="px-2 py-1 rounded-md text-xs font-medium bg-neutral-100 text-neutral-700 dark:bg-neutral-700 dark:text-neutral-300">
+                                <i class="fas fa-server mr-1"></i>服务化部署
+                            </span>
+                        </div>
+                        
+                        <a href="fine-tuning/index.html" class="inline-flex items-center justify-center w-full py-3 px-4 rounded-lg bg-green-600 hover:bg-green-700 text-white font-medium transition-colors">
+                            深入学习微调技术
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+
+                    <!-- RAG系统构建 -->
+                    <div class="model-card bg-white dark:bg-neutral-800 rounded-xl border border-light p-6 hover:shadow-lg transition-all duration-300">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-neutral-800 dark:text-neutral-100 mb-2">RAG系统构建</h3>
+                                <span class="px-2 py-1 rounded-md text-xs font-medium bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400">
+                                    知识增强
+                                </span>
+                            </div>
+                            <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/30 rounded-full flex items-center justify-center">
+                                <i class="fas fa-database text-indigo-600 dark:text-indigo-400 text-xl"></i>
+                            </div>
+                        </div>
+                        
+                        <p class="text-neutral-600 dark:text-neutral-400 mb-4">
+                            结合知识库与大语言模型的能力，通过文档处理、向量存储、语义检索与上下文融合，构建基于可靠知识的应用系统，增强模型实用性与准确性。
+                        </p>
+                        
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-2 py-1 rounded-md text-xs font-medium bg-neutral-100 text-neutral-700 dark:bg-neutral-700 dark:text-neutral-300">
+                                <i class="fas fa-search mr-1"></i>向量检索
+                            </span>
+                            <span class="px-2 py-1 rounded-md text-xs font-medium bg-neutral-100 text-neutral-700 dark:bg-neutral-700 dark:text-neutral-300">
+                                <i class="fas fa-file-alt mr-1"></i>文档解析
+                            </span>
+                            <span class="px-2 py-1 rounded-md text-xs font-medium bg-neutral-100 text-neutral-700 dark:bg-neutral-700 dark:text-neutral-300">
+                                <i class="fas fa-puzzle-piece mr-1"></i>上下文工程
+                            </span>
+                        </div>
+                        
+                        <a href="rag/index.html" class="inline-flex items-center justify-center w-full py-3 px-4 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-medium transition-colors">
+                            探索RAG系统构建
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+
+                    <!-- Agent开发 -->
+                    <div class="model-card bg-white dark:bg-neutral-800 rounded-xl border border-light p-6 hover:shadow-lg transition-all duration-300">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-neutral-800 dark:text-neutral-100 mb-2">Agent 开发</h3>
+                                <span class="px-2 py-1 rounded-md text-xs font-medium bg-amber-50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">
+                                    自主代理
+                                </span>
+                            </div>
+                            <div class="w-12 h-12 bg-amber-100 dark:bg-amber-900/30 rounded-full flex items-center justify-center">
+                                <i class="fas fa-robot text-amber-600 dark:text-amber-400 text-xl"></i>
+                            </div>
+                        </div>
+                        
+                        <p class="text-neutral-600 dark:text-neutral-400 mb-4">
+                            基于大语言模型构建具备规划、推理、行动和反思能力的自主代理系统，通过工具使用拓展模型能力边界，实现复杂任务的自主完成。
+                        </p>
+                        
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-2 py-1 rounded-md text-xs font-medium bg-neutral-100 text-neutral-700 dark:bg-neutral-700 dark:text-neutral-300">
+                                <i class="fas fa-tools mr-1"></i>工具调用
+                            </span>
+                            <span class="px-2 py-1 rounded-md text-xs font-medium bg-neutral-100 text-neutral-700 dark:bg-neutral-700 dark:text-neutral-300">
+                                <i class="fas fa-sitemap mr-1"></i>ReAct框架
+                            </span>
+                            <span class="px-2 py-1 rounded-md text-xs font-medium bg-neutral-100 text-neutral-700 dark:bg-neutral-700 dark:text-neutral-300">
+                                <i class="fas fa-brain mr-1"></i>多Agent协作
+                            </span>
+                        </div>
+                        
+                        <a href="agent/index.html" class="inline-flex items-center justify-center w-full py-3 px-4 rounded-lg bg-amber-600 hover:bg-amber-700 text-white font-medium transition-colors">
+                            学习Agent开发
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+
+                    <!-- 多模态应用 -->
+                    <div class="model-card bg-white dark:bg-neutral-800 rounded-xl border border-light p-6 hover:shadow-lg transition-all duration-300">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-neutral-800 dark:text-neutral-100 mb-2">多模态应用</h3>
+                                <span class="px-2 py-1 rounded-md text-xs font-medium bg-purple-50 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400">
+                                    跨媒体交互
+                                </span>
+                            </div>
+                            <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center">
+                                <i class="fas fa-images text-purple-600 dark:text-purple-400 text-xl"></i>
+                            </div>
+                        </div>
+                        
+                        <p class="text-neutral-600 dark:text-neutral-400 mb-4">
+                            整合文本、图像、音频等多种模态的大模型能力，开发能够理解和生成跨媒体内容的智能应用，实现更自然的人机交互和内容创作体验。
+                        </p>
+                        
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-2 py-1 rounded-md text-xs font-medium bg-neutral-100 text-neutral-700 dark:bg-neutral-700 dark:text-neutral-300">
+                                <i class="fas fa-image mr-1"></i>图像理解/生成
+                            </span>
+                            <span class="px-2 py-1 rounded-md text-xs font-medium bg-neutral-100 text-neutral-700 dark:bg-neutral-700 dark:text-neutral-300">
+                                <i class="fas fa-headphones mr-1"></i>语音交互
+                            </span>
+                            <span class="px-2 py-1 rounded-md text-xs font-medium bg-neutral-100 text-neutral-700 dark:bg-neutral-700 dark:text-neutral-300">
+                                <i class="fas fa-code mr-1"></i>模态融合
+                            </span>
+                        </div>
+                        
+                        <a href="multimodal/index.html" class="inline-flex items-center justify-center w-full py-3 px-4 rounded-lg bg-purple-600 hover:bg-purple-700 text-white font-medium transition-colors">
+                            探索多模态应用
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 应用技术分类 -->
+        <section class="py-12" id="techniques">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-2xl md:text-3xl font-bold mb-8 text-neutral-800 dark:text-neutral-100">
+                    <i class="fas fa-cog text-blue-500 dark:text-blue-400 mr-2"></i>
+                    核心技术与最佳实践
+                </h2>
+                
+                <div class="grid md:grid-cols-3 gap-6">
+                    <!-- 提示工程 -->
+                    <a href="techniques/prompt-engineering.html" class="bg-white dark:bg-neutral-800 rounded-xl border border-light p-5 hover:shadow-md transition-all duration-300 group">
+                        <div class="flex items-center mb-3">
+                            <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900/40 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-keyboard text-blue-500 dark:text-blue-400"></i>
+                            </div>
+                            <h3 class="text-lg font-semibold text-neutral-800 dark:text-neutral-100">提示工程</h3>
+                        </div>
+                        <p class="text-neutral-600 dark:text-neutral-400 text-sm mb-4">掌握有效的提示设计技术，包括上下文学习、Few-shot学习和Chain of Thought等方法，优化模型输入以获得更精准的输出。</p>
+                        <span class="text-primary-600 dark:text-primary-400 text-sm font-medium group-hover:underline flex items-center">
+                            了解更多 
+                            <i class="fas fa-arrow-right ml-1 transition-transform group-hover:translate-x-1"></i>
+                        </span>
+                    </a>
+
+                    <!-- 检索增强生成 -->
+                    <a href="techniques/rag-techniques.html" class="bg-white dark:bg-neutral-800 rounded-xl border border-light p-5 hover:shadow-md transition-all duration-300 group">
+                        <div class="flex items-center mb-3">
+                            <div class="w-10 h-10 bg-indigo-100 dark:bg-indigo-900/40 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-search-plus text-indigo-500 dark:text-indigo-400"></i>
+                            </div>
+                            <h3 class="text-lg font-semibold text-neutral-800 dark:text-neutral-100">检索增强生成</h3>
+                        </div>
+                        <p class="text-neutral-600 dark:text-neutral-400 text-sm mb-4">结合向量检索与大语言模型能力，从混合检索策略、文档分块、向量表示到上下文合成，系统掌握RAG技术的关键环节。</p>
+                        <span class="text-primary-600 dark:text-primary-400 text-sm font-medium group-hover:underline flex items-center">
+                            了解更多 
+                            <i class="fas fa-arrow-right ml-1 transition-transform group-hover:translate-x-1"></i>
+                        </span>
+                    </a>
+
+                    <!-- 模型微调技术 -->
+                    <a href="techniques/fine-tuning-methods.html" class="bg-white dark:bg-neutral-800 rounded-xl border border-light p-5 hover:shadow-md transition-all duration-300 group">
+                        <div class="flex items-center mb-3">
+                            <div class="w-10 h-10 bg-green-100 dark:bg-green-900/40 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-sliders-h text-green-500 dark:text-green-400"></i>
+                            </div>
+                            <h3 class="text-lg font-semibold text-neutral-800 dark:text-neutral-100">模型微调技术</h3>
+                        </div>
+                        <p class="text-neutral-600 dark:text-neutral-400 text-sm mb-4">了解低秩适应（LoRA）、指令微调、RLHF等先进微调方法，以及如何准备高质量数据集，高效定制大模型能力。</p>
+                        <span class="text-primary-600 dark:text-primary-400 text-sm font-medium group-hover:underline flex items-center">
+                            了解更多 
+                            <i class="fas fa-arrow-right ml-1 transition-transform group-hover:translate-x-1"></i>
+                        </span>
+                    </a>
+
+                    <!-- 评估与优化 -->
+                    <a href="techniques/evaluation.html" class="bg-white dark:bg-neutral-800 rounded-xl border border-light p-5 hover:shadow-md transition-all duration-300 group">
+                        <div class="flex items-center mb-3">
+                            <div class="w-10 h-10 bg-amber-100 dark:bg-amber-900/40 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-chart-line text-amber-500 dark:text-amber-400"></i>
+                            </div>
+                            <h3 class="text-lg font-semibold text-neutral-800 dark:text-neutral-100">评估与优化</h3>
+                        </div>
+                        <p class="text-neutral-600 dark:text-neutral-400 text-sm mb-4">系统性的大模型应用评估方法，包括自动化评估、人工评估和A/B测试，以及性能优化技术，提升应用质量与可靠性。</p>
+                        <span class="text-primary-600 dark:text-primary-400 text-sm font-medium group-hover:underline flex items-center">
+                            了解更多 
+                            <i class="fas fa-arrow-right ml-1 transition-transform group-hover:translate-x-1"></i>
+                        </span>
+                    </a>
+
+                    <!-- 大模型推理优化 -->
+                    <a href="techniques/inference-optimization.html" class="bg-white dark:bg-neutral-800 rounded-xl border border-light p-5 hover:shadow-md transition-all duration-300 group">
+                        <div class="flex items-center mb-3">
+                            <div class="w-10 h-10 bg-red-100 dark:bg-red-900/40 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-bolt text-red-500 dark:text-red-400"></i>
+                            </div>
+                            <h3 class="text-lg font-semibold text-neutral-800 dark:text-neutral-100">推理优化</h3>
+                        </div>
+                        <p class="text-neutral-600 dark:text-neutral-400 text-sm mb-4">通过模型量化、KV缓存、批处理和流式生成等方法，优化大模型推理性能，降低延迟和成本，提升用户体验。</p>
+                        <span class="text-primary-600 dark:text-primary-400 text-sm font-medium group-hover:underline flex items-center">
+                            了解更多 
+                            <i class="fas fa-arrow-right ml-1 transition-transform group-hover:translate-x-1"></i>
+                        </span>
+                    </a>
+
+                    <!-- 应用安全与治理 -->
+                    <a href="techniques/security-governance.html" class="bg-white dark:bg-neutral-800 rounded-xl border border-light p-5 hover:shadow-md transition-all duration-300 group">
+                        <div class="flex items-center mb-3">
+                            <div class="w-10 h-10 bg-purple-100 dark:bg-purple-900/40 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-shield-alt text-purple-500 dark:text-purple-400"></i>
+                            </div>
+                            <h3 class="text-lg font-semibold text-neutral-800 dark:text-neutral-100">安全与治理</h3>
+                        </div>
+                        <p class="text-neutral-600 dark:text-neutral-400 text-sm mb-4">大模型应用的安全策略、输入过滤、输出审查、隐私保护和合规治理方法，构建负责任且可信的AI应用。</p>
+                        <span class="text-primary-600 dark:text-primary-400 text-sm font-medium group-hover:underline flex items-center">
+                            了解更多 
+                            <i class="fas fa-arrow-right ml-1 transition-transform group-hover:translate-x-1"></i>
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 应用场景展示 -->
+        <section class="py-12" id="use-cases">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-2xl md:text-3xl font-bold mb-8 text-neutral-800 dark:text-neutral-100">
+                    <i class="fas fa-lightbulb text-amber-500 dark:text-amber-400 mr-2"></i>
+                    应用场景与案例
+                </h2>
+                
+                <div class="grid md:grid-cols-3 gap-6">
+                    <!-- 智能客服与对话系统 -->
+                    <div class="bg-white dark:bg-neutral-800 rounded-xl overflow-hidden border border-light hover:shadow-lg transition-all duration-300">
+                        <div class="h-40 overflow-hidden relative">
+                            <div class="absolute inset-0 bg-gradient-to-r from-blue-500/90 to-indigo-600/90 flex items-center justify-center">
+                                <i class="fas fa-comments text-white text-5xl"></i>
+                            </div>
+                        </div>
+                        <div class="p-5">
+                            <h3 class="text-lg font-bold text-neutral-800 dark:text-neutral-100 mb-2">智能客服与对话系统</h3>
+                            <p class="text-neutral-600 dark:text-neutral-400 text-sm mb-3">基于大语言模型构建的新一代客服系统，能够理解复杂查询、提供个性化响应，并无缝集成知识库与业务系统。</p>
+                            <div class="flex flex-wrap gap-2 mb-3">
+                                <span class="px-2 py-0.5 rounded text-xs bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">多轮对话</span>
+                                <span class="px-2 py-0.5 rounded text-xs bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">意图识别</span>
+                                <span class="px-2 py-0.5 rounded text-xs bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">情感分析</span>
+                            </div>
+                            <a href="cases/chatbot.html" class="text-primary-600 dark:text-primary-400 text-sm font-medium hover:underline inline-flex items-center">
+                                查看案例
+                                <i class="fas fa-arrow-right ml-1 text-xs"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 内容生成与创作辅助 -->
+                    <div class="bg-white dark:bg-neutral-800 rounded-xl overflow-hidden border border-light hover:shadow-lg transition-all duration-300">
+                        <div class="h-40 overflow-hidden relative">
+                            <div class="absolute inset-0 bg-gradient-to-r from-purple-500/90 to-pink-600/90 flex items-center justify-center">
+                                <i class="fas fa-pen-fancy text-white text-5xl"></i>
+                            </div>
+                        </div>
+                        <div class="p-5">
+                            <h3 class="text-lg font-bold text-neutral-800 dark:text-neutral-100 mb-2">内容生成与创作辅助</h3>
+                            <p class="text-neutral-600 dark:text-neutral-400 text-sm mb-3">为营销人员、作者和创作者提供的AI写作工具，支持多语种内容创作、编辑建议和风格调整，提升创作效率与质量。</p>
+                            <div class="flex flex-wrap gap-2 mb-3">
+                                <span class="px-2 py-0.5 rounded text-xs bg-purple-50 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400">文本生成</span>
+                                <span class="px-2 py-0.5 rounded text-xs bg-purple-50 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400">风格转换</span>
+                                <span class="px-2 py-0.5 rounded text-xs bg-purple-50 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400">多语言支持</span>
+                            </div>
+                            <a href="cases/content-creation.html" class="text-primary-600 dark:text-primary-400 text-sm font-medium hover:underline inline-flex items-center">
+                                查看案例
+                                <i class="fas fa-arrow-right ml-1 text-xs"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 智能搜索与知识管理 -->
+                    <div class="bg-white dark:bg-neutral-800 rounded-xl overflow-hidden border border-light hover:shadow-lg transition-all duration-300">
+                        <div class="h-40 overflow-hidden relative">
+                            <div class="absolute inset-0 bg-gradient-to-r from-green-500/90 to-teal-600/90 flex items-center justify-center">
+                                <i class="fas fa-search text-white text-5xl"></i>
+                            </div>
+                        </div>
+                        <div class="p-5">
+                            <h3 class="text-lg font-bold text-neutral-800 dark:text-neutral-100 mb-2">智能搜索与知识管理</h3>
+                            <p class="text-neutral-600 dark:text-neutral-400 text-sm mb-3">基于RAG技术构建的企业知识库与内部搜索系统，实现对结构化与非结构化数据的语义理解与精准检索。</p>
+                            <div class="flex flex-wrap gap-2 mb-3">
+                                <span class="px-2 py-0.5 rounded text-xs bg-green-50 text-green-600 dark:bg-green-900/30 dark:text-green-400">向量检索</span>
+                                <span class="px-2 py-0.5 rounded text-xs bg-green-50 text-green-600 dark:bg-green-900/30 dark:text-green-400">语义搜索</span>
+                                <span class="px-2 py-0.5 rounded text-xs bg-green-50 text-green-600 dark:bg-green-900/30 dark:text-green-400">知识图谱</span>
+                            </div>
+                            <a href="cases/intelligent-search.html" class="text-primary-600 dark:text-primary-400 text-sm font-medium hover:underline inline-flex items-center">
+                                查看案例
+                                <i class="fas fa-arrow-right ml-1 text-xs"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 代码助手与开发工具 -->
+                    <div class="bg-white dark:bg-neutral-800 rounded-xl overflow-hidden border border-light hover:shadow-lg transition-all duration-300">
+                        <div class="h-40 overflow-hidden relative">
+                            <div class="absolute inset-0 bg-gradient-to-r from-gray-700/90 to-gray-900/90 flex items-center justify-center">
+                                <i class="fas fa-code text-white text-5xl"></i>
+                            </div>
+                        </div>
+                        <div class="p-5">
+                            <h3 class="text-lg font-bold text-neutral-800 dark:text-neutral-100 mb-2">代码助手与开发工具</h3>
+                            <p class="text-neutral-600 dark:text-neutral-400 text-sm mb-3">为开发者打造的智能编程助手，提供代码生成、问题排查、文档生成等功能，加速软件开发流程并提高代码质量。</p>
+                            <div class="flex flex-wrap gap-2 mb-3">
+                                <span class="px-2 py-0.5 rounded text-xs bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300">代码补全</span>
+                                <span class="px-2 py-0.5 rounded text-xs bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300">问题诊断</span>
+                                <span class="px-2 py-0.5 rounded text-xs bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300">重构建议</span>
+                            </div>
+                            <a href="cases/code-assistant.html" class="text-primary-600 dark:text-primary-400 text-sm font-medium hover:underline inline-flex items-center">
+                                查看案例
+                                <i class="fas fa-arrow-right ml-1 text-xs"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 数据分析与洞察提取 -->
+                    <div class="bg-white dark:bg-neutral-800 rounded-xl overflow-hidden border border-light hover:shadow-lg transition-all duration-300">
+                        <div class="h-40 overflow-hidden relative">
+                            <div class="absolute inset-0 bg-gradient-to-r from-amber-500/90 to-orange-600/90 flex items-center justify-center">
+                                <i class="fas fa-chart-pie text-white text-5xl"></i>
+                            </div>
+                        </div>
+                        <div class="p-5">
+                            <h3 class="text-lg font-bold text-neutral-800 dark:text-neutral-100 mb-2">数据分析与洞察提取</h3>
+                            <p class="text-neutral-600 dark:text-neutral-400 text-sm mb-3">结合大语言模型与数据处理能力，从非结构化数据中抽取有价值信息，生成报告，并提供决策建议。</p>
+                            <div class="flex flex-wrap gap-2 mb-3">
+                                <span class="px-2 py-0.5 rounded text-xs bg-amber-50 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400">数据解析</span>
+                                <span class="px-2 py-0.5 rounded text-xs bg-amber-50 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400">趋势分析</span>
+                                <span class="px-2 py-0.5 rounded text-xs bg-amber-50 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400">报告生成</span>
+                            </div>
+                            <a href="cases/data-analysis.html" class="text-primary-600 dark:text-primary-400 text-sm font-medium hover:underline inline-flex items-center">
+                                查看案例
+                                <i class="fas fa-arrow-right ml-1 text-xs"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 教育与学习助手 -->
+                    <div class="bg-white dark:bg-neutral-800 rounded-xl overflow-hidden border border-light hover:shadow-lg transition-all duration-300">
+                        <div class="h-40 overflow-hidden relative">
+                            <div class="absolute inset-0 bg-gradient-to-r from-red-500/90 to-rose-600/90 flex items-center justify-center">
+                                <i class="fas fa-graduation-cap text-white text-5xl"></i>
+                            </div>
+                        </div>
+                        <div class="p-5">
+                            <h3 class="text-lg font-bold text-neutral-800 dark:text-neutral-100 mb-2">教育与学习助手</h3>
+                            <p class="text-neutral-600 dark:text-neutral-400 text-sm mb-3">面向教育领域的大模型应用，提供个性化学习辅导、概念解析、答疑解惑，以及智能教学内容生成功能。</p>
+                            <div class="flex flex-wrap gap-2 mb-3">
+                                <span class="px-2 py-0.5 rounded text-xs bg-red-50 text-red-600 dark:bg-red-900/30 dark:text-red-400">个性化辅导</span>
+                                <span class="px-2 py-0.5 rounded text-xs bg-red-50 text-red-600 dark:bg-red-900/30 dark:text-red-400">问题解析</span>
+                                <span class="px-2 py-0.5 rounded text-xs bg-red-50 text-red-600 dark:bg-red-900/30 dark:text-red-400">内容创建</span>
+                            </div>
+                            <a href="cases/educational-assistant.html" class="text-primary-600 dark:text-primary-400 text-sm font-medium hover:underline inline-flex items-center">
+                                查看案例
+                                <i class="fas fa-arrow-right ml-1 text-xs"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 更多案例按钮 -->
+                <div class="mt-8 text-center">
+                    <a href="cases/index.html" class="inline-flex items-center px-6 py-3 rounded-lg bg-neutral-200 hover:bg-neutral-300 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-700 dark:text-neutral-300 font-medium transition-colors">
+                        探索更多行业案例
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 开发工具与资源 -->
+        <section class="py-12" id="tools">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-2xl md:text-3xl font-bold mb-8 text-neutral-800 dark:text-neutral-100">
+                    <i class="fas fa-tools text-indigo-500 dark:text-indigo-400 mr-2"></i>
+                    开发工具与资源
+                </h2>
+                
+                <div class="grid md:grid-cols-4 gap-6">
+                    <!-- 模型框架 -->
+                    <a href="tools/frameworks.html" class="bg-white dark:bg-neutral-800 rounded-xl border border-light p-5 hover:shadow-md transition-all duration-300 group flex flex-col h-full">
+                        <div class="mb-4">
+                            <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-cube text-indigo-500 dark:text-indigo-400 text-xl"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-lg font-semibold text-neutral-800 dark:text-neutral-100 mb-2">模型开发框架</h3>
+                        <p class="text-neutral-600 dark:text-neutral-400 text-sm mb-4 flex-grow">Hugging Face Transformers、LangChain、LlamaIndex等开发框架和工具库，简化大模型应用开发流程。</p>
+                        <span class="text-primary-600 dark:text-primary-400 text-sm font-medium group-hover:underline">浏览框架 →</span>
+                    </a>
+
+                    <!-- 云服务与API -->
+                    <a href="tools/cloud-services.html" class="bg-white dark:bg-neutral-800 rounded-xl border border-light p-5 hover:shadow-md transition-all duration-300 group flex flex-col h-full">
+                        <div class="mb-4">
+                            <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-cloud text-blue-500 dark:text-blue-400 text-xl"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-lg font-semibold text-neutral-800 dark:text-neutral-100 mb-2">云服务与API</h3>
+                        <p class="text-neutral-600 dark:text-neutral-400 text-sm mb-4 flex-grow">各大云平台提供的大模型服务，包括OpenAI API、Claude API、Azure AI以及国内主流大模型API服务。</p>
+                        <span class="text-primary-600 dark:text-primary-400 text-sm font-medium group-hover:underline">查看服务 →</span>
+                    </a>
+
+                    <!-- 向量数据库 -->
+                    <a href="tools/vector-databases.html" class="bg-white dark:bg-neutral-800 rounded-xl border border-light p-5 hover:shadow-md transition-all duration-300 group flex flex-col h-full">
+                        <div class="mb-4">
+                            <div class="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-database text-green-500 dark:text-green-400 text-xl"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-lg font-semibold text-neutral-800 dark:text-neutral-100 mb-2">向量数据库</h3>
+                        <p class="text-neutral-600 dark:text-neutral-400 text-sm mb-4 flex-grow">专为大模型应用中的向量检索设计的数据库，包括Pinecone、Milvus、Faiss、Weaviate等产品对比。</p>
+                        <span class="text-primary-600 dark:text-primary-400 text-sm font-medium group-hover:underline">了解更多 →</span>
+                    </a>
+
+                    <!-- 评估工具 -->
+                    <a href="tools/evaluation.html" class="bg-white dark:bg-neutral-800 rounded-xl border border-light p-5 hover:shadow-md transition-all duration-300 group flex flex-col h-full">
+                        <div class="mb-4">
+                            <div class="w-12 h-12 bg-amber-100 dark:bg-amber-900/30 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-chart-bar text-amber-500 dark:text-amber-400 text-xl"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-lg font-semibold text-neutral-800 dark:text-neutral-100 mb-2">评估工具</h3>
+                        <p class="text-neutral-600 dark:text-neutral-400 text-sm mb-4 flex-grow">大模型应用评估框架与工具，帮助开发者测试模型性能、检测幻觉问题，优化用户体验。</p>
+                        <span class="text-primary-600 dark:text-primary-400 text-sm font-medium group-hover:underline">查看工具 →</span>
+                    </a>
+
+                    <!-- 开源模型 -->
+                    <a href="tools/open-source-models.html" class="bg-white dark:bg-neutral-800 rounded-xl border border-light p-5 hover:shadow-md transition-all duration-300 group flex flex-col h-full">
+                        <div class="mb-4">
+                            <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-brain text-purple-500 dark:text-purple-400 text-xl"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-lg font-semibold text-neutral-800 dark:text-neutral-100 mb-2">开源模型资源</h3>
+                        <p class="text-neutral-600 dark:text-neutral-400 text-sm mb-4 flex-grow">精选高质量开源大语言模型，包括Llama系列、Mistral系列等，及其适用场景与应用实例。</p>
+                        <span class="text-primary-600 dark:text-primary-400 text-sm font-medium group-hover:underline">浏览模型 →</span>
+                    </a>
+
+                    <!-- 部署方案 -->
+                    <a href="tools/deployment.html" class="bg-white dark:bg-neutral-800 rounded-xl border border-light p-5 hover:shadow-md transition-all duration-300 group flex flex-col h-full">
+                        <div class="mb-4">
+                            <div class="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-server text-red-500 dark:text-red-400 text-xl"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-lg font-semibold text-neutral-800 dark:text-neutral-100 mb-2">部署方案</h3>
+                        <p class="text-neutral-600 dark:text-neutral-400 text-sm mb-4 flex-grow">模型部署技术与实践，从本地部署、容器化到云原生，以及vLLM、TensorRT等高性能推理引擎介绍。</p>
+                        <span class="text-primary-600 dark:text-primary-400 text-sm font-medium group-hover:underline">了解方案 →</span>
+                    </a>
+
+                    <!-- 最佳实践 -->
+                    <a href="tools/best-practices.html" class="bg-white dark:bg-neutral-800 rounded-xl border border-light p-5 hover:shadow-md transition-all duration-300 group flex flex-col h-full">
+                        <div class="mb-4">
+                            <div class="w-12 h-12 bg-teal-100 dark:bg-teal-900/30 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-check-circle text-teal-500 dark:text-teal-400 text-xl"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-lg font-semibold text-neutral-800 dark:text-neutral-100 mb-2">最佳实践指南</h3>
+                        <p class="text-neutral-600 dark:text-neutral-400 text-sm mb-4 flex-grow">大模型应用开发的最佳实践，从架构设计、性能优化到安全合规，帮助开发者避免常见陷阱。</p>
+                        <span class="text-primary-600 dark:text-primary-400 text-sm font-medium group-hover:underline">获取指南 →</span>
+                    </a>
+
+                    <!-- 学习资源 -->
+                    <a href="tools/learning-resources.html" class="bg-white dark:bg-neutral-800 rounded-xl border border-light p-5 hover:shadow-md transition-all duration-300 group flex flex-col h-full">
+                        <div class="mb-4">
+                            <div class="w-12 h-12 bg-sky-100 dark:bg-sky-900/30 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-book text-sky-500 dark:text-sky-400 text-xl"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-lg font-semibold text-neutral-800 dark:text-neutral-100 mb-2">学习资源</h3>
+                        <p class="text-neutral-600 dark:text-neutral-400 text-sm mb-4 flex-grow">精选大模型应用开发相关的课程、书籍、论文和教程，系统提升开发技能与理论知识。</p>
+                        <span class="text-primary-600 dark:text-primary-400 text-sm font-medium group-hover:underline">浏览资源 →</span>
+                    </a>
+                </div>
+
+                <!-- 资源集合下载 -->
+                <div class="mt-10 p-6 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 dark:from-indigo-900/30 dark:to-purple-900/30 rounded-xl border border-light">
+                    <div class="flex flex-col md:flex-row items-center gap-6">
+                        <div class="md:w-2/3">
+                            <h3 class="text-xl font-bold text-neutral-800 dark:text-neutral-100 mb-2">大模型开发资源集合</h3>
+                            <p class="text-neutral-600 dark:text-neutral-400">我们精心收集并整理了200+优质开发资源，包括模型、工具库、论文、教程与代码示例，助力您快速构建高质量的大模型应用。</p>
+                        </div>
+                        <div class="md:w-1/3 flex justify-center">
+                            <a href="resources/llm-dev-toolkit.html" class="inline-flex items-center px-5 py-3 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-medium transition-colors">
+                                <i class="fas fa-download mr-2"></i>
+                                获取资源集合
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="py-8 border-t border-light bg-neutral-50/30 dark:bg-neutral-900/30">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <a href="../index.html" class="flex items-center mb-2">
+                        <div class="w-6 h-6 bg-gradient-primary rounded-md flex items-center justify-center mr-2">
+                            <i class="fas fa-brain text-white text-xs"></i>
+                        </div>
+                        <span class="text-neutral-700 dark:text-neutral-300 font-medium">大模型全栈平台</span>
+                    </a>
+                    <p class="text-neutral-500 dark:text-neutral-400 text-sm">
+                        探索大语言模型的原理与应用，从理论到实践的全栈学习平台
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-2 gap-8 md:gap-16">
+                    <div>
+                        <h4 class="text-sm font-semibold mb-3 text-neutral-800 dark:text-neutral-200">学习资源</h4>
+                        <ul class="space-y-2">
+                            <li>
+                                <a href="../models/theory/index.html" class="text-sm text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">模型原理</a>
+                            </li>
+                            <li>
+                                <a href="../applications/index.html" class="text-sm text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">应用开发</a>
+                            </li>
+                            <li>
+                                <a href="../index.html#components" class="text-sm text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">核心组件</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-semibold mb-3 text-neutral-800 dark:text-neutral-200">热门主题</h4>
+                        <ul class="space-y-2">
+                            <li>
+                                <a href="fine-tuning/index.html" class="text-sm text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">模型微调</a>
+                            </li>
+                            <li>
+                                <a href="agent/index.html" class="text-sm text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Agent 开发</a>
+                            </li>
+                            <li>
+                                <a href="rag/index.html" class="text-sm text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">RAG 系统</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-8 pt-6 border-t border-light flex flex-col md:flex-row justify-between items-center">
+                <p class="text-sm text-neutral-500 dark:text-neutral-400 mb-4 md:mb-0">
+                    &copy; 2025-2025 大模型全栈平台. 保留所有权利.
+                </p>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-neutral-400 hover:text-primary-500 dark:hover:text-primary-400 transition-colors">
+                        <i class="fas fa-rss"></i>
+                    </a>
+                    <a href="#" class="text-neutral-400 hover:text-primary-500 dark:hover:text-primary-400 transition-colors">
+                        <i class="fas fa-book"></i>
+                    </a>
+                    <a href="#" class="text-neutral-400 hover:text-primary-500 dark:hover:text-primary-400 transition-colors">
+                        <i class="fas fa-graduation-cap"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 返回顶部按钮 -->
+    <button id="back-to-top" 
+        class="fixed bottom-6 right-6 p-2 rounded-full bg-primary-500 text-white shadow-lg opacity-0 invisible transition-all duration-300 hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-neutral-900">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Preline UI 初始化 -->
+    <script src="../common/js/preline.min.js"></script>
+    
+    <!-- 导航和主题切换脚本 -->
+    <script src="../common/js/navigation.js"></script>
+    <script src="../common/js/theme.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 初始化主题管理器
+            const themeManager = ThemeManager.getInstance();
+
+            // 初始化导航功能
+            const navigation = Navigation.getInstance();
+            
+            // 添加滚动动画
+            function handleScrollAnimation() {
+                const elements = document.querySelectorAll('section');
+                elements.forEach(element => {
+                    const position = element.getBoundingClientRect();
+                    if (position.top < window.innerHeight * 0.8) {
+                        element.classList.add('animate-fade-in');
+                    }
+                });
+            }
+
+            // 初始化时执行一次
+            handleScrollAnimation();
+            // 滚动时执行
+            window.addEventListener('scroll', handleScrollAnimation);
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="页面未找到 - 大模型全栈平台">
+    <meta name="keywords" content="404, 页面未找到, 大语言模型, AI">
+    <meta name="author" content="AI 架构可视化团队">
+    <meta name="theme-color" content="#0ea5e9"> 
+    <title>404 - 页面未找到 | 大模型全栈平台</title>
+
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Preline UI -->
+    <link rel="stylesheet" href="./common/styles/variants.min.css" />
+    
+    <!-- 自定义TailwindCSS配置 -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                            950: '#082f49',
+                        },
+                        secondary: {
+                            50: '#f5f3ff',
+                            100: '#ede9fe',
+                            200: '#ddd6fe',
+                            300: '#c4b5fd',
+                            400: '#a78bfa',
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                            800: '#5b21b6',
+                            900: '#4c1d95',
+                            950: '#2e1065',
+                        },
+                        accent: {
+                            50: '#fff1f2',
+                            100: '#ffe4e6',
+                            200: '#fecdd3',
+                            300: '#fda4af',
+                            400: '#fb7185',
+                            500: '#f43f5e',
+                            600: '#e11d48',
+                            700: '#be123c',
+                            800: '#9f1239',
+                            900: '#881337',
+                            950: '#4c0519',
+                        },
+                        neutral: {
+                            50: '#fafafa',
+                            100: '#f5f5f5',
+                            200: '#e5e5e5',
+                            300: '#d4d4d4',
+                            400: '#a3a3a3',
+                            500: '#737373',
+                            600: '#525252',
+                            700: '#404040',
+                            800: '#262626',
+                            900: '#171717',
+                            950: '#0a0a0a',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['-apple-system', 'BlinkMacSystemFont', 'Inter', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+                        mono: ['SF Mono', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', 'monospace'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-up': 'slideUp 0.5s ease-out',
+                        'pulse-slow': 'pulse 3s ease-in-out infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                    },
+                },
+            },
+            plugins: [],
+        }
+    </script>
+
+    <!-- 编译后的 CSS -->
+    <link rel="stylesheet" href="./common/styles/output.css">
+
+    <!-- 图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* 基于Linear App的现代设计特点 */
+        body {
+            font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+        }
+        
+        /* 滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: rgba(115, 115, 115, 0.2);
+            border-radius: 8px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(115, 115, 115, 0.4);
+        }
+        
+        /* 深色模式滚动条 */
+        .dark ::-webkit-scrollbar-thumb {
+            background: rgba(163, 163, 163, 0.3);
+        }
+        
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background: rgba(163, 163, 163, 0.5);
+        }
+        
+        /* 404元素动画 */
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+    </style>
+</head>
+
+<body class="bg-neutral-50 text-neutral-800 dark:bg-neutral-900 dark:text-neutral-100 min-h-screen flex flex-col">
+    <!-- 导航栏 -->
+    <header class="sticky top-0 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-sm z-50 border-b border-gray-200 dark:border-neutral-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo和主导航 -->
+                <div class="flex items-center">
+                    <a href="/" class="flex items-center">
+                        <i class="fas fa-brain text-primary-500 dark:text-primary-400 text-xl mr-2"></i>
+                        <span class="font-bold text-lg">大模型全栈平台</span>
+                    </a>
+                </div>
+
+                <!-- 主题切换按钮 -->
+                <div class="flex items-center">
+                    <button id="theme-toggle" class="p-2 rounded-md text-neutral-500 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 focus:outline-none">
+                        <i class="fas fa-sun hidden dark:block"></i>
+                        <i class="fas fa-moon block dark:hidden"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主要内容区 -->
+    <main class="flex-grow flex items-center justify-center py-16 px-4">
+        <div class="max-w-3xl mx-auto text-center">
+            <div class="relative mb-8">
+                <!-- 404图形元素 -->
+                <div class="text-8xl md:text-9xl font-bold text-primary-400/20 dark:text-primary-500/20 relative z-0">
+                    404
+                </div>
+                <!-- 悬浮装饰元素 -->
+                <div class="absolute -top-6 -right-6 w-12 h-12 bg-yellow-400 dark:bg-yellow-500 rounded-full animate-pulse-slow opacity-20"></div>
+                <div class="absolute -bottom-4 -left-4 w-10 h-10 bg-primary-400 dark:bg-primary-500 rounded-full animate-pulse-slow opacity-20"></div>
+                
+                <!-- 模型图标 -->
+                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-6xl text-primary-500 dark:text-primary-400 animate-float">
+                    <i class="fas fa-robot"></i>
+                </div>
+            </div>
+            
+            <h1 class="text-2xl md:text-3xl font-bold mb-4 text-neutral-800 dark:text-neutral-100">
+                页面正在开发中，敬请期待
+            </h1>
+            
+            <p class="text-lg mb-8 text-neutral-600 dark:text-neutral-400">
+                您访问的页面当前尚未实现或可能已被移动。我们正在积极开发中，敬请关注后续更新。
+            </p>
+            
+            <div class="flex flex-col md:flex-row gap-4 justify-center">
+                <a href="/" class="btn-primary py-3 px-6 rounded-lg bg-primary-500 text-white hover:bg-primary-600 transition-colors">
+                    <i class="fas fa-home mr-2"></i>返回首页
+                </a>
+                <a href="javascript:history.back()" class="btn-outline py-3 px-6 rounded-lg border border-primary-400 text-primary-600 dark:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/30 transition-colors">
+                    <i class="fas fa-arrow-left mr-2"></i>返回上一页
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-white dark:bg-neutral-800 border-t border-light py-8">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="mt-4 pt-4 border-t border-light flex flex-col md:flex-row justify-between items-center">
+                <p class="text-sm text-neutral-500 dark:text-neutral-400 mb-4 md:mb-0">
+                    &copy; 2025-2025 大模型全栈平台. 保留所有权利.
+                </p>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-neutral-400 hover:text-primary-500 dark:hover:text-primary-400 transition-colors">
+                        <i class="fas fa-rss"></i>
+                    </a>
+                    <a href="#" class="text-neutral-400 hover:text-primary-500 dark:hover:text-primary-400 transition-colors">
+                        <i class="fas fa-book"></i>
+                    </a>
+                    <a href="#" class="text-neutral-400 hover:text-primary-500 dark:hover:text-primary-400 transition-colors">
+                        <i class="fas fa-graduation-cap"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 导航和主题切换脚本 -->
+    <script src="./common/js/navigation.js"></script>
+    <script src="./common/js/theme.js"></script>
+</body>
+
+</html> 

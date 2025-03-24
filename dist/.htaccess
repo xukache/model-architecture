@@ -1,0 +1,36 @@
+# 设置404错误页面
+ErrorDocument 404 /404.html
+
+# 确保所有目录索引默认为index.html
+DirectoryIndex index.html
+
+# 启用重写引擎
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # 如果请求的文件不存在
+    RewriteCond %{REQUEST_FILENAME} !-f
+    # 如果请求的目录不存在
+    RewriteCond %{REQUEST_FILENAME} !-d
+    # 重定向到404页面
+    RewriteRule ^(.*)$ /404.html [L,R=302]
+</IfModule>
+
+# 确保正确的字符集
+AddDefaultCharset UTF-8
+
+# 设置缓存控制
+<IfModule mod_expires.c>
+    ExpiresActive On
+    # 设置默认缓存为1个月
+    ExpiresDefault "access plus 1 month"
+    # CSS, JavaScript和图片缓存时间
+    ExpiresByType text/css "access plus 1 year"
+    ExpiresByType application/javascript "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    # HTML和XML文件不缓存太久
+    ExpiresByType text/html "access plus 0 seconds"
+    ExpiresByType application/xhtml+xml "access plus 0 seconds"
+</IfModule> 

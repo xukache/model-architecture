@@ -7,7 +7,7 @@
     "watch:css": "postcss common/styles/input.css -o common/styles/output.css --watch",
     "dev": "pnpm run watch:css",
     "build": "pnpm run build:css && pnpm run copy-assets",
-    "copy-assets": "pnpm dlx mkdirp dist && pnpm dlx copyfiles -u 0 \"index.html\" \"tailwind.config.js\" \"dist/\" && pnpm dlx copyfiles -u 0 \"models/**/*\" \"applications/**/*\" \"about/**/*\" \"common/**/*\" \"dist/\"",
+    "copy-assets": "pnpm dlx mkdirp dist && pnpm dlx copyfiles -u 0 \"index.html\" \"404.html\" \".htaccess\" \"tailwind.config.js\" \"dist/\" && pnpm dlx copyfiles -u 0 \"models/**/*\" \"applications/**/*\" \"about/**/*\" \"common/**/*\" \"dist/\"",
     "serve": "cd dist && pnpm dlx http-server -p 3000",
     "clean": "pnpm dlx rimraf dist",
     "deploy": "pnpm run clean && pnpm run build && pnpm run serve",
