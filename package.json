@@ -7,10 +7,12 @@
     "watch:css": "postcss common/styles/input.css -o common/styles/output.css --watch",
     "dev": "pnpm run watch:css",
     "build": "pnpm run build:css && pnpm run copy-assets",
-    "copy-assets": "if not exist dist mkdir dist && xcopy index.html dist\\ /Y && xcopy models dist\\models\\ /S /E /Y && xcopy common dist\\common\\ /S /E /Y && xcopy tailwind.config.js dist\\ /Y",
+    "copy-assets": "pnpm dlx mkdirp dist && pnpm dlx copyfiles -u 0 \"index.html\" \"tailwind.config.js\" \"dist/\" && pnpm dlx copyfiles -u 0 \"models/**/*\" \"applications/**/*\" \"about/**/*\" \"common/**/*\" \"dist/\"",
     "serve": "cd dist && pnpm dlx http-server -p 3000",
-    "clean": "if exist dist rd /s /q dist",
-    "deploy": "pnpm run clean && pnpm run build && pnpm run serve"
+    "clean": "pnpm dlx rimraf dist",
+    "deploy": "pnpm run clean && pnpm run build && pnpm run serve",
+    "build:prod": "pnpm run build:css && pnpm run copy-assets",
+    "zip": "pnpm run clean && pnpm run build:prod && pnpm dlx bestzip dist.zip dist/"
   },
   "keywords": [],
   "author": "",
@@ -18,9 +20,13 @@
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.16",
     "autoprefixer": "^10.4.17",
+    "bestzip": "^2.2.1",
+    "copyfiles": "^2.4.1",
     "http-server": "^14.1.1",
+    "mkdirp": "^2.1.6",
     "postcss": "^8.4.35",
     "postcss-cli": "^11.0.0",
+    "rimraf": "^5.0.5",
     "tailwindcss": "^3.3.0"
   }
 }

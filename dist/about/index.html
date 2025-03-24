@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="大模型全栈平台 - 关于我们与发展历程">
+    <meta name="keywords" content="大语言模型, AI, 机器学习, 关于我们, 团队介绍">
+    <meta name="author" content="AI 架构可视化团队">
+    <meta name="theme-color" content="#0ea5e9"> 
+    <title>关于我们 - 大模型全栈平台</title>
+
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Preline UI -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/preline@2.0.3/dist/preline.min.css" />
+    
+    <!-- 编译后的 CSS -->
+    <link rel="stylesheet" href="../common/styles/output.css">
+
+    <!-- 图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="bg-neutral-50 dark:bg-neutral-900 text-neutral-800 dark:text-neutral-200 transition-colors duration-300">
+    <!-- 页面顶部导航 -->
+    <header class="sticky top-0 z-50 bg-neutral-50/80 dark:bg-neutral-900/80 glassmorphism border-b border-light">
+        <div class="container mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center">
+                <a href="../index.html" class="flex items-center">
+                    <div class="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center mr-3">
+                        <i class="fas fa-brain text-white text-lg"></i>
+                    </div>
+                    <h1 class="text-lg font-medium text-neutral-800 dark:text-neutral-100">
+                        大模型全栈平台
+                    </h1>
+                </a>
+            </div>
+
+            <nav class="hidden md:flex items-center space-x-1">
+                <a href="../index.html" class="px-3 py-2 rounded-md text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100">
+                    首页
+                </a>
+                <a href="../models/theory/index.html" class="px-3 py-2 rounded-md text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100">
+                    大模型原理
+                </a>
+                <a href="../applications/index.html" class="px-3 py-2 rounded-md text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100">
+                    应用开发
+                </a>
+                <a href="../index.html#components" class="px-3 py-2 rounded-md text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100">
+                    核心组件
+                </a>
+                <a href="#" class="px-3 py-2 rounded-md text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20">
+                    关于
+                </a>
+            </nav>
+
+            <div class="flex items-center space-x-3">
+                <a href="https://github.com/xukache" target="_blank" 
+                   class="text-neutral-700 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-200">
+                    <i class="fab fa-github text-lg"></i>
+                </a>
+                <button id="theme-toggle" 
+                    class="p-2 rounded-md text-neutral-700 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-200">
+                    <i class="fas fa-moon text-lg dark:hidden"></i>
+                    <i class="fas fa-sun text-lg hidden dark:block"></i>
+                </button>
+                <button class="md:hidden p-2 rounded-md text-neutral-700 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+                    id="mobile-menu-button">
+                    <i class="fas fa-bars text-lg"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- 移动端菜单 -->
+        <div id="mobile-menu"
+            class="md:hidden hidden bg-neutral-50 dark:bg-neutral-900 border-t border-light">
+            <div class="container mx-auto px-4 py-3 space-y-2">
+                <a href="../index.html"
+                    class="block px-3 py-2 rounded-md text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 text-sm font-medium">
+                    首页
+                </a>
+                <a href="../models/theory/index.html"
+                    class="block px-3 py-2 rounded-md text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 text-sm font-medium">
+                    大模型原理
+                </a>
+                <a href="../applications/index.html"
+                    class="block px-3 py-2 rounded-md text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 text-sm font-medium">
+                    应用开发
+                </a>
+                <a href="../index.html#components"
+                    class="block px-3 py-2 rounded-md text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 text-sm font-medium">
+                    核心组件
+                </a>
+                <a href="#"
+                    class="block px-3 py-2 rounded-md text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20 text-sm font-medium">
+                    关于
+                </a>
+                <div class="border-t border-light my-3"></div>
+                <a href="https://github.com/xukache" target="_blank"
+                    class="block px-3 py-2 rounded-md text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 text-sm font-medium">
+                    <i class="fab fa-github mr-2"></i> GitHub
+                </a>
+                <button id="mobile-theme-toggle"
+                    class="w-full text-left px-3 py-2 rounded-md text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 text-sm font-medium">
+                    <i class="fas fa-moon mr-2 dark:hidden"></i>
+                    <i class="fas fa-sun mr-2 hidden dark:block"></i>
+                    <span class="dark:hidden">切换到深色模式</span>
+                    <span class="hidden dark:block">切换到浅色模式</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-10 max-w-6xl">
+        <!-- 页面标题 - 左右布局 -->
+        <section class="py-12 md:py-16">
+            <div class="max-w-6xl mx-auto">
+                <div class="flex flex-col md:flex-row items-center md:items-start gap-8 md:gap-12">
+                    <!-- 左侧标题内容 -->
+                    <div class="w-full md:w-1/2 md:pt-8">
+                        <div class="inline-block mb-4">
+                            <span class="px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
+                                我们的故事与使命
+                            </span>
+                        </div>
+                        <h1 class="text-4xl md:text-5xl font-bold mb-6 text-neutral-800 dark:text-neutral-100">
+                            关于大模型全栈平台
+                        </h1>
+                        <p class="text-lg text-neutral-600 dark:text-neutral-400 mb-8 max-w-xl">
+                            致力于让大语言模型技术的学习变得简单而有趣，连接理论与实践，为AI开发者提供全方位的成长平台
+                        </p>
+                        <div class="flex flex-wrap gap-3">
+                            <a href="#mission" class="inline-flex items-center px-4 py-2 rounded-lg bg-primary-600 hover:bg-primary-700 text-white font-medium transition-colors">
+                                <i class="fas fa-bullseye mr-2"></i>
+                                使命与愿景
+                            </a>
+                            <a href="#team" class="inline-flex items-center px-4 py-2 rounded-lg bg-neutral-200 hover:bg-neutral-300 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-700 dark:text-neutral-300 font-medium transition-colors">
+                                <i class="fas fa-users mr-2"></i>
+                                团队介绍
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- 右侧图形 -->
+                    <div class="w-full md:w-1/2">
+                        <div class="bg-gradient-to-br from-blue-50 to-sky-50 dark:from-blue-900/20 dark:to-sky-900/20 rounded-2xl p-6 md:p-8 backdrop-blur-sm border border-light">
+                            <div class="relative">
+                                <svg viewBox="0 0 400 260" class="w-full h-auto">
+                                    <defs>
+                                        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+                                            <stop offset="0%" stop-color="#0ea5e9" stop-opacity="0.8" />
+                                            <stop offset="100%" stop-color="#3b82f6" stop-opacity="0.8" />
+                                        </linearGradient>
+                                        <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+                                            <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#0ea5e9" flood-opacity="0.2"/>
+                                        </filter>
+                                    </defs>
+                                    
+                                    <!-- 关于我们示意图 -->
+                                    <g filter="url(#shadow)">
+                                        <rect x="80" y="20" width="240" height="40" rx="6" fill="url(#grad1)" />
+                                        <text x="200" y="45" text-anchor="middle" fill="white" font-size="16">大模型全栈平台</text>
+                                        
+                                        <rect x="50" y="80" width="100" height="40" rx="6" fill="url(#grad1)" />
+                                        <text x="100" y="105" text-anchor="middle" fill="white" font-size="14">理论原理</text>
+                                        
+                                        <rect x="160" y="80" width="80" height="40" rx="6" fill="url(#grad1)" />
+                                        <text x="200" y="105" text-anchor="middle" fill="white" font-size="14">技术组件</text>
+                                        
+                                        <rect x="250" y="80" width="100" height="40" rx="6" fill="url(#grad1)" />
+                                        <text x="300" y="105" text-anchor="middle" fill="white" font-size="14">应用实践</text>
+                                        
+                                        <rect x="80" y="140" width="240" height="40" rx="6" fill="url(#grad1)" />
+                                        <text x="200" y="165" text-anchor="middle" fill="white" font-size="16">开发者社区</text>
+                                        
+                                        <rect x="80" y="200" width="240" height="40" rx="6" fill="url(#grad1)" />
+                                        <text x="200" y="225" text-anchor="middle" fill="white" font-size="16">未来发展规划</text>
+                                    </g>
+                                    
+                                    <!-- 连接线 -->
+                                    <line x1="100" y1="60" x2="100" y2="80" stroke="#0ea5e9" stroke-width="2" />
+                                    <line x1="200" y1="60" x2="200" y2="80" stroke="#0ea5e9" stroke-width="2" />
+                                    <line x1="300" y1="60" x2="300" y2="80" stroke="#0ea5e9" stroke-width="2" />
+                                    <line x1="200" y1="120" x2="200" y2="140" stroke="#0ea5e9" stroke-width="2" />
+                                    <line x1="200" y1="180" x2="200" y2="200" stroke="#0ea5e9" stroke-width="2" />
+                                    
+                                    <!-- 装饰元素 -->
+                                    <circle cx="80" cy="45" r="8" fill="white" opacity="0.3" />
+                                    <circle cx="320" cy="45" r="8" fill="white" opacity="0.3" />
+                                    <circle cx="100" cy="225" r="8" fill="white" opacity="0.3" />
+                                    <circle cx="300" cy="225" r="8" fill="white" opacity="0.3" />
+                                </svg>
+                                
+                                <!-- 装饰性点阵 -->
+                                <div class="absolute top-0 right-0 w-20 h-20 grid grid-cols-4 grid-rows-4 gap-2 opacity-20">
+                                    <div class="w-1 h-1 rounded-full bg-primary-500"></div>
+                                    <div class="w-1 h-1 rounded-full bg-primary-500"></div>
+                                    <div class="w-1 h-1 rounded-full bg-primary-500"></div>
+                                    <div class="w-1 h-1 rounded-full bg-primary-500"></div>
+                                    <div class="w-1 h-1 rounded-full bg-primary-500"></div>
+                                    <div class="w-1 h-1 rounded-full bg-primary-500"></div>
+                                    <div class="w-1 h-1 rounded-full bg-primary-500"></div>
+                                    <div class="w-1 h-1 rounded-full bg-primary-500"></div>
+                                    <div class="w-1 h-1 rounded-full bg-primary-500"></div>
+                                    <div class="w-1 h-1 rounded-full bg-primary-500"></div>
+                                    <div class="w-1 h-1 rounded-full bg-primary-500"></div>
+                                    <div class="w-1 h-1 rounded-full bg-primary-500"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 使命与愿景 -->
+        <section class="py-12" id="mission">
+            <div class="max-w-6xl mx-auto">
+                <div class="grid md:grid-cols-2 gap-12">
+                    <!-- 左侧：使命 -->
+                    <div class="bg-white dark:bg-neutral-800 rounded-xl border border-light p-8 hover:shadow-lg transition-all duration-300">
+                        <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mb-6">
+                            <i class="fas fa-bullseye text-blue-600 dark:text-blue-400 text-xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold mb-4 text-neutral-800 dark:text-neutral-100">我们的使命</h2>
+                        <div class="space-y-4 text-neutral-600 dark:text-neutral-400">
+                            <p>本项目旨在通过可视化和交互式的方式，使大型语言模型的内部架构和工作原理变得透明且易于理解，为研究者、学习者和从业者提供一个深入了解大模型技术的平台。</p>
+                            <p>我们致力于：</p>
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li>降低大模型技术的认知门槛，使复杂的AI理论变得易于理解</li>
+                                <li>促进人工智能领域的知识传播和技术创新</li>
+                                <li>连接理论与实践，提供从原理到应用的全栈学习体验</li>
+                                <li>建立开放、共享、互助的AI学习社区</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 右侧：愿景 -->
+                    <div class="bg-white dark:bg-neutral-800 rounded-xl border border-light p-8 hover:shadow-lg transition-all duration-300">
+                        <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center mb-6">
+                            <i class="fas fa-lightbulb text-purple-600 dark:text-purple-400 text-xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold mb-4 text-neutral-800 dark:text-neutral-100">我们的愿景</h2>
+                        <div class="space-y-4 text-neutral-600 dark:text-neutral-400">
+                            <p>打造全球最实用的大模型技术学习平台，涵盖从理论原理到实际应用的全栈知识体系。</p>
+                            <p>我们期望：</p>
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li>成为大模型学习领域的权威参考平台</li>
+                                <li>推动大模型技术的普及与创新应用</li>
+                                <li>助力100万+开发者掌握前沿AI能力</li>
+                                <li>催生新一代AI应用创新</li>
+                                <li>构建一个多元、包容的AI学习者社区</li>
+                            </ul>
+                            <p class="mt-4 italic">我们相信，通过简化学习过程，我们可以释放更多人的创造潜力，加速AI技术的民主化进程。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 团队介绍 -->
+        <section class="py-12" id="team">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-12">
+                    <div class="mb-4 inline-block">
+                        <span class="px-3 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700 dark:bg-green-900/30 dark:text-green-400">
+                            团队介绍
+                        </span>
+                    </div>
+                    <h2 class="text-3xl font-bold mb-4 text-neutral-800 dark:text-neutral-100">我们的团队</h2>
+                    <p class="text-lg text-neutral-600 dark:text-neutral-400 max-w-3xl mx-auto">
+                        一群对人工智能充满热情的研究者、工程师和教育者，致力于推动大语言模型技术的普及与创新
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- 创始人 -->
+                    <div class="bg-white dark:bg-neutral-800 rounded-xl border border-light p-6 hover:shadow-lg transition-all duration-300 text-center">
+                        <div class="w-24 h-24 mx-auto mb-6 overflow-hidden rounded-full border-4 border-primary-100 dark:border-primary-900">
+                            <div class="w-full h-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center">
+                                <i class="fas fa-user text-white text-3xl"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-neutral-800 dark:text-neutral-100">张明</h3>
+                        <p class="text-primary-600 dark:text-primary-400 font-medium mb-3">创始人 & AI研究主管</p>
+                        <p class="text-neutral-600 dark:text-neutral-400 mb-4">
+                            前某AI领军企业研究员，深度学习和NLP领域专家，拥有10年AI研究与开发经验。
+                        </p>
+                        <div class="flex justify-center space-x-4">
+                            <a href="#" class="text-neutral-400 hover:text-blue-500 dark:hover:text-blue-400">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                            <a href="#" class="text-neutral-400 hover:text-blue-500 dark:hover:text-blue-400">
+                                <i class="fab fa-github"></i>
+                            </a>
+                            <a href="#" class="text-neutral-400 hover:text-blue-500 dark:hover:text-blue-400">
+                                <i class="fas fa-globe"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 技术总监 -->
+                    <div class="bg-white dark:bg-neutral-800 rounded-xl border border-light p-6 hover:shadow-lg transition-all duration-300 text-center">
+                        <div class="w-24 h-24 mx-auto mb-6 overflow-hidden rounded-full border-4 border-primary-100 dark:border-primary-900">
+                            <div class="w-full h-full bg-gradient-to-r from-green-500 to-teal-500 flex items-center justify-center">
+                                <i class="fas fa-user text-white text-3xl"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-neutral-800 dark:text-neutral-100">李华</h3>
+                        <p class="text-primary-600 dark:text-primary-400 font-medium mb-3">技术总监 & 全栈开发者</p>
+                        <p class="text-neutral-600 dark:text-neutral-400 mb-4">
+                            全栈工程师，专注于AI系统架构设计与开发，曾主导多个大规模AI平台的构建。
+                        </p>
+                        <div class="flex justify-center space-x-4">
+                            <a href="#" class="text-neutral-400 hover:text-blue-500 dark:hover:text-blue-400">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                            <a href="#" class="text-neutral-400 hover:text-blue-500 dark:hover:text-blue-400">
+                                <i class="fab fa-github"></i>
+                            </a>
+                            <a href="#" class="text-neutral-400 hover:text-blue-500 dark:hover:text-blue-400">
+                                <i class="fas fa-globe"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 教育总监 -->
+                    <div class="bg-white dark:bg-neutral-800 rounded-xl border border-light p-6 hover:shadow-lg transition-all duration-300 text-center">
+                        <div class="w-24 h-24 mx-auto mb-6 overflow-hidden rounded-full border-4 border-primary-100 dark:border-primary-900">
+                            <div class="w-full h-full bg-gradient-to-r from-amber-500 to-orange-500 flex items-center justify-center">
+                                <i class="fas fa-user text-white text-3xl"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-neutral-800 dark:text-neutral-100">王秀英</h3>
+                        <p class="text-primary-600 dark:text-primary-400 font-medium mb-3">教育总监 & 内容策略师</p>
+                        <p class="text-neutral-600 dark:text-neutral-400 mb-4">
+                            教育科技专家，擅长复杂技术内容的教学设计，致力于通过可视化降低AI学习门槛。
+                        </p>
+                        <div class="flex justify-center space-x-4">
+                            <a href="#" class="text-neutral-400 hover:text-blue-500 dark:hover:text-blue-400">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                            <a href="#" class="text-neutral-400 hover:text-blue-500 dark:hover:text-blue-400">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="text-neutral-400 hover:text-blue-500 dark:hover:text-blue-400">
+                                <i class="fas fa-globe"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 我们的专家团队 -->
+                <div class="mt-16">
+                    <h3 class="text-xl font-bold mb-6 text-neutral-800 dark:text-neutral-100">我们的专家团队</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                        <!-- 专家1 -->
+                        <div class="bg-white dark:bg-neutral-800 rounded-xl border border-light p-4 hover:shadow-md transition-all duration-300">
+                            <div class="flex items-center">
+                                <div class="w-12 h-12 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700 flex items-center justify-center mr-4">
+                                    <i class="fas fa-user text-gray-400 dark:text-gray-500"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-neutral-800 dark:text-neutral-100">陈志强</h4>
+                                    <p class="text-sm text-neutral-600 dark:text-neutral-400">模型架构专家</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 专家2 -->
+                        <div class="bg-white dark:bg-neutral-800 rounded-xl border border-light p-4 hover:shadow-md transition-all duration-300">
+                            <div class="flex items-center">
+                                <div class="w-12 h-12 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700 flex items-center justify-center mr-4">
+                                    <i class="fas fa-user text-gray-400 dark:text-gray-500"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-neutral-800 dark:text-neutral-100">赵梅</h4>
+                                    <p class="text-sm text-neutral-600 dark:text-neutral-400">RAG系统专家</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 专家3 -->
+                        <div class="bg-white dark:bg-neutral-800 rounded-xl border border-light p-4 hover:shadow-md transition-all duration-300">
+                            <div class="flex items-center">
+                                <div class="w-12 h-12 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700 flex items-center justify-center mr-4">
+                                    <i class="fas fa-user text-gray-400 dark:text-gray-500"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-neutral-800 dark:text-neutral-100">吴子明</h4>
+                                    <p class="text-sm text-neutral-600 dark:text-neutral-400">推理优化专家</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 专家4 -->
+                        <div class="bg-white dark:bg-neutral-800 rounded-xl border border-light p-4 hover:shadow-md transition-all duration-300">
+                            <div class="flex items-center">
+                                <div class="w-12 h-12 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700 flex items-center justify-center mr-4">
+                                    <i class="fas fa-user text-gray-400 dark:text-gray-500"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-neutral-800 dark:text-neutral-100">林小芳</h4>
+                                    <p class="text-sm text-neutral-600 dark:text-neutral-400">Agent开发专家</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 发展历程时间线 -->
+        <section class="py-12" id="timeline">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-12">
+                    <div class="mb-4 inline-block">
+                        <span class="px-3 py-1 rounded-full text-xs font-medium bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400">
+                            发展历程
+                        </span>
+                    </div>
+                    <h2 class="text-3xl font-bold mb-4 text-neutral-800 dark:text-neutral-100">我们的成长轨迹</h2>
+                    <p class="text-lg text-neutral-600 dark:text-neutral-400 max-w-3xl mx-auto">
+                        从创意萌发到行业影响力的每一步成长历程
+                    </p>
+                </div>
+
+                <!-- 时间线 -->
+                <div class="relative">
+                    <!-- 垂直线 -->
+                    <div class="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-blue-400 via-indigo-500 to-purple-600 dark:from-blue-500 dark:via-indigo-600 dark:to-purple-700"></div>
+
+                    <!-- 时间节点1 -->
+                    <div class="relative z-10 mb-16">
+                        <div class="flex items-center flex-col md:flex-row">
+                            <!-- 左侧内容 -->
+                            <div class="md:w-1/2 md:pr-12 text-right mb-8 md:mb-0">
+                                <div class="bg-white dark:bg-neutral-800 rounded-xl border border-light p-6 inline-block hover:shadow-lg transition-all duration-300">
+                                    <h3 class="text-xl font-bold mb-2 text-neutral-800 dark:text-neutral-100">项目创立</h3>
+                                    <p class="text-primary-600 dark:text-primary-400 font-medium mb-2">2023年1月</p>
+                                    <p class="text-neutral-600 dark:text-neutral-400">
+                                        项目创意萌发，确立了构建大模型全栈学习平台的愿景，组建了核心团队，开始进行初步研究与规划。
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <!-- 中间节点 -->
+                            <div class="absolute left-1/2 transform -translate-x-1/2 w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 flex items-center justify-center border-4 border-white dark:border-neutral-900">
+                                <i class="fas fa-lightbulb text-white text-xs"></i>
+                            </div>
+                            
+                            <!-- 右侧为空 -->
+                            <div class="md:w-1/2 md:pl-12"></div>
+                        </div>
+                    </div>
+
+                    <!-- 时间节点2 -->
+                    <div class="relative z-10 mb-16">
+                        <div class="flex items-center flex-col md:flex-row">
+                            <!-- 左侧为空 -->
+                            <div class="md:w-1/2 md:pr-12"></div>
+                            
+                            <!-- 中间节点 -->
+                            <div class="absolute left-1/2 transform -translate-x-1/2 w-8 h-8 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 flex items-center justify-center border-4 border-white dark:border-neutral-900">
+                                <i class="fas fa-code text-white text-xs"></i>
+                            </div>
+                            
+                            <!-- 右侧内容 -->
+                            <div class="md:w-1/2 md:pl-12 text-left mb-8 md:mb-0">
+                                <div class="bg-white dark:bg-neutral-800 rounded-xl border border-light p-6 inline-block hover:shadow-lg transition-all duration-300">
+                                    <h3 class="text-xl font-bold mb-2 text-neutral-800 dark:text-neutral-100">平台原型发布</h3>
+                                    <p class="text-primary-600 dark:text-primary-400 font-medium mb-2">2023年5月</p>
+                                    <p class="text-neutral-600 dark:text-neutral-400">
+                                        发布第一版平台原型，包含基础的模型原理可视化内容和初步的交互式学习功能，获得了行业内的积极反馈。
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 时间节点3 -->
+                    <div class="relative z-10 mb-16">
+                        <div class="flex items-center flex-col md:flex-row">
+                            <!-- 左侧内容 -->
+                            <div class="md:w-1/2 md:pr-12 text-right mb-8 md:mb-0">
+                                <div class="bg-white dark:bg-neutral-800 rounded-xl border border-light p-6 inline-block hover:shadow-lg transition-all duration-300">
+                                    <h3 class="text-xl font-bold mb-2 text-neutral-800 dark:text-neutral-100">应用开发板块上线</h3>
+                                    <p class="text-primary-600 dark:text-primary-400 font-medium mb-2">2023年9月</p>
+                                    <p class="text-neutral-600 dark:text-neutral-400">
+                                        扩展平台功能，增加应用开发板块，提供模型微调、RAG系统构建和Agent开发的实用教程与代码示例。
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <!-- 中间节点 -->
+                            <div class="absolute left-1/2 transform -translate-x-1/2 w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-600 flex items-center justify-center border-4 border-white dark:border-neutral-900">
+                                <i class="fas fa-rocket text-white text-xs"></i>
+                            </div>
+                            
+                            <!-- 右侧为空 -->
+                            <div class="md:w-1/2 md:pl-12"></div>
+                        </div>
+                    </div>
+
+                    <!-- 时间节点4 -->
+                    <div class="relative z-10 mb-16">
+                        <div class="flex items-center flex-col md:flex-row">
+                            <!-- 左侧为空 -->
+                            <div class="md:w-1/2 md:pr-12"></div>
+                            
+                            <!-- 中间节点 -->
+                            <div class="absolute left-1/2 transform -translate-x-1/2 w-8 h-8 rounded-full bg-gradient-to-r from-pink-500 to-red-600 flex items-center justify-center border-4 border-white dark:border-neutral-900">
+                                <i class="fas fa-users text-white text-xs"></i>
+                            </div>
+                            
+                            <!-- 右侧内容 -->
+                            <div class="md:w-1/2 md:pl-12 text-left mb-8 md:mb-0">
+                                <div class="bg-white dark:bg-neutral-800 rounded-xl border border-light p-6 inline-block hover:shadow-lg transition-all duration-300">
+                                    <h3 class="text-xl font-bold mb-2 text-neutral-800 dark:text-neutral-100">社区建设与活动</h3>
+                                    <p class="text-primary-600 dark:text-primary-400 font-medium mb-2">2023年12月</p>
+                                    <p class="text-neutral-600 dark:text-neutral-400">
+                                        启动线上学习社区，举办月度技术分享和讨论活动，形成了活跃的学习者交流圈，月活用户突破10万。
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 时间节点5 -->
+                    <div class="relative z-10">
+                        <div class="flex items-center flex-col md:flex-row">
+                            <!-- 左侧内容 -->
+                            <div class="md:w-1/2 md:pr-12 text-right mb-8 md:mb-0">
+                                <div class="bg-white dark:bg-neutral-800 rounded-xl border border-light p-6 inline-block hover:shadow-lg transition-all duration-300">
+                                    <h3 class="text-xl font-bold mb-2 text-neutral-800 dark:text-neutral-100">平台2.0版本发布</h3>
+                                    <p class="text-primary-600 dark:text-primary-400 font-medium mb-2">2024年3月</p>
+                                    <p class="text-neutral-600 dark:text-neutral-400">
+                                        全新升级的平台2.0版本上线，引入更丰富的交互式学习体验、实战项目和案例研究，为用户提供更全面的学习路径。
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <!-- 中间节点 -->
+                            <div class="absolute left-1/2 transform -translate-x-1/2 w-8 h-8 rounded-full bg-gradient-to-r from-red-500 to-orange-600 flex items-center justify-center border-4 border-white dark:border-neutral-900">
+                                <i class="fas fa-star text-white text-xs"></i>
+                            </div>
+                            
+                            <!-- 右侧为空 -->
+                            <div class="md:w-1/2 md:pl-12"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 未来规划 Roadmap -->
+        <section class="py-12" id="roadmap">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-12">
+                    <div class="mb-4 inline-block">
+                        <span class="px-3 py-1 rounded-full text-xs font-medium bg-amber-50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">
+                            未来规划
+                        </span>
+                    </div>
+                    <h2 class="text-3xl font-bold mb-4 text-neutral-800 dark:text-neutral-100">我们的发展路线图</h2>
+                    <p class="text-lg text-neutral-600 dark:text-neutral-400 max-w-3xl mx-auto">
+                        大模型全栈平台的未来发展蓝图，持续探索AI教育的更多可能性
+                    </p>
+                </div>
+
+                <!-- 路线图内容 -->
+                <div class="bg-white dark:bg-neutral-800 rounded-xl border border-light p-8 hover:shadow-lg transition-all duration-300">
+                    <div class="grid md:grid-cols-3 gap-8">
+                        <!-- 2024年Q2-Q3 -->
+                        <div>
+                            <div class="w-full h-2 bg-gradient-to-r from-green-400 to-green-600 rounded-full mb-6"></div>
+                            <h3 class="text-xl font-bold mb-3 text-neutral-800 dark:text-neutral-100">2024年 Q2-Q3</h3>
+                            <ul class="space-y-4">
+                                <li class="flex items-start">
+                                    <div class="w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/40 flex items-center justify-center mt-0.5 mr-3">
+                                        <i class="fas fa-check text-green-600 dark:text-green-400 text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-neutral-800 dark:text-neutral-100 mb-1">交互式代码实验室</h4>
+                                        <p class="text-sm text-neutral-600 dark:text-neutral-400">
+                                            开发在线交互式代码环境，使用户能够直接在浏览器中实践LLM应用开发技术。
+                                        </p>
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <div class="w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/40 flex items-center justify-center mt-0.5 mr-3">
+                                        <i class="fas fa-check text-green-600 dark:text-green-400 text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-neutral-800 dark:text-neutral-100 mb-1">多语言支持</h4>
+                                        <p class="text-sm text-neutral-600 dark:text-neutral-400">
+                                            扩展平台内容的语言支持，增加英语、日语等多语言版本，扩大全球影响力。
+                                        </p>
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <div class="w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/40 flex items-center justify-center mt-0.5 mr-3">
+                                        <i class="fas fa-check text-green-600 dark:text-green-400 text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-neutral-800 dark:text-neutral-100 mb-1">行业应用案例库</h4>
+                                        <p class="text-sm text-neutral-600 dark:text-neutral-400">
+                                            构建丰富的行业应用案例库，覆盖金融、医疗、教育等多个领域的实际应用范例。
+                                        </p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- 2024年Q4 - 2025年Q1 -->
+                        <div>
+                            <div class="w-full h-2 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full mb-6"></div>
+                            <h3 class="text-xl font-bold mb-3 text-neutral-800 dark:text-neutral-100">2024年Q4 - 2025年Q1</h3>
+                            <ul class="space-y-4">
+                                <li class="flex items-start">
+                                    <div class="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center mt-0.5 mr-3">
+                                        <i class="fas fa-spinner text-blue-600 dark:text-blue-400 text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-neutral-800 dark:text-neutral-100 mb-1">AI辅助学习助手</h4>
+                                        <p class="text-sm text-neutral-600 dark:text-neutral-400">
+                                            引入基于大模型的学习助手，为用户提供个性化学习指导和疑难解答服务。
+                                        </p>
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <div class="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center mt-0.5 mr-3">
+                                        <i class="fas fa-spinner text-blue-600 dark:text-blue-400 text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-neutral-800 dark:text-neutral-100 mb-1">社区贡献系统</h4>
+                                        <p class="text-sm text-neutral-600 dark:text-neutral-400">
+                                            构建开放的社区贡献系统，允许专家用户提交教程、案例和技术文章，打造共创生态。
+                                        </p>
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <div class="w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center mt-0.5 mr-3">
+                                        <i class="fas fa-spinner text-blue-600 dark:text-blue-400 text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-neutral-800 dark:text-neutral-100 mb-1">进阶实战项目</h4>
+                                        <p class="text-sm text-neutral-600 dark:text-neutral-400">
+                                            提供完整的实战项目教程，从需求分析到部署运维，全方位培养AI应用开发能力。
+                                        </p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- 2025年Q2及以后 -->
+                        <div>
+                            <div class="w-full h-2 bg-gradient-to-r from-purple-400 to-purple-600 rounded-full mb-6"></div>
+                            <h3 class="text-xl font-bold mb-3 text-neutral-800 dark:text-neutral-100">2025年Q2及以后</h3>
+                            <ul class="space-y-4">
+                                <li class="flex items-start">
+                                    <div class="w-6 h-6 rounded-full bg-purple-100 dark:bg-purple-900/40 flex items-center justify-center mt-0.5 mr-3">
+                                        <i class="fas fa-hourglass-half text-purple-600 dark:text-purple-400 text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-neutral-800 dark:text-neutral-100 mb-1">开发者认证体系</h4>
+                                        <p class="text-sm text-neutral-600 dark:text-neutral-400">
+                                            建立完善的技能认证体系，帮助学习者获得行业认可的能力证明，提升就业竞争力。
+                                        </p>
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <div class="w-6 h-6 rounded-full bg-purple-100 dark:bg-purple-900/40 flex items-center justify-center mt-0.5 mr-3">
+                                        <i class="fas fa-hourglass-half text-purple-600 dark:text-purple-400 text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-neutral-800 dark:text-neutral-100 mb-1">AI创新实验室</h4>
+                                        <p class="text-sm text-neutral-600 dark:text-neutral-400">
+                                            创建开放式实验环境，鼓励用户探索大模型的创新应用，并提供资源支持和导师指导。
+                                        </p>
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <div class="w-6 h-6 rounded-full bg-purple-100 dark:bg-purple-900/40 flex items-center justify-center mt-0.5 mr-3">
+                                        <i class="fas fa-hourglass-half text-purple-600 dark:text-purple-400 text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-neutral-800 dark:text-neutral-100 mb-1">全球AI教育联盟</h4>
+                                        <p class="text-sm text-neutral-600 dark:text-neutral-400">
+                                            与全球高校、研究机构和企业合作，建立AI教育联盟，共同推动大模型技术的普及与创新。
+                                        </p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 加入我们的旅程 -->
+                    <div class="mt-10 p-6 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 dark:from-indigo-900/30 dark:to-purple-900/30 rounded-xl border border-light">
+                        <div class="flex flex-col md:flex-row items-center gap-6">
+                            <div class="md:w-2/3">
+                                <h3 class="text-xl font-bold text-neutral-800 dark:text-neutral-100 mb-2">加入我们的开发与创新之旅</h3>
+                                <p class="text-neutral-600 dark:text-neutral-400">我们期待与更多热爱AI技术的开发者、教育者和创新者合作，共同构建更完善的大模型学习生态。如果您有兴趣参与我们的平台建设，请随时与我们联系！</p>
+                            </div>
+                            <div class="md:w-1/3 flex justify-center">
+                                <a href="mailto:contact@llmplatform.com" class="inline-flex items-center px-5 py-3 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-medium transition-colors">
+                                    <i class="fas fa-envelope mr-2"></i>
+                                    联系我们
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 联系方式与反馈 -->
+        <section class="py-12" id="contact">
+            <div class="max-w-6xl mx-auto">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- 联系方式 -->
+                    <div class="bg-white dark:bg-neutral-800 rounded-xl border border-light p-6 hover:shadow-lg transition-all duration-300">
+                        <h3 class="text-xl font-bold mb-4 text-neutral-800 dark:text-neutral-100">
+                            <i class="fas fa-envelope text-primary-500 dark:text-primary-400 mr-2"></i>
+                            联系我们
+                        </h3>
+                        <p class="text-neutral-600 dark:text-neutral-400 mb-6">
+                            我们期待听到您的声音！无论是合作提案、建议反馈，还是加入我们的团队，都欢迎与我们取得联系。
+                        </p>
+                        <div class="space-y-4">
+                            <div class="flex items-center">
+                                <i class="fas fa-envelope-open text-primary-500 dark:text-primary-400 mr-3"></i>
+                                <div>
+                                    <p class="text-sm text-neutral-500 dark:text-neutral-400">电子邮件</p>
+                                    <p class="text-neutral-800 dark:text-neutral-100">contact@llmplatform.com</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-map-marker-alt text-primary-500 dark:text-primary-400 mr-3"></i>
+                                <div>
+                                    <p class="text-sm text-neutral-500 dark:text-neutral-400">地址</p>
+                                    <p class="text-neutral-800 dark:text-neutral-100">北京市海淀区中关村科技园区</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-comments text-primary-500 dark:text-primary-400 mr-3"></i>
+                                <div>
+                                    <p class="text-sm text-neutral-500 dark:text-neutral-400">社区交流</p>
+                                    <p class="text-neutral-800 dark:text-neutral-100">加入我们的微信群、Discord或Slack频道</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 社交媒体与资源 -->
+                    <div class="bg-white dark:bg-neutral-800 rounded-xl border border-light p-6 hover:shadow-lg transition-all duration-300">
+                        <h3 class="text-xl font-bold mb-4 text-neutral-800 dark:text-neutral-100">
+                            <i class="fas fa-share-alt text-primary-500 dark:text-primary-400 mr-2"></i>
+                            关注我们
+                        </h3>
+                        <p class="text-neutral-600 dark:text-neutral-400 mb-6">
+                            通过社交媒体关注我们，获取最新的平台动态、技术分享和学习资源。
+                        </p>
+                        <div class="grid grid-cols-2 gap-4">
+                            <a href="#" class="flex items-center p-3 rounded-lg bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-700 dark:hover:bg-neutral-600 transition-colors">
+                                <i class="fab fa-github text-xl text-neutral-800 dark:text-neutral-200 mr-3"></i>
+                                <span class="text-neutral-800 dark:text-neutral-100">GitHub</span>
+                            </a>
+                            <a href="#" class="flex items-center p-3 rounded-lg bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-700 dark:hover:bg-neutral-600 transition-colors">
+                                <i class="fab fa-weixin text-xl text-neutral-800 dark:text-neutral-200 mr-3"></i>
+                                <span class="text-neutral-800 dark:text-neutral-100">微信公众号</span>
+                            </a>
+                            <a href="#" class="flex items-center p-3 rounded-lg bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-700 dark:hover:bg-neutral-600 transition-colors">
+                                <i class="fab fa-zhihu text-xl text-neutral-800 dark:text-neutral-200 mr-3"></i>
+                                <span class="text-neutral-800 dark:text-neutral-100">知乎</span>
+                            </a>
+                            <a href="#" class="flex items-center p-3 rounded-lg bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-700 dark:hover:bg-neutral-600 transition-colors">
+                                <i class="fab fa-twitter text-xl text-neutral-800 dark:text-neutral-200 mr-3"></i>
+                                <span class="text-neutral-800 dark:text-neutral-100">Twitter</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="py-8 border-t border-light bg-neutral-50/30 dark:bg-neutral-900/30">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <a href="../index.html" class="flex items-center mb-2">
+                        <div class="w-6 h-6 bg-gradient-primary rounded-md flex items-center justify-center mr-2">
+                            <i class="fas fa-brain text-white text-xs"></i>
+                        </div>
+                        <span class="text-neutral-700 dark:text-neutral-300 font-medium">大模型全栈平台</span>
+                    </a>
+                    <p class="text-neutral-500 dark:text-neutral-400 text-sm">
+                        探索大语言模型的原理与应用，从理论到实践的全栈学习平台
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-2 gap-8 md:gap-16">
+                    <div>
+                        <h4 class="text-sm font-semibold mb-3 text-neutral-800 dark:text-neutral-200">学习资源</h4>
+                        <ul class="space-y-2">
+                            <li>
+                                <a href="../models/theory/index.html" class="text-sm text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">模型原理</a>
+                            </li>
+                            <li>
+                                <a href="../applications/index.html" class="text-sm text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">应用开发</a>
+                            </li>
+                            <li>
+                                <a href="../index.html#components" class="text-sm text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">核心组件</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-semibold mb-3 text-neutral-800 dark:text-neutral-200">关于我们</h4>
+                        <ul class="space-y-2">
+                            <li>
+                                <a href="#mission" class="text-sm text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">使命与愿景</a>
+                            </li>
+                            <li>
+                                <a href="#team" class="text-sm text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">团队介绍</a>
+                            </li>
+                            <li>
+                                <a href="#contact" class="text-sm text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">联系我们</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-8 pt-6 border-t border-light flex flex-col md:flex-row justify-between items-center">
+                <p class="text-sm text-neutral-500 dark:text-neutral-400 mb-4 md:mb-0">
+                    &copy; 2025-2025 大模型全栈平台. 保留所有权利.
+                </p>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-neutral-400 hover:text-primary-500 dark:hover:text-primary-400 transition-colors">
+                        <i class="fas fa-rss"></i>
+                    </a>
+                    <a href="#" class="text-neutral-400 hover:text-primary-500 dark:hover:text-primary-400 transition-colors">
+                        <i class="fas fa-book"></i>
+                    </a>
+                    <a href="#" class="text-neutral-400 hover:text-primary-500 dark:hover:text-primary-400 transition-colors">
+                        <i class="fas fa-graduation-cap"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 返回顶部按钮 -->
+    <button id="back-to-top" 
+        class="fixed bottom-6 right-6 p-2 rounded-full bg-primary-500 text-white shadow-lg opacity-0 invisible transition-all duration-300 hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-neutral-900">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Preline UI 初始化 -->
+    <script src="https://cdn.jsdelivr.net/npm/preline@2.0.3/dist/preline.min.js"></script>
+    
+    <!-- 导航和主题切换脚本 -->
+    <script src="../common/js/navigation.js"></script>
+    <script src="../common/js/theme.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 初始化主题管理器
+            const themeManager = ThemeManager.getInstance();
+
+            // 初始化导航功能
+            const navigation = Navigation.getInstance();
+            
+            // 添加滚动动画
+            function handleScrollAnimation() {
+                const elements = document.querySelectorAll('section');
+                elements.forEach(element => {
+                    const position = element.getBoundingClientRect();
+                    if (position.top < window.innerHeight * 0.8) {
+                        element.classList.add('animate-fade-in');
+                    }
+                });
+            }
+
+            // 初始化时执行一次
+            handleScrollAnimation();
+            // 滚动时执行
+            window.addEventListener('scroll', handleScrollAnimation);
+            
+            // 返回顶部功能
+            const backToTopBtn = document.getElementById('back-to-top');
+            
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 300) {
+                    backToTopBtn.classList.remove('opacity-0', 'invisible');
+                    backToTopBtn.classList.add('opacity-100', 'visible');
+                } else {
+                    backToTopBtn.classList.add('opacity-0', 'invisible');
+                    backToTopBtn.classList.remove('opacity-100', 'visible');
+                }
+            });
+            
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // 平滑滚动功能
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html> 
