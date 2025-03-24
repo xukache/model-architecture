@@ -32,7 +32,31 @@ pnpm run dev
 
 # 构建生产版本
 pnpm run build:css
+
+# 清理构建目录
+pnpm run clean
+
+# 构建完整项目到dist目录
+pnpm run build:prod
+
+# 打包项目为zip文件以便部署
+pnpm run zip
+
+# 本地预览构建结果
+pnpm run serve
 ```
+
+## 部署说明
+
+本项目支持多种部署方式：
+
+1. **本地预览**：使用`pnpm run serve`命令在本地启动HTTP服务器进行预览
+2. **静态文件部署**：
+   - 运行`pnpm run zip`命令生成`dist.zip`文件
+   - 将zip文件上传至服务器并解压
+   - 使用Nginx、Apache等Web服务器托管解压后的文件
+
+所有构建和部署命令均已实现跨平台兼容，可在Windows、MacOS和Linux环境下使用。
 
 ## 技术亮点
 
@@ -48,6 +72,8 @@ pnpm run build:css
 
 -**响应式设计**：所有动画和可视化组件都能自适应不同屏幕尺寸
 
+-**跨平台构建系统**：支持在不同操作系统上一致地构建和部署项目
+
 ## 项目结构
 
 ```├──
@@ -61,6 +87,15 @@ pnpm run build:css
 │ ├── transformer/ # Transformer模型架构（计划中）
 │ ├── gpt/ # GPT系列模型架构（计划中）
 │ └── deepseek/ # Deepseek模型架构（计划中）
+├── applications/ # 大模型应用开发相关页面
+├── about/ # 关于我们页面
+├── common/ # 共享资源
+│ ├── styles/ # 样式文件
+│ │ ├── input.css # TailwindCSS输入文件
+│ │ └── output.css # 编译后的CSS文件
+│ └── js/ # JavaScript文件
+├── dist/ # 构建输出目录
+├── dist.zip # 打包后的部署文件
 └── README.md # 项目说明文档
 ```
 
@@ -80,6 +115,7 @@ pnpm run build:css
 - **实时CSS编译**：支持开发时CSS的实时编译和热重载
 - **模块化CSS**：采用组件化的CSS架构，提高代码复用
 - **自动化构建**：集成了CSS的自动化构建和优化流程
+- **跨平台打包部署**：支持一键打包和多环境部署
 
 ## 已实现的内容
 
@@ -92,6 +128,11 @@ pnpm run build:css
   - [X] TailwindCSS集成
   - [X] 自动化编译流程
   - [X] 开发环境热重载
+- [X] 打包部署系统
+  - [X] 跨平台构建脚本
+  - [X] 资源文件复制优化
+  - [X] ZIP打包功能
+  - [X] 构建前自动清理
 - [X] LLaMA模型架构解析
   - [X] 整体架构概览（SVG可视化）
   - [ ] 自注意力机制讲解
@@ -123,6 +164,7 @@ pnpm run build:css
 - [X] 添加代码语法高亮支持
 - [X] 完善CSS构建系统
 - [X] 优化深色模式适配
+- [X] 实现跨平台打包部署功能
 - [ ] 完成更多模型组件的可视化（如多头注意力、LayerNorm等）
 - [ ] 添加更多交互式动画展示模型训练和推理过程
 - [ ] 实现模型对比功能，直观展示不同架构的异同
@@ -136,29 +178,34 @@ pnpm run build:css
 2. 安装依赖：
 
 ```bash
-
 pnpm install
-
 ```
 
 3. 启动开发服务器：
 
 ```bash
-
 pnpm run dev
-
 ```
 
 4. 构建生产版本：
 
 ```bash
-
-pnpm run build:css
-
+pnpm run build:prod
 ```
 
-5. 在浏览器中打开 `index.html` 文件
-6. 使用右上角的主题切换按钮可以在深色/浅色模式之间切换
+5. 打包部署文件：
+
+```bash
+pnpm run zip
+```
+
+6. 本地预览构建结果：
+
+```bash
+pnpm run serve
+```
+
+7. 使用右上角的主题切换按钮可以在深色/浅色模式之间切换
 
 ## 如何贡献
 
