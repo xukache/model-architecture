@@ -162,8 +162,42 @@
   }
 
   .header-link {
-    @apply px-4 py-2 rounded-lg text-neutral-600 dark:text-neutral-300 hover:text-primary-600 
-                       dark:hover:text-primary-400 hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors;
+    @apply px-4 py-2 rounded-lg text-neutral-600 dark:text-neutral-300 
+           relative overflow-hidden transition-all duration-300 ease-out
+           hover:text-primary-600 dark:hover:text-primary-400;
+  }
+
+  /* 导航链接Hover效果 */
+  .nav-link {
+    @apply px-3 py-2 rounded-md text-sm font-medium text-neutral-700 dark:text-neutral-300 
+           relative overflow-hidden transition-all duration-300 ease-out;
+  }
+  
+  .nav-link::after {
+    @apply absolute bottom-0 left-0 w-0 h-0.5 bg-primary-500 dark:bg-primary-400
+           transition-all duration-300 ease-out opacity-0 content-[''];
+  }
+  
+  .nav-link:hover {
+    @apply text-primary-600 dark:text-primary-400 bg-primary-50/50 dark:bg-primary-900/10;
+  }
+  
+  .nav-link:hover::after {
+    @apply w-full opacity-100;
+  }
+  
+  .nav-link:active {
+    @apply transform scale-95 transition-transform duration-75;
+  }
+  
+  /* 激活的导航链接 */
+  .nav-link-active {
+    @apply text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20
+           border-b-2 border-primary-500 dark:border-primary-400 rounded-b-none;
+  }
+  
+  .nav-link-active:hover::after {
+    @apply opacity-0;
   }
 
   .active-link {

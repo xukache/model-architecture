@@ -1,0 +1,6 @@
+@echo off
+echo 开始编译CSS...
+npx tailwindcss -i ./common/styles/input.css -o ./common/styles/output.css
+echo 已编译根目录CSS，正在同步到dist目录...
+copy /Y .\common\styles\output.css .\dist\common\styles\output.css
+echo CSS编译完成，并已同步到dist目录 

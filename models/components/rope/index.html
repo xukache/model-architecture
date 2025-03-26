@@ -8,7 +8,10 @@
 
     <!-- TailwindCSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="../../../common/styles/tailwind.config.js"></script>
+    <script src="../../../tailwind.config.js"></script>
+
+    <!-- 全局配置脚本 -->
+    <script src="../../../common/js/config.js"></script>
 
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -17,23 +20,28 @@
     <link rel="stylesheet" href="../../../common/styles/output.css">
 </head>
 
-<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-300"
+<body class="bg-neutral-50 dark:bg-neutral-900 text-neutral-800 dark:text-neutral-200 transition-colors duration-300"
     style="font-family: 'Microsoft YaHei', sans-serif;">
     <!-- 页面顶部导航 -->
     <header class="sticky top-0 z-50 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-sm">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center">
+                <a href="../../../index.html" class="flex items-center mr-3">
+                    <div class="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center mr-3">
+                        <i class="fas fa-brain text-white text-lg"></i>
+                    </div>
+                </a>
                 <h1 class="text-xl md:text-2xl font-bold text-gray-800 dark:text-gray-100">
                     <i class="fas fa-rotate mr-2"></i>RoPE旋转位置编码作用Q、K矩阵的过程
                 </h1>
             </div>
             <div class="flex items-center space-x-2">
                 <a href="../../../index.html"
-                    class="px-3 py-1.5 bg-primary-50 dark:bg-primary-900/30 rounded-lg text-primary-600 dark:text-primary-400 hover:bg-primary-100 dark:hover:bg-primary-800/40 transition-colors flex items-center">
+                    class="nav-link">
                     <i class="fas fa-home mr-1"></i> 首页
                 </a>
                 <a href="../../llama/index.html"
-                    class="px-3 py-1.5 bg-primary-50 dark:bg-primary-900/30 rounded-lg text-primary-600 dark:text-primary-400 hover:bg-primary-100 dark:hover:bg-primary-800/40 transition-colors flex items-center">
+                    class="nav-link">
                     <i class="fas fa-arrow-up mr-1"></i> 返回上级
                 </a>
                 <button id="theme-toggle"
@@ -49,14 +57,14 @@
             class="md:hidden hidden bg-white dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700">
             <div class="container mx-auto px-4 py-2 flex flex-col">
                 <a href="../../../index.html"
-                    class="py-2 px-4 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
+                    class="nav-link block w-full text-left py-2 px-4">
                     <i class="fas fa-home mr-2"></i> 首页
                 </a>
                 <a href="../../llama/index.html"
-                    class="py-2 px-4 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
+                    class="nav-link block w-full text-left py-2 px-4">
                     <i class="fas fa-arrow-up mr-2"></i> 返回上级
                 </a>
-                <span class="py-2 px-4 text-primary-600 dark:text-primary-400 bg-gray-100 dark:bg-gray-700 rounded">
+                <span class="nav-link-active block w-full text-left py-2 px-4">
                     <i class="fas fa-rotate mr-2"></i> RoPE可视化
                 </span>
                 <button id="mobile-theme-toggle"
@@ -598,9 +606,71 @@
         </section>
     </main>
 
-    <footer class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-4">
-        <div class="container mx-auto px-4 text-center text-gray-600 dark:text-gray-400 text-sm">
-            <p class="mt-1">© 2024 大模型架构可视化平台 | RoPE旋转位置编码作用Q、K矩阵的过程</p>
+    <footer class="py-8 border-t border-light bg-neutral-50/30 dark:bg-neutral-900/30">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <div class="flex items-center mb-2">
+                        <div class="w-6 h-6 bg-gradient-primary rounded-md flex items-center justify-center mr-2">
+                            <i class="fas fa-brain text-white text-xs"></i>
+                        </div>
+                        <span class="text-neutral-700 dark:text-neutral-300 font-medium">大模型全栈平台</span>
+                    </div>
+                    <p class="text-neutral-500 dark:text-neutral-400 text-sm">
+                        探索大语言模型的原理与应用，从理论到实践的全栈学习平台
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-2 gap-8 md:gap-16">
+                    <div>
+                        <h4 class="text-sm font-semibold mb-3 text-neutral-800 dark:text-neutral-200">学习资源</h4>
+                        <ul class="space-y-2">
+                            <li>
+                                <a href="../../../models/theory/index.html" class="text-sm text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">模型原理</a>
+                            </li>
+                            <li>
+                                <a href="../../../applications/index.html" class="text-sm text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">应用开发</a>
+                            </li>
+                            <li>
+                                <a href="../../../index.html#components" class="text-sm text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">核心组件</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-semibold mb-3 text-neutral-800 dark:text-neutral-200">热门主题</h4>
+                        <ul class="space-y-2">
+                            <li>
+                                <a href="../../../applications/fine-tuning.html" class="text-sm text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">模型微调</a>
+                            </li>
+                            <li>
+                                <a href="../../../applications/agent.html" class="text-sm text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Agent 开发</a>
+                            </li>
+                            <li>
+                                <a href="../../../applications/rag.html" class="text-sm text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">RAG 系统</a>
+                            </li>
+                            <li>
+                                <a href="../../../about/index.html" class="text-sm text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">关于我们</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-8 pt-6 border-t border-light flex flex-col md:flex-row justify-between items-center">
+                <p class="text-sm text-neutral-500 dark:text-neutral-400 mb-4 md:mb-0">
+                    &copy; 2025-2025 大模型全栈平台. 保留所有权利.
+                </p>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-neutral-400 hover:text-primary-500 dark:hover:text-primary-400 transition-colors">
+                        <i class="fas fa-rss"></i>
+                    </a>
+                    <a href="#" class="text-neutral-400 hover:text-primary-500 dark:hover:text-primary-400 transition-colors">
+                        <i class="fas fa-book"></i>
+                    </a>
+                    <a href="#" class="text-neutral-400 hover:text-primary-500 dark:hover:text-primary-400 transition-colors">
+                        <i class="fas fa-graduation-cap"></i>
+                    </a>
+                </div>
+            </div>
         </div>
     </footer>
 

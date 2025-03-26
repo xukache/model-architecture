@@ -12,6 +12,9 @@
 
     <!-- TailwindCSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- 全局配置脚本 -->
+    <script src="../../common/js/config.js"></script>
     
     <!-- Preline UI -->
     <link rel="stylesheet" href="../../common/styles/variants.min.css" />
@@ -39,19 +42,19 @@
             </div>
 
             <nav class="hidden md:flex items-center space-x-1">
-                <a href="../../index.html" class="px-3 py-2 rounded-md text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100">
+                <a href="../../index.html" class="nav-link">
                     首页
                 </a>
-                <a href="#" class="px-3 py-2 rounded-md text-sm font-medium text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20">
+                <a href="#" class="nav-link-active">
                     大模型原理
                 </a>
-                <a href="../../applications/index.html" class="px-3 py-2 rounded-md text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100">
+                <a href="../../applications/index.html" class="nav-link">
                     应用开发
                 </a>
-                <a href="../../index.html#components" class="px-3 py-2 rounded-md text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100">
+                <a href="../../index.html#components" class="nav-link">
                     核心组件
                 </a>
-                <a href="../../index.html#about" class="px-3 py-2 rounded-md text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100">
+                <a href="../../index.html#about" class="nav-link">
                     关于
                 </a>
             </nav>
@@ -78,23 +81,23 @@
             class="md:hidden hidden bg-neutral-50 dark:bg-neutral-900 border-t border-light">
             <div class="container mx-auto px-4 py-3 space-y-2">
                 <a href="../../index.html"
-                    class="block px-3 py-2 rounded-md text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 text-sm font-medium">
+                    class="block nav-link w-full text-left">
                     首页
                 </a>
                 <a href="#"
-                    class="block px-3 py-2 rounded-md text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20 text-sm font-medium">
+                    class="block nav-link-active w-full text-left">
                     大模型原理
                 </a>
                 <a href="../../applications/index.html"
-                    class="block px-3 py-2 rounded-md text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 text-sm font-medium">
+                    class="block nav-link w-full text-left">
                     应用开发
                 </a>
                 <a href="../../index.html#components"
-                    class="block px-3 py-2 rounded-md text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 text-sm font-medium">
+                    class="block nav-link w-full text-left">
                     核心组件
                 </a>
                 <a href="../../index.html#about"
-                    class="block px-3 py-2 rounded-md text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 text-sm font-medium">
+                    class="block nav-link w-full text-left">
                     关于
                 </a>
                 <div class="border-t border-light my-3"></div>

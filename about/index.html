@@ -39,19 +39,19 @@
             </div>
 
             <nav class="hidden md:flex items-center space-x-1">
-                <a href="../index.html" class="px-3 py-2 rounded-md text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100">
+                <a href="../index.html" class="nav-link">
                     首页
                 </a>
-                <a href="../models/theory/index.html" class="px-3 py-2 rounded-md text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100">
+                <a href="../models/theory/index.html" class="nav-link">
                     大模型原理
                 </a>
-                <a href="../applications/index.html" class="px-3 py-2 rounded-md text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100">
+                <a href="../applications/index.html" class="nav-link">
                     应用开发
                 </a>
-                <a href="../index.html#components" class="px-3 py-2 rounded-md text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100">
+                <a href="../index.html#components" class="nav-link">
                     核心组件
                 </a>
-                <a href="#" class="px-3 py-2 rounded-md text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20">
+                <a href="#" class="nav-link-active">
                     关于
                 </a>
             </nav>
@@ -89,7 +89,7 @@
                     class="block px-3 py-2 rounded-md text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 text-sm font-medium">
                     应用开发
                 </a>
-                <a href="../index.html#components"
+                <a href="../components/index.html"
                     class="block px-3 py-2 rounded-md text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 text-sm font-medium">
                     核心组件
                 </a>
@@ -218,13 +218,20 @@
         <!-- 使命与愿景 -->
         <section class="py-12" id="mission">
             <div class="max-w-6xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-neutral-800 dark:text-neutral-100">
+                    <i class="fas fa-bullseye text-blue-500 dark:text-blue-400 mr-2"></i>使命与愿景
+                </h2>
+                <p class="text-lg text-neutral-600 dark:text-neutral-400 max-w-3xl mb-8">
+                    我们对大语言模型技术教育与普及的核心理念和未来展望
+                </p>
+                
                 <div class="grid md:grid-cols-2 gap-12">
                     <!-- 左侧：使命 -->
                     <div class="bg-white dark:bg-neutral-800 rounded-xl border border-light p-8 hover:shadow-lg transition-all duration-300">
                         <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mb-6">
                             <i class="fas fa-bullseye text-blue-600 dark:text-blue-400 text-xl"></i>
                         </div>
-                        <h2 class="text-2xl font-bold mb-4 text-neutral-800 dark:text-neutral-100">我们的使命</h2>
+                        <h3 class="text-2xl font-bold mb-4 text-neutral-800 dark:text-neutral-100">我们的使命</h3>
                         <div class="space-y-4 text-neutral-600 dark:text-neutral-400">
                             <p>本项目旨在通过可视化和交互式的方式，使大型语言模型的内部架构和工作原理变得透明且易于理解，为研究者、学习者和从业者提供一个深入了解大模型技术的平台。</p>
                             <p>我们致力于：</p>
@@ -242,7 +249,7 @@
                         <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center mb-6">
                             <i class="fas fa-lightbulb text-purple-600 dark:text-purple-400 text-xl"></i>
                         </div>
-                        <h2 class="text-2xl font-bold mb-4 text-neutral-800 dark:text-neutral-100">我们的愿景</h2>
+                        <h3 class="text-2xl font-bold mb-4 text-neutral-800 dark:text-neutral-100">我们的愿景</h3>
                         <div class="space-y-4 text-neutral-600 dark:text-neutral-400">
                             <p>打造全球最实用的大模型技术学习平台，涵盖从理论原理到实际应用的全栈知识体系。</p>
                             <p>我们期望：</p>
@@ -263,17 +270,12 @@
         <!-- 团队介绍 -->
         <section class="py-12" id="team">
             <div class="max-w-6xl mx-auto">
-                <div class="text-center mb-12">
-                    <div class="mb-4 inline-block">
-                        <span class="px-3 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700 dark:bg-green-900/30 dark:text-green-400">
-                            团队介绍
-                        </span>
-                    </div>
-                    <h2 class="text-3xl font-bold mb-4 text-neutral-800 dark:text-neutral-100">我们的团队</h2>
-                    <p class="text-lg text-neutral-600 dark:text-neutral-400 max-w-3xl mx-auto">
-                        一群对人工智能充满热情的研究者、工程师和教育者，致力于推动大语言模型技术的普及与创新
-                    </p>
-                </div>
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-neutral-800 dark:text-neutral-100">
+                    <i class="fas fa-users text-green-500 dark:text-green-400 mr-2"></i>团队介绍
+                </h2>
+                <p class="text-lg text-neutral-600 dark:text-neutral-400 max-w-3xl mb-8">
+                    一群对人工智能充满热情的研究者、工程师和教育者，致力于推动大语言模型技术的普及与创新
+                </p>
 
                 <div class="grid md:grid-cols-3 gap-8">
                     <!-- 创始人 -->
@@ -354,7 +356,9 @@
 
                 <!-- 我们的专家团队 -->
                 <div class="mt-16">
-                    <h3 class="text-xl font-bold mb-6 text-neutral-800 dark:text-neutral-100">我们的专家团队</h3>
+                    <h3 class="text-xl font-bold mb-6 text-neutral-800 dark:text-neutral-100">
+                        <i class="fas fa-certificate text-green-500 dark:text-green-400 mr-2"></i>我们的专家团队
+                    </h3>
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
                         <!-- 专家1 -->
                         <div class="bg-white dark:bg-neutral-800 rounded-xl border border-light p-4 hover:shadow-md transition-all duration-300">
@@ -412,20 +416,15 @@
             </div>
         </section>
 
-        <!-- 发展历程时间线 -->
-        <section class="py-12" id="timeline">
+        <!-- 发展历程 -->
+        <section class="py-12" id="history">
             <div class="max-w-6xl mx-auto">
-                <div class="text-center mb-12">
-                    <div class="mb-4 inline-block">
-                        <span class="px-3 py-1 rounded-full text-xs font-medium bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400">
-                            发展历程
-                        </span>
-                    </div>
-                    <h2 class="text-3xl font-bold mb-4 text-neutral-800 dark:text-neutral-100">我们的成长轨迹</h2>
-                    <p class="text-lg text-neutral-600 dark:text-neutral-400 max-w-3xl mx-auto">
-                        从创意萌发到行业影响力的每一步成长历程
-                    </p>
-                </div>
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-neutral-800 dark:text-neutral-100">
+                    <i class="fas fa-history text-purple-500 dark:text-purple-400 mr-2"></i>发展历程
+                </h2>
+                <p class="text-lg text-neutral-600 dark:text-neutral-400 max-w-3xl mb-8">
+                    我们的成长足迹与关键里程碑
+                </p>
 
                 <!-- 时间线 -->
                 <div class="relative">
@@ -716,9 +715,68 @@
             </div>
         </section>
 
+        <!-- 合作与支持 -->
+        <section class="py-12" id="partners">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-neutral-800 dark:text-neutral-100">
+                    <i class="fas fa-handshake text-sky-500 dark:text-sky-400 mr-2"></i>合作与支持
+                </h2>
+                <p class="text-lg text-neutral-600 dark:text-neutral-400 max-w-3xl mb-8">
+                    感谢这些优秀组织和机构的支持与合作，共同推动AI技术的教育普及
+                </p>
+
+                <!-- 合作与支持内容 -->
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- 合作伙伴1 -->
+                    <div class="bg-white dark:bg-neutral-800 rounded-xl border border-light p-6 hover:shadow-lg transition-all duration-300">
+                        <h3 class="text-xl font-bold mb-4 text-neutral-800 dark:text-neutral-100">合作伙伴1</h3>
+                        <p class="text-neutral-600 dark:text-neutral-400 mb-6">
+                            合作伙伴1的描述和合作内容
+                        </p>
+                        <div class="flex justify-center space-x-4">
+                            <a href="#" class="text-neutral-400 hover:text-blue-500 dark:hover:text-blue-400">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                            <a href="#" class="text-neutral-400 hover:text-blue-500 dark:hover:text-blue-400">
+                                <i class="fab fa-github"></i>
+                            </a>
+                            <a href="#" class="text-neutral-400 hover:text-blue-500 dark:hover:text-blue-400">
+                                <i class="fas fa-globe"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 合作伙伴2 -->
+                    <div class="bg-white dark:bg-neutral-800 rounded-xl border border-light p-6 hover:shadow-lg transition-all duration-300">
+                        <h3 class="text-xl font-bold mb-4 text-neutral-800 dark:text-neutral-100">合作伙伴2</h3>
+                        <p class="text-neutral-600 dark:text-neutral-400 mb-6">
+                            合作伙伴2的描述和合作内容
+                        </p>
+                        <div class="flex justify-center space-x-4">
+                            <a href="#" class="text-neutral-400 hover:text-blue-500 dark:hover:text-blue-400">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                            <a href="#" class="text-neutral-400 hover:text-blue-500 dark:hover:text-blue-400">
+                                <i class="fab fa-github"></i>
+                            </a>
+                            <a href="#" class="text-neutral-400 hover:text-blue-500 dark:hover:text-blue-400">
+                                <i class="fas fa-globe"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- 联系方式与反馈 -->
         <section class="py-12" id="contact">
             <div class="max-w-6xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-neutral-800 dark:text-neutral-100">
+                    <i class="fas fa-envelope text-pink-500 dark:text-pink-400 mr-2"></i>联系我们
+                </h2>
+                <p class="text-lg text-neutral-600 dark:text-neutral-400 max-w-3xl mb-8">
+                    我们期待与您交流，无论是合作、建议还是问题解答
+                </p>
                 <div class="grid md:grid-cols-2 gap-8">
                     <!-- 联系方式 -->
                     <div class="bg-white dark:bg-neutral-800 rounded-xl border border-light p-6 hover:shadow-lg transition-all duration-300">
@@ -814,7 +872,7 @@
                                 <a href="../applications/index.html" class="text-sm text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">应用开发</a>
                             </li>
                             <li>
-                                <a href="../index.html#components" class="text-sm text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">核心组件</a>
+                                <a href="../components/index.html" class="text-sm text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">核心组件</a>
                             </li>
                         </ul>
                     </div>

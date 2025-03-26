@@ -40,7 +40,7 @@ tailwind.config = {
           900: "#7c2d12",
         },
         neutral: {
-          50: "#fafafa",
+          50: "rgb(242 245 250)",
           100: "#f5f5f5",
           200: "#e5e5e5",
           300: "#d4d4d4",

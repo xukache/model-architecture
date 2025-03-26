@@ -11,8 +11,9 @@
     "serve": "cd dist && pnpm dlx http-server -p 3000",
     "clean": "pnpm dlx rimraf dist",
     "deploy": "pnpm run clean && pnpm run build && pnpm run serve",
-    "build:prod": "pnpm run build:css && pnpm run copy-assets",
-    "zip": "pnpm run clean && pnpm run build:prod && pnpm dlx bestzip dist.zip dist/"
+    "build:prod": "pnpm run build:all && pnpm run build:css && pnpm run copy-assets",
+    "zip": "pnpm run clean && pnpm run build:prod && pnpm dlx bestzip dist.zip dist/",
+    "build:all": "tailwindcss -i ./common/styles/input.css -o ./common/styles/output.css && copy /Y .\\common\\styles\\output.css .\\dist\\common\\styles\\output.css"
   },
   "keywords": [],
   "author": "",
