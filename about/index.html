@@ -12,6 +12,9 @@
 
     <!-- TailwindCSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- 全局配置脚本 -->
+    <script src="../common/js/config.js"></script>
     
     <!-- Preline UI -->
     <link rel="stylesheet" href="./common/styles/variants.min.css" />
@@ -38,7 +41,7 @@
                 </a>
             </div>
 
-            <nav class="hidden md:flex items-center space-x-1">
+            <nav class="hidden md:flex items-center space-x-4">
                 <a href="../index.html" class="nav-link">
                     首页
                 </a>
@@ -557,17 +560,12 @@
         <!-- 未来规划 Roadmap -->
         <section class="py-12" id="roadmap">
             <div class="max-w-6xl mx-auto">
-                <div class="text-center mb-12">
-                    <div class="mb-4 inline-block">
-                        <span class="px-3 py-1 rounded-full text-xs font-medium bg-amber-50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">
-                            未来规划
-                        </span>
-                    </div>
-                    <h2 class="text-3xl font-bold mb-4 text-neutral-800 dark:text-neutral-100">我们的发展路线图</h2>
-                    <p class="text-lg text-neutral-600 dark:text-neutral-400 max-w-3xl mx-auto">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4 text-neutral-800 dark:text-neutral-100">
+                        <i class="fas fa-road text-purple-500 dark:text-purple-400 mr-2"></i>未来规划
+                    </h2>
+                    <p class="text-lg text-neutral-600 dark:text-neutral-400 max-w-3xl mb-8">
                         大模型全栈平台的未来发展蓝图，持续探索AI教育的更多可能性
                     </p>
-                </div>
 
                 <!-- 路线图内容 -->
                 <div class="bg-white dark:bg-neutral-800 rounded-xl border border-light p-8 hover:shadow-lg transition-all duration-300">

@@ -169,7 +169,7 @@
 
   /* 导航链接Hover效果 */
   .nav-link {
-    @apply px-3 py-2 rounded-md text-sm font-medium text-neutral-700 dark:text-neutral-300 
+    @apply px-4 py-2 rounded-md text-sm font-medium text-neutral-700 dark:text-neutral-300 
            relative overflow-hidden transition-all duration-300 ease-out;
   }
   
@@ -192,8 +192,9 @@
   
   /* 激活的导航链接 */
   .nav-link-active {
-    @apply text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20
-           border-b-2 border-primary-500 dark:border-primary-400 rounded-b-none;
+    @apply px-4 py-2 rounded-md text-sm font-medium text-primary-600 dark:text-primary-400 
+           bg-primary-50 dark:bg-primary-900/20 border-b-2 border-primary-500 
+           dark:border-primary-400 rounded-b-none;
   }
   
   .nav-link-active:hover::after {
